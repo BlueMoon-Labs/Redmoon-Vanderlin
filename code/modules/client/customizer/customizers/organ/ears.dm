@@ -172,3 +172,15 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/miqote,
 		)
+
+/datum/customizer/organ/ears/axian
+	customizer_choices = list(/datum/customizer_choice/organ/ears/axian)
+	allows_disabling = FALSE
+
+/datum/customizer_choice/organ/ears/axian
+	name = "Axian ears"
+	organ_type = /obj/item/organ/ears
+	generic_random_pick = TRUE
+	sprite_accessories = list(
+		/datum/sprite_accessory/ears/shark,
+		)

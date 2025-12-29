@@ -44,3 +44,16 @@
 		/datum/sprite_accessory/snout/thin_beak/hookbeak,
 		/datum/sprite_accessory/snout/thin_beak/hookbeakbig,
 	)
+
+/datum/customizer/organ/snout/akula
+	customizer_choices = list(/datum/customizer_choice/organ/snout/akula)
+	allows_disabling = FALSE
+
+/datum/customizer_choice/organ/snout/akula
+	name = "Axian shout"
+	organ_type = /obj/item/organ/snout/akula
+	generic_random_pick = TRUE
+	sprite_accessories = list(
+		/datum/sprite_accessory/snout/shark,
+		/datum/sprite_accessory/snout/sharp,
+	)

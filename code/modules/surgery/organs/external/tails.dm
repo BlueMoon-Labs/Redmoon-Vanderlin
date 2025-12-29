@@ -68,3 +68,7 @@
 /obj/item/organ/tail/triton
 	name = "triton bell"
 	accessory_type = /datum/sprite_accessory/tail/triton
+
+/obj/item/organ/tail/axian
+	name = "Axian tail"
+	accessory_type = /datum/sprite_accessory/tail/shark

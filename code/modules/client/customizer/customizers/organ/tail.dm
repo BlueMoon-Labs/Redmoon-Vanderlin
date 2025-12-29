@@ -134,3 +134,13 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/tail/medicator
 	)
+
+/datum/customizer/organ/tail/axian
+	customizer_choices = list(/datum/customizer_choice/organ/tail/axian)
+	allows_disabling = FALSE
+
+/datum/customizer_choice/organ/tail/axian
+	name = "Axian Tail"
+	organ_type = /obj/item/organ/tail/axian
+	generic_random_pick = TRUE
+	sprite_accessories = list(/datum/sprite_accessory/tail/sharknofin, /datum/sprite_accessory/tail/shark)

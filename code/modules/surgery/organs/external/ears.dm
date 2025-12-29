@@ -137,3 +137,7 @@
 /obj/item/organ/ears/rakshari/Remove(mob/living/carbon/human/H,  special = 0)
 	. = ..()
 	REMOVE_TRAIT(H, TRAIT_KEENEARS, "[type]")
+
+/obj/item/organ/ears/akula
+	name = "Axian Ears"
+	accessory_type = /datum/sprite_accessory/ears/shark
