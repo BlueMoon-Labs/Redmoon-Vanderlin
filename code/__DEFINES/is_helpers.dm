@@ -84,8 +84,12 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define ismedicator(A) (is_species(A, /datum/species/medicator))
 #define istriton(A) (is_species(A, /datum/species/triton))
 #define ishalfling(A) (is_species(A, /datum/species/halfling))
-#define isaxian(A) (is_)species(A, /datum/species/axian)
-
+#define isaxian(A) (is_species(A, /datum/species/axian))
+#define islupian(A) (is_species(A, /datum/species/lupian))
+#define isvulpkanin(A) (is_species(A, /datum/species/vulpkanin))
+#define istabaxi(A) (is_species(A, /datum/species/tabaxi))
+#define ismoth(A) (is_species(A, /datum/species/moth))
+#define isdragon(A) (is_species(A, /datum/species/dragon))
 //more carbon mobs
 #define ismonkey(A) (istype(A, /mob/living/carbon/monkey))
 

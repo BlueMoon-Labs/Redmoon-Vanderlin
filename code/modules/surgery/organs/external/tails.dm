@@ -72,3 +72,19 @@
 /obj/item/organ/tail/axian
 	name = "Axian tail"
 	accessory_type = /datum/sprite_accessory/tail/shark
+
+/obj/item/organ/tail/lupian
+	name = "Lupian tail"
+	accessory_type = /datum/sprite_accessory/tail/wolf
+
+/obj/item/organ/tail/vulpkanin
+	name = "Vulpkanin tail"
+	accessory_type = /datum/sprite_accessory/tail/fox
+
+/obj/item/organ/tail/tabaxi
+	name = "Tabaxi tail"
+	accessory_type = /datum/sprite_accessory/tail/catbig
+
+/obj/item/organ/tail/dracon
+	name = "Dracon tail"
+	accessory_type = /datum/sprite_accessory/tail/lizard/smooth

@@ -141,3 +141,23 @@
 /obj/item/organ/ears/akula
 	name = "Axian Ears"
 	accessory_type = /datum/sprite_accessory/ears/shark
+
+/obj/item/organ/ears/lupian
+	name = "Lupian ears"
+	accessory_type = /datum/sprite_accessory/ears/wolf
+
+/obj/item/organ/ears/vulpkanin
+	name = "Vulpkanin ears"
+	accessory_type = /datum/sprite_accessory/ears/vulp
+
+/obj/item/organ/ears/tabaxi
+	name = "Tabaxi ears"
+	accessory_type = /datum/sprite_accessory/ears/cat_big
+
+/obj/item/organ/ears/dracon
+	name = "Dracon ears"
+	accessory_type = /datum/sprite_accessory/ears/cobrahoodears
+
+/obj/item/organ/ears/moth
+	name = "Moth ears"
+	accessory_type = /datum/sprite_accessory/ears/antenna_simple1

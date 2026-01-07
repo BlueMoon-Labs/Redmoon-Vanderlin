@@ -9,3 +9,7 @@
 	var/can_open
 	///Whether an openable wing is currently opened
 	var/is_open
+
+/obj/item/organ/wings/moth
+	name = "Moth wings"
+	accessory_type = /datum/sprite_accessory/wings/moth/brown
