@@ -27,7 +27,6 @@
 #define SPEC_ID_TABAXI "tabaxi"
 #define SPEC_ID_MOTH "moth"
 #define SPEC_ID_DRACON "dracon"
-#define SPEC_ID_CONSTRUCT "construct"
 
 /// List of all species
 #define ALL_RACES_LIST list(\
@@ -58,7 +57,7 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-	SPEC_ID_CONSTRUCT,\
+
 )
 
 /// Species where females get underwear, no underwear for kobold, rakshari, medicator and triton, dwarves handled seperately
@@ -130,7 +129,7 @@
 	SPEC_ID_KOBOLD,\
 	SPEC_ID_HOLLOWKIN,\
 	SPEC_ID_HALF_ORC,\
-	SPEC_ID_CONSTRUCT,\
+
 )
 
 /// Species not considered discriminated against in Vanderlin. Used for nobility, etc.
@@ -160,7 +159,7 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-	SPEC_ID_CONSTRUCT,\
+
 )
 
 /// Species who are non-exotic to Vanderlin. These are species from foreign lands with no local pull or uncommon species. Used in miscellaneous cases, when they would not be that role.
@@ -185,7 +184,7 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-	SPEC_ID_CONSTRUCT,\
+
 )
 
 /// Species that lack lux. Any who have no ties to divinity anymore, whether it be their creation story or otherwise taken from them (Hollow-kin)
@@ -197,7 +196,7 @@
 	SPEC_ID_ROUSMAN,\
 	SPEC_ID_GOBLIN,\
 	SPEC_ID_ORC,\
-	SPEC_ID_CONSTRUCT,\
+
 )
 
 /// Species who are affiliated with Grenzelhoft or Psydon specifically.
@@ -346,5 +345,5 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-	SPEC_ID_CONSTRUCT,\
+
 )
