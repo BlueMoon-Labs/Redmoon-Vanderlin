@@ -57,8 +57,7 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-
-)
+	)
 
 /// Species where females get underwear, no underwear for kobold, rakshari, medicator and triton, dwarves handled seperately
 #define RACES_UNDERWEAR_FEMALE list(\
@@ -129,7 +128,6 @@
 	SPEC_ID_KOBOLD,\
 	SPEC_ID_HOLLOWKIN,\
 	SPEC_ID_HALF_ORC,\
-
 )
 
 /// Species not considered discriminated against in Vanderlin. Used for nobility, etc.
@@ -159,7 +157,6 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-
 )
 
 /// Species who are non-exotic to Vanderlin. These are species from foreign lands with no local pull or uncommon species. Used in miscellaneous cases, when they would not be that role.
@@ -184,7 +181,6 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-
 )
 
 /// Species that lack lux. Any who have no ties to divinity anymore, whether it be their creation story or otherwise taken from them (Hollow-kin)
@@ -196,7 +192,6 @@
 	SPEC_ID_ROUSMAN,\
 	SPEC_ID_GOBLIN,\
 	SPEC_ID_ORC,\
-
 )
 
 /// Species who are affiliated with Grenzelhoft or Psydon specifically.
@@ -345,5 +340,4 @@
 	SPEC_ID_TABAXI,\
 	SPEC_ID_MOTH,\
 	SPEC_ID_DRACON,\
-
 )
