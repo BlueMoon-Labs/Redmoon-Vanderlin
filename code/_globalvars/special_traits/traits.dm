@@ -116,8 +116,8 @@
 	weight = 100
 
 /datum/special_trait/beautiful/on_apply(mob/living/carbon/human/character, silent)
-	REMOVE_TRAIT(character, TRAIT_UGLY, TRAIT_GENERIC)
-	REMOVE_TRAIT(character, TRAIT_FISHFACE, TRAIT_GENERIC)
+	REMOVE_TRAIT(character, TRAIT_UGLY, BE_SPECIAL_TRAIT)
+	REMOVE_TRAIT(character, TRAIT_FISHFACE, BE_SPECIAL_TRAIT)
 	ADD_TRAIT(character, TRAIT_BEAUTIFUL, "[type]")
 
 //positive
@@ -177,7 +177,7 @@
 /datum/special_trait/too_smart/on_apply(mob/living/carbon/human/character, silent)
 	character.change_stat(STATKEY_INT, 5)
 	ADD_TRAIT(character, TRAIT_BAD_MOOD, "[type]")
-	character.set_flaw(/datum/charflaw/paranoid)
+	character.add_quirk(/datum/quirk/vice/paranoid)
 
 /datum/special_trait/bookworm
 	name = "Bookworm"
@@ -314,8 +314,8 @@
 	weight = 50
 
 /datum/special_trait/tavernbrawler/on_apply(mob/living/carbon/human/character)
-	character.clamped_adjust_skillrank(/datum/skill/combat/wrestling, 3, 4, TRUE)
-	character.clamped_adjust_skillrank(/datum/skill/combat/unarmed, 3, 4, TRUE)
+	character.clamped_adjust_skillrank(/datum/skill/combat/wrestling, 2, 3, TRUE)
+	character.clamped_adjust_skillrank(/datum/skill/combat/unarmed, 2, 3, TRUE)
 	character.change_stat(STATKEY_STR, 1)
 	character.change_stat(STATKEY_END, 1)
 	character.change_stat(STATKEY_CON, 1)
@@ -472,9 +472,9 @@
 	allowed_ages = list(AGE_MIDDLEAGED, AGE_OLD)
 
 /datum/special_trait/war_veteran/on_apply(mob/living/carbon/human/character, silent)
-	character.set_flaw(/datum/charflaw/limbloss/arm_l)
-	character.set_flaw(/datum/charflaw/noeyel)
-	character.set_flaw(/datum/charflaw/old_war_wound)
+	character.add_quirk(/datum/quirk/vice/wooden_arm_left)
+	character.add_quirk(/datum/quirk/vice/cyclops_left)
+	character.add_quirk(/datum/quirk/vice/old_war_wound)
 	character.clamped_adjust_skillrank(/datum/skill/combat/swords, 4, 4, TRUE)
 	character.clamped_adjust_skillrank(/datum/skill/combat/polearms, 4, 4, TRUE)
 	character.adjust_skillrank(/datum/skill/misc/sneaking, 2, TRUE)
@@ -485,8 +485,8 @@
 	weight = 25
 
 /datum/special_trait/sadistic/on_apply(mob/living/carbon/human/character, silent)
-	character.set_flaw(/datum/charflaw/addiction/maniac)
-	character.verbs |= /mob/living/carbon/human/proc/torture_victim
+	character.add_quirk(/datum/quirk/vice/maniac)
+	add_verb(character, /mob/living/carbon/human/proc/torture_victim)
 	character.mind.special_items["Chains"] = /obj/item/rope/chain
 
 //negative
@@ -505,7 +505,7 @@
 
 /datum/special_trait/ugly/on_apply(mob/living/carbon/human/character, silent)
 	ADD_TRAIT(character, TRAIT_UGLY, "[type]")
-	REMOVE_TRAIT(character, TRAIT_BEAUTIFUL, TRAIT_GENERIC)
+	REMOVE_TRAIT(character, TRAIT_BEAUTIFUL, BE_SPECIAL_TRAIT)
 
 /datum/special_trait/nopouch
 	name = "No Pouch"
@@ -642,7 +642,7 @@
 	character.adjust_skillrank(/datum/skill/combat/axesmaces, 1, TRUE)
 	character.adjust_skillrank(/datum/skill/combat/bows, 3, TRUE)
 	character.adjust_skillrank(/datum/skill/combat/crossbows, 2, TRUE)
-	character.adjust_skillrank(/datum/skill/combat/wrestling, 2, TRUE)
+	character.adjust_skillrank(/datum/skill/combat/wrestling, 1, TRUE)
 	character.adjust_skillrank(/datum/skill/combat/unarmed, 2, TRUE)
 	character.adjust_skillrank(/datum/skill/combat/swords, 2, TRUE)
 	character.adjust_skillrank(/datum/skill/combat/knives, 2, TRUE)
@@ -765,7 +765,7 @@
 	name = "Devout Knight"
 	greet_text = span_notice("I am a devoted warrior of the Ten, and my equipments lie hidden in their resting place, ready to be donned when the call comes.")
 	allowed_jobs = list(/datum/job/royalknight)
-	allowed_flaw = /datum/charflaw/addiction/godfearing
+	allowed_flaw = /datum/quirk/vice/godfearing
 	allowed_patrons = ALL_TEMPLE_PATRONS
 	req_text = "Be a Royal knight, With the Flaw 'devout follower' and be a follower of the ten."
 	weight = 50
@@ -788,7 +788,7 @@
 			cloak = /obj/item/clothing/cloak/stabard/templar/noc
 			weapon = /obj/item/weapon/sword/sabre/noc
 			character.cmode_music = 'sound/music/cmode/adventurer/CombatMonk.ogg'
-			ADD_TRAIT(character, TRAIT_DUALWIELDER, TRAIT_GENERIC)
+			ADD_TRAIT(character, TRAIT_DUALWIELDER, BE_SPECIAL_TRAIT)
 		if(/datum/patron/divine/dendor)
 			psycross = /obj/item/clothing/neck/psycross/silver/dendor
 			helmet = /obj/item/clothing/head/helmet/heavy/necked/dendorhelm
@@ -809,7 +809,7 @@
 			weapon = /obj/item/weapon/knife/dagger/steel/pestrasickle
 			character.mind.special_items["Second Weapon"] = /obj/item/weapon/knife/dagger/steel/pestrasickle
 			character.cmode_music = 'sound/music/cmode/adventurer/CombatMonk.ogg'
-			ADD_TRAIT(character, TRAIT_DUALWIELDER, TRAIT_GENERIC)
+			ADD_TRAIT(character, TRAIT_DUALWIELDER, BE_SPECIAL_TRAIT)
 			character.clamped_adjust_skillrank(/datum/skill/combat/knives, 4, 4, TRUE)
 			character.adjust_skillrank(/datum/skill/craft/alchemy, 2, TRUE)
 		if(/datum/patron/divine/eora)
@@ -819,7 +819,7 @@
 			weapon = /obj/item/weapon/sword/rapier/eora
 			character.cmode_music = 'sound/music/cmode/church/CombatEora.ogg'
 			character.mind.special_items["Eora's Gift"] = /obj/item/clothing/head/flowercrown/rosa
-			ADD_TRAIT(character, TRAIT_BEAUTIFUL, TRAIT_GENERIC)
+			ADD_TRAIT(character, TRAIT_BEAUTIFUL, BE_SPECIAL_TRAIT)
 		if(/datum/patron/divine/ravox)
 			psycross = /obj/item/clothing/neck/psycross/silver/ravox
 			helmet = /obj/item/clothing/head/helmet/heavy/ravoxhelm
@@ -849,7 +849,7 @@
 			character.clamped_adjust_skillrank(/datum/skill/combat/whipsflails, 4, 4, TRUE)
 		if(/datum/patron/inhumen/graggar_zizo) //In case a admin decide to give them graggazo roundstart
 			psycross = /obj/item/clothing/ring/silver/toper
-			helmet = /obj/item/clothing/head/helmet/graggar
+			helmet = /obj/item/clothing/head/helmet/heavy/graggar
 			cloak = /obj/item/clothing/cloak/graggar
 			weapon = /obj/item/weapon/sword/long/judgement/evil
 		else
@@ -884,8 +884,8 @@
 	weight = 25
 
 /datum/special_trait/smelly/on_apply(mob/living/carbon/human/character, silent)
-	ADD_TRAIT(character, TRAIT_STINKY, TRAIT_GENERIC)
-	ADD_TRAIT(character, TRAIT_DEADNOSE, TRAIT_GENERIC)
+	ADD_TRAIT(character, TRAIT_STINKY, BE_SPECIAL_TRAIT)
+	ADD_TRAIT(character, TRAIT_DEADNOSE, BE_SPECIAL_TRAIT)
 
 /datum/special_trait/keenears
 	name = "Keen Ears"
@@ -933,7 +933,7 @@
 	character.update_transform()
 	character.RemoveElement(/datum/element/footstep, character.footstep_type, 1, -6)
 	character.AddElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, -2)
-	character.verbs |= /mob/living/carbon/human/proc/emote_burp_loud
+	add_verb(character, /mob/living/carbon/human/proc/emote_burp_loud)
 	var/datum/voicepack/glutton/sound_m = new()
 	var/datum/voicepack/glutton/sound_f = new()
 	sound_m.parent_datum = character.dna.species.soundpack_m
@@ -952,7 +952,7 @@
 
 /mob/living/carbon/human/proc/emote_burp_loud()
 	set name = "Gluttonous Burp"
-	set category = "Noises"
+	set category = "Emotes.Noises"
 
 	emote("burploud", intentional = TRUE)
 
@@ -962,9 +962,8 @@
 	weight = 50
 
 /datum/special_trait/musical/on_apply(mob/living/carbon/human/character, silent)
-	ADD_TRAIT(character, TRAIT_BARDIC_TRAINING, TRAIT_GENERIC)
-	var/datum/inspiration/I = new /datum/inspiration(character)
-	I.grant_inspiration(character, bard_tier = BARD_T2)
+	ADD_TRAIT(character, TRAIT_BARDIC_TRAINING, BE_SPECIAL_TRAIT)
+	character.inspiration = new /datum/inspiration(character)
 	character.adjust_skillrank(/datum/skill/misc/music, 4, TRUE)
 
 /datum/special_trait/baothan

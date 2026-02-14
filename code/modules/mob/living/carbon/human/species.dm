@@ -1,6 +1,6 @@
 // This code handles different species in the game.
-GLOBAL_LIST_EMPTY(roundstart_races)
-GLOBAL_LIST_EMPTY(donator_races)
+GLOBAL_LIST_EMPTY(roundstart_species)
+
 /datum/species
 	/// The name used for examine text and so on
 	var/name
@@ -8,6 +8,9 @@ GLOBAL_LIST_EMPTY(donator_races)
 	var/desc
 	/// Internal ID of this species used for job checks, etc.
 	var/id
+	// Since an unique ID is required, but subspecies probably should have the same restrictions
+	/// Override for things that use species id to use instead
+	var/id_override
 	/// Override for limbs to use a different species' limbs
 	var/limbs_id
 	/// Limb icon to use to build appearance for males
@@ -188,7 +191,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 	var/use_skintones = FALSE
 
 	/// Wording for skin tone on examine and on character setup
-	var/skin_tone_wording = "Skin Tone"
+	var/skin_tone_wording = "Ancestry"
 
 	/// List of bodypart features of this species
 	var/list/bodypart_features
@@ -440,32 +443,12 @@ GLOBAL_LIST_EMPTY(donator_races)
 		H.dna.species.accent_language = H.dna.species.get_accent(H.dna.species.native_language)
 	return TRUE
 
-/proc/generate_selectable_species()
-	for(var/I as anything in subtypesof(/datum/species))
-		var/datum/species/S = new I
-		if(!S.check_roundstart_eligible())
-			continue
-		GLOB.roundstart_races += S.name
-		if(S.donator_req)
-			GLOB.donator_races += S.name
-		qdel(S)
-	if(!LAZYLEN(GLOB.roundstart_races))
-		GLOB.roundstart_races += "Humen" // GLOB.species_list uses name and should probably be refactored
-	sortTim(GLOB.roundstart_races, GLOBAL_PROC_REF(cmp_text_dsc))
-
-/proc/get_selectable_species(donator = TRUE)
-	if(!LAZYLEN(GLOB.roundstart_races))
-		generate_selectable_species()
-	var/list/species = GLOB.roundstart_races.Copy()
-	if(!donator)
-		species -= GLOB.donator_races
-	return species
-
 /datum/species/proc/check_roundstart_eligible()
 	return FALSE
-//	if(id in (CONFIG_GET(keyed_list/roundstart_races)))
-//		return TRUE
-//	return FALSE
+
+// Remove when preference datums
+/datum/species/proc/preference_accessible(datum/preferences/prefs)
+	return TRUE
 
 /datum/species/proc/get_possible_names(gender = MALE) as /list
 	SHOULD_CALL_PARENT(FALSE)
@@ -496,23 +479,24 @@ GLOBAL_LIST_EMPTY(donator_races)
 /datum/species/proc/get_spec_undies_list(gender)
 	if(!GLOB.underwear_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear, GLOB.underwear_list, GLOB.underwear_m, GLOB.underwear_f)
+
+	var/list/used_list = GLOB.underwear_list
+	if(gender == MALE)
+		used_list = GLOB.underwear_m
+	else if(gender == FEMALE)
+		used_list = GLOB.underwear_f
+
+	var/used_species_id = id_override ? id_override : id
+
 	var/list/spec_undies = list()
-	var/datum/sprite_accessory/X
-	switch(gender)
-		if(MALE)
-			for(var/O in GLOB.underwear_m)
-				X = GLOB.underwear_list[O]
-				if(X)
-					if(id in X.specuse)
-						if(X.roundstart)
-							spec_undies += X
-		if(FEMALE)
-			for(var/O in GLOB.underwear_f)
-				X = GLOB.underwear_list[O]
-				if(X)
-					if(id in X.specuse)
-						if(X.roundstart)
-							spec_undies += X
+	for(var/name in used_list)
+		var/datum/sprite_accessory/accessory = used_list[name]
+		if(!accessory.roundstart)
+			continue
+		if(!(used_species_id in accessory.specuse))
+			continue
+		spec_undies += accessory
+
 	return spec_undies
 
 /datum/species/proc/random_underwear(gender)
@@ -746,12 +730,12 @@ GLOBAL_LIST_EMPTY(donator_races)
 	if(C.hud_used)
 		C.hud_used.update_locked_slots()
 
-	if(ishuman(C))
+	if(ishuman(C) && !pref_load)
 		random_character(C)
+	else
+		regenerate_organs(C, old_species, pref_load = pref_load)
 
 	C.mob_biotypes = inherent_biotypes
-
-	regenerate_organs(C,old_species, pref_load=pref_load)
 
 	if(exotic_bloodtype && C.dna.human_blood_type != exotic_bloodtype)
 		C.dna.human_blood_type = exotic_bloodtype
@@ -791,7 +775,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 		C.setToxLoss(0, TRUE, TRUE)
 
 	if(TRAIT_NOMETABOLISM in inherent_traits)
-		C.reagents.end_metabolization(C, keep_liverless = TRUE)
+		C.reagents.end_metabolization(src, keep_liverless = TRUE)
 
 	if(inherent_factions)
 		for(var/i in inherent_factions)
@@ -828,8 +812,6 @@ GLOBAL_LIST_EMPTY(donator_races)
 	if(inherent_factions)
 		for(var/i in inherent_factions)
 			C.faction -= i
-
-	C.remove_movespeed_modifier(MOVESPEED_ID_SPECIES)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_LOSS, src)
 
@@ -870,7 +852,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 				limb_icon = species.limbs_icon_m
 			else
 				limb_icon = species.limbs_icon_f
-			var/mutable_appearance/bodyhair_overlay = mutable_appearance(limb_icon, "[species?.hairyness]", -BODY_LAYER)
+			var/mutable_appearance/bodyhair_overlay = mutable_appearance(limb_icon, "[species?.hairyness]", -FRONT_MUTATIONS_LAYER)
 			bodyhair_overlay.color = H.get_hair_color()
 			standing += bodyhair_overlay
 
@@ -955,13 +937,14 @@ GLOBAL_LIST_EMPTY(donator_races)
 
 /datum/species/proc/spec_life(mob/living/carbon/human/H)
 	SHOULD_CALL_PARENT(TRUE)
+	if(H.stat == DEAD)
+		return
 
 	if(HAS_TRAIT(H, TRAIT_NOBREATH))
 		H.setOxyLoss(0)
 		H.losebreath = 0
-
-	if((H.health < H.crit_threshold) && !HAS_TRAIT(H, TRAIT_NOCRITDAMAGE))
-		H.adjustBruteLoss(1)
+	else if((H.health < H.crit_threshold) && !HAS_TRAIT(H, TRAIT_NOCRITDAMAGE))
+		H.adjustOxyLoss(1)
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
 	return
@@ -1252,7 +1235,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 			if(CONFIG_GET(flag/starvation_death))
 				H.apply_status_effect(/datum/status_effect/debuff/hungryt4)
 			if(prob(3))
-				playsound(get_turf(H), pick('sound/vo/hungry1.ogg','sound/vo/hungry2.ogg','sound/vo/hungry3.ogg'), 100, TRUE, -1)
+				playsound(H, pick('sound/vo/hungry1.ogg','sound/vo/hungry2.ogg','sound/vo/hungry3.ogg'), 100, TRUE, -1)
 
 	switch(H.hydration)
 		if(HYDRATION_LEVEL_THIRSTY to HYDRATION_LEVEL_SMALLTHIRST)
@@ -1334,9 +1317,6 @@ GLOBAL_LIST_EMPTY(donator_races)
 //////////////////
 
 /datum/species/proc/spec_updatehealth(mob/living/carbon/human/H)
-	return
-
-/datum/species/proc/spec_fully_heal(mob/living/carbon/human/H)
 	return
 
 /datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
@@ -1500,7 +1480,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 		if(target.body_position == LYING_DOWN)
 			target.forcesay(GLOB.hit_appends)
 		if(!nodmg)
-			playsound(target.loc, user.used_intent.hitsound, 100, FALSE)
+			playsound(target, user.used_intent.hitsound, 100, FALSE)
 
 
 /datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
@@ -1631,15 +1611,14 @@ GLOBAL_LIST_EMPTY(donator_races)
 		return FALSE
 	if(user == target)
 		return FALSE
-	if(!HAS_TRAIT(user, TRAIT_GARROTED))
-		if(user.check_leg_grabbed(1) || user.check_leg_grabbed(2))
-			if(user.check_leg_grabbed(1) && user.check_leg_grabbed(2))		//If both legs are grabbed
-				to_chat(user, span_notice("I can't move my legs!"))
-				return
-			else															//If only one leg is grabbed
-				to_chat(user, span_notice("I can't move my leg!"))
-				user.resist_grab()
+	if(user.check_leg_grabbed(1) || user.check_leg_grabbed(2))
+		if(user.check_leg_grabbed(1) && user.check_leg_grabbed(2))		//If both legs are grabbed
+			to_chat(user, span_notice("I can't move my legs!"))
 			return
+		else															//If only one leg is grabbed
+			to_chat(user, span_notice("I can't move my leg!"))
+			user.resist_grab()
+		return
 
 	if(user.stamina >= user.maximum_stamina)
 		return FALSE
@@ -1881,7 +1860,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 					affecting.receive_damage(I.embedding.embedded_unsafe_removal_pain_multiplier*I.w_class)//It hurts to rip it out, get surgery you dingus.
 					user.put_in_hands(I)
 					H.emote("pain", TRUE)
-					playsound(H.loc, 'sound/foley/flesh_rem.ogg', 100, TRUE, -2)
+					playsound(H, 'sound/foley/flesh_rem.ogg', 100, TRUE, -2)
 			I.do_special_attack_effect(user, affecting, intent, H, selzone)
 			if(istype(user.used_intent, /datum/intent/effect) && selzone)
 				var/datum/intent/effect/effect_intent = user.used_intent
@@ -2501,7 +2480,7 @@ GLOBAL_LIST_EMPTY(donator_races)
 	var/skill_modifier = 10
 	if(istype(starting_turf) && !QDELETED(starting_turf))
 		distance = get_dist(starting_turf, src)
-	skill_modifier *= get_skill_level(/datum/skill/misc/athletics)
+	skill_modifier *= get_skill_level(/datum/skill/misc/athletics, TRUE)
 	var/modifier = -distance
 	if(!prob(STAEND+skill_modifier+modifier))
 		Knockdown(8)

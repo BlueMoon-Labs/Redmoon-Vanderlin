@@ -46,8 +46,8 @@
 		/datum/skill/misc/medicine = 1,
 		/datum/skill/misc/reading = 3,
 		/datum/skill/combat/knives = 5,
-		/datum/skill/combat/unarmed = 3,
-		/datum/skill/combat/wrestling = 3,
+		/datum/skill/combat/unarmed = 2,
+		/datum/skill/combat/wrestling = 2,
 	)
 
 	jobstats = list(
@@ -57,6 +57,9 @@
 		STATKEY_SPD =  2
 	)
 
+	mind_traits = list(
+		TRAIT_KNOW_THIEF_DOORS
+	)
 	traits = list(
 		TRAIT_THIEVESGUILD,
 		TRAIT_OLDPARTY,
@@ -68,6 +71,7 @@
 
 /datum/job/matron/after_spawn(mob/living/carbon/human/spawned, client/player_client)
 	. = ..()
+	spawned.add_quirk(/datum/quirk/boon/folk_hero)
 	if(spawned.age == AGE_OLD)
 		spawned.adjust_skillrank(/datum/skill/combat/unarmed, 1, TRUE)
 		spawned.adjust_skillrank(/datum/skill/combat/knives, 1, TRUE)
@@ -90,7 +94,7 @@
 	cloak = /obj/item/clothing/cloak/matron
 
 	backpack_contents = list(
-		/obj/item/weapon/knife/dagger/steel = 1,
+		/obj/item/weapon/knife/dagger/steel/stiletto = 1,
 		/obj/item/key/matron = 1
 	)
 
