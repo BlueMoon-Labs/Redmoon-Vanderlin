@@ -1,0 +1,6 @@
+#define SPEC_ID_AXIAN "axian"
+#define SPEC_ID_LUPIAN "lupian"
+#define SPEC_ID_VULPKANIN "vulpkanin"
+#define SPEC_ID_TABAXI "tabaxi"
+#define SPEC_ID_MOTH "moth"
+#define SPEC_ID_DRACON "dracon"

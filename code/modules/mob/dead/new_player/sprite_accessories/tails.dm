@@ -3,7 +3,7 @@
 	icon = 'icons/mob/sprite_accessory/tails/tails.dmi'
 	color_key_name = "Tail"
 	relevant_layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
-	color_key_defaults = list(KEY_SKIN_COLOR)
+	color_key_defaults = list(KEY_HAIR_COLOR)
 	var/can_wag = FALSE
 
 /datum/sprite_accessory/tail/is_visible(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
