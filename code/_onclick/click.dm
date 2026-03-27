@@ -120,6 +120,14 @@
 			MiddleClickOn(clicked_atom, modifiers)
 		return
 
+// REDMOON EDIT START
+
+	if(LAZYACCESS(modifiers, CTRL_CLICKED) && LAZYACCESS(modifiers, SHIFT_CLICKED))
+		CtrlShiftClickOn(clicked_atom, modifiers)
+		return
+
+//REDMOON EDIT END
+
 	if(LAZYACCESS(modifiers, SHIFT_CLICKED))
 		ShiftClickOn(clicked_atom, modifiers)
 		return

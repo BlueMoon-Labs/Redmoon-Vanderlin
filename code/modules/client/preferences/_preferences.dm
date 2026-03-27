@@ -40,6 +40,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	var/UI_style = null
 	var/buttons_locked = TRUE
 	var/hotkeys = TRUE
+	var/arousable = TRUE
 
 	var/showrolls = TRUE
 	var/max_chat_length = CHAT_MESSAGE_MAX_LENGTH
@@ -114,6 +115,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 	/// Voice color.
 	var/voice_color = "a0a0a0"
+
+	///REDMOON ADDITION
+	var/body_color = "a0a0a0"
+	///REDMOON ADDITION END
 
 	/// Detail color.
 	var/detail_color = "000"
@@ -441,7 +446,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.v-blob      { top: 4px;   left: 35px; width: 8px;  height: 7px;
 		               background-image: url('voice_colour_blob.png');
 		               background-blend-mode: multiply; }
-
+		.v-color-box-body { top: 54px; left: 138px; width: 48px; height: 15px; background-image: url('voice_colour.png'); }
+		.v-blob-body      { top: 4px;   left: 35px; width: 8px;  height: 7px;
+		               background-image: url('voice_colour_blob.png');
+		               background-blend-mode: multiply; }
 		.menu-keybinds {
 			top: 280px;
 			left: 78px;
@@ -567,6 +575,11 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				var blob = document.getElementById('voice-blob');
 				if(blob && data.voice_color) {
 					blob.style.backgroundColor = data.voice_color;
+				}
+			if('body_color' in data) {
+				var blob = document.getElementById('voice-blob-body');
+				if(blob && data.body_color) {
+					blob.style.backgroundColor = data.body_color;
 				}
 			}
 		}
@@ -713,6 +726,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			<div id="voice-blob" class="sprite v-blob" style="background-color: [voice_color];"></div>
 		</a>
 	</div>
+	<div class="sprite v-color-box-body">
+		<a href='?_src_=prefs;preference=body_color;task=input' style="display: block; width: 100%; height: 100%;">
+		<div id="voice-blob-body" class="sprite v-blob" style="background-color: [skin_tone];"></div>
+	</div>
 	<a href='?_src_=prefs;preference=bespecial'><div id="bespecial" class="sprite [next_special_trait ? "yes" : ""]"></div></a>
 	<a href='?_src_=prefs;preference=multi;task=menu'><div class="sprite menu-ready"></div></a>
 	<a href='?_src_=prefs;preference=changeslot;'><div class="sprite menu-change"></div></a>
@@ -792,6 +809,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		params["headshot"] = headshot_link || ""
 	if(update_all || ("voice_color" in fields_to_update))
 		params["voice_color"] = voice_color
+	if(update_all || ("body_color in fields_to_update"))
+		params["body_color"] = body_color
 	if(update_all || ("bespecial" in fields_to_update))
 		params["bespecial"] = next_special_trait ? "1" : "0"
 	if(update_all || ("culture" in fields_to_update))
@@ -1654,11 +1673,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 							to_chat(user, "<font color='red'>This voice color is too dark for mortals.</font>")
 							return
 						voice_color = sanitize_hexcolor(new_voice)
-
+				if("body_color")
+					var/new_color = input(user, "Выбери цвет кожи/шерсти своего персонажа", "THE THROAT","#"+body_color) as color|null
+					if(new_color)
+						if(color_hex2num(new_color) < 230)
+							to_chat(user, "<font color='red'>Этот цвет слишком тёмный!.</font>")
+							return
+						skin_tone = sanitize_hexcolor(new_color)
 				if("headshot")
-					if(!donator)
-						to_chat(user, "This is a donator exclusive feature, your headshot link will be applied but others will only be able to view it if you are a Patreon supporter or Twitch subscriber.")
-
 					to_chat(user, span_notice("Please use an image of the head and shoulder area to maintain immersion level. Lastly, ["<span class='bold'>do not use a real life photo or ANYTHING AI generated.</span>"]"))
 					to_chat(user, span_notice("If the photo doesn't show up properly in-game, ensure that it's a direct image link that opens properly in a browser."))
 					to_chat(user, span_notice("Keep in mind that the photo will be downsized to 325x325 pixels, so the more square the photo, the better it will look."))

@@ -14,6 +14,7 @@
 	var/list/organ_dna = list()
 	//Familytree variable
 	var/parent_mix
+	var/skin_tone_override
 
 /datum/dna/New(mob/living/new_holder)
 	if(istype(new_holder))

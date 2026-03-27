@@ -1,0 +1,382 @@
+<html lang="en">
+<head>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            image-rendering: pixelated;
+        }
+        .ui-container {
+            position: relative;
+            width: 272px;
+            height: 315px;
+            background-image: url('parchment/background&reference/Charsheet_BG.1.png');
+            background-size: cover;
+            transform: scale(3);
+            zoom: 100%;
+        }
+        .sprite { position: absolute; background-repeat: no-repeat; cursor: pointer; }
+
+        .header-bg   { top: 5px;   left: 6px;   width: 260px; height: 52px; background-image: url('parchment/header/0_header_bg.png'); }
+        .preview-bg  { top: 50px;  left: 8px;   width: 99px;  height: 83px; background-image: url('parchment/character_preview/charpreview_bg.png'); }
+        .body-bg     { top: 58px;  left: 110px; width: 118px; height: 75px; background-image: url('parchment/body/0_body_bg.png'); }
+        .voice-bg    { top: 137px; left: 2px;   width: 107px; height: 41px; background-image: url('parchment/voice/0_voice_bg.png'); }
+        .family-bg   { top: 137px; left: 114px; width: 86px;  height: 74px; background-image: url('parchment/family/0_family_bg.png'); }
+        .flavour-bg  { top: 137px; left: 201px; width: 65px;  height: 95px; background-image: url('parchment/flavour/0_flavour_bg.png'); }
+        .loadout-bg  { top: 181px; left: 3px;   width: 64px;  height: 74px; background-image: url('parchment/loadout/0_loadout_bg.png'); }
+        .triumphs-bg { top: 182px; left: 74px;  width: 37px;  height: 34px; background-image: url('parchment/triumphs/0_triumphs_bg.png'); }
+        .headshot-bg { top: 213px; left: 119px; width: 76px;  height: 76px; background-image: url('parchment/character_headshot/headshot_bg.png'); }
+        .ooc-bg      { top: 236px; left: 201px; width: 54px;  height: 48px; background-image: url('parchment/ooc/0_ooc_bg.png'); }
+
+        .features-bg { top: 60px; left: 231px; width: 36px; height: 48px; background-image: url('parchment/features/0_features_bg.png'); }
+        #silhouette  { top: 3px;  left: 10px;  width: 15px; height: 28px; background-image: url('parchment/features/features_bodytype_f.png'); }
+        .f-btn       { top: 95px; left: 232px; width: 34px; height: 10px; background-image: url('parchment/features/features_button.png'); z-index: 3; }
+        .f-btn:hover { background-image: url('parchment/features/features_button_hover.png'); }
+        .f-random    { top: 110px; left: 232px; width: 34px; height: 25px; background-image: url('parchment/features/features_random.png'); }
+        .f-random:hover { background-image: url('parchment/features/features_random_hover.png'); }
+
+        .flav-desc { top: 174px; left: 207px; width: 49px; height: 10px; background-image: url('parchment/flavour/flavour_descriptors.png'); }
+        .flav-desc:hover { background-image: url('parchment/flavour/flavour_descriptors_hover.png'); }
+        .flav-text { top: 192px; left: 207px; width: 53px; height: 10px; background-image: url('parchment/flavour/flavour_text.png'); }
+        .flav-text:hover { background-image: url('parchment/flavour/flavour_text_hover.png'); }
+        .flav-food { top: 210px; left: 207px; width: 45px; height: 10px; background-image: url('parchment/flavour/flavour_foodprefs.png'); }
+        .flav-food:hover { background-image: url('parchment/flavour/flavour_foodprefs_hover.png'); }
+        .flav-prev { top: 226px; left: 215px; width: 34px; height: 10px; background-image: url('parchment/flavour/flavour_preview.png'); }
+        .flav-prev:hover { background-image: url('parchment/flavour/flavour_preview_hover.png'); }
+
+        .ooc-notes { top: 252px; left: 207px; width: 41px; height: 10px; background-image: url('parchment/ooc/ooc_notes.png'); }
+        .ooc-notes:hover { background-image: url('parchment/ooc/ooc_notes_hover.png'); }
+        .ooc-extra { top: 270px; left: 207px; width: 40px; height: 10px; background-image: url('parchment/ooc/ooc_extra.png'); }
+        .ooc-extra:hover { background-image: url('parchment/ooc/ooc_extra_hover.png'); }
+        .btn-roles { top: 284px; left: 200px; width: 55px; height: 30px; background-image: url('parchment/ooc/ooc_specialroles.png'); }
+        .btn-roles:hover { background-image: url('parchment/ooc/ooc_specialroles_hover.png'); }
+
+        .tri-shop { top: 202px; left: 75px; width: 34px; height: 26px; background-image: url('parchment/triumphs/triumphs_shop.png'); }
+        .tri-shop:hover { background-image: url('parchment/triumphs/triumphs_shop_hover.png'); }
+
+        .clickable-text {
+            font-weight: bold;
+            position: absolute;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 8px;
+            color: #161418;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 2px;
+        }
+
+        .clickable-text:hover {
+            text-decoration: underline;
+        }
+
+        .auto-shrink {
+            font-size: 8px;
+        }
+
+        @media (max-width: 100px) {
+            .auto-shrink { font-size: 7px; }
+        }
+
+        #bespecial   { top: 230px; left: 76px; width: 34px; height: 23px; background-image: url('parchment/bespecial/bespecial_no.png'); }
+        #bespecial:hover {background-image: url('parchment/bespecial/bespecial_no_hover.png');}
+        #bespecial.yes:hover {background-image: url('parchment/bespecial/bespecial_yes_hover.png');}
+        #bespecial.yes { background-image: url('parchment/bespecial/bespecial_yes.png'); }
+
+        .menu-ready  { top: 258px; left: 4px;   width: 88px; height: 10px; background-image: url('parchment/misc_buttons/ready_order.png'); }
+        .menu-ready:hover { background-image: url('parchment/misc_buttons/ready_order_hover.png'); }
+        .menu-change { top: 269px; left: 4px;   width: 69px; height: 10px; background-image: url('parchment/misc_buttons/change_character.png'); }
+        .menu-change:hover { background-image: url('parchment/misc_buttons/change_character_hover.png'); }
+        .menu-save   { top: 280px; left: 4px;   width: 21px; height: 10px; background-image: url('parchment/misc_buttons/save.png'); }
+        .menu-save:hover { background-image: url('parchment/misc_buttons/save_hover.png'); }
+        .menu-undo   { top: 280px; left: 26px;  width: 21px; height: 10px; background-image: url('parchment/misc_buttons/undo.png'); }
+        .menu-undo:hover { background-image: url('parchment/misc_buttons/undo_hover.png'); }
+        .menu-done   { top: 280px; left: 48px;  width: 20px; height: 10px; background-image: url('parchment/misc_buttons/done.png'); }
+        .menu-done:hover { background-image: url('parchment/misc_buttons/done_hover.png'); }
+
+        .v-color-box { top: 136px; left: 34px; width: 48px; height: 15px; background-image: url('parchment/voice/voice_colour.png'); }
+        .v-blob      { top: 4px;   left: 35px; width: 8px;  height: 7px;
+                       background-image: url('parchment/voice/voice_colour_blob.png');
+                       background-blend-mode: multiply; }
+
+        .menu-keybinds {
+            top: 280px;
+            left: 78px;
+            width: 39px;
+            height: 10px;
+            background-image: url('parchment/misc_buttons/keybinds.png');
+        }
+        .menu-keybinds:hover {
+            background-image: url('parchment/misc_buttons/keybinds_hover.png');
+        }
+
+        .menu-toggles {
+            top: 269px;
+            left: 83px;
+            width: 34px;
+            height: 10px;
+            background-image: url('parchment/misc_buttons/toggles.png');
+        }
+        .menu-toggles:hover {
+            background-image: url('parchment/misc_buttons/toggles_hover.png');
+        }
+    </style>
+    <script>
+        function shrinkText(element) {
+            element.style.fontSize = '8px';
+            element.offsetHeight;
+            const maxWidth = element.offsetWidth - 4;
+            let fontSize = 8;
+            while (element.scrollWidth > maxWidth && fontSize > 5) {
+                fontSize -= 0.5;
+                element.style.fontSize = fontSize + 'px';
+                element.offsetHeight;
+            }
+        }
+
+        function updateField(fieldId, value) {
+            var elem = document.getElementById(fieldId);
+            if(elem) {
+                elem.textContent = value;
+                if(elem.classList.contains('auto-shrink')) {
+                    shrinkText(elem);
+                }
+            }
+        }
+
+        function updateHeadshot(url) {
+            var img = document.getElementById('headshot-img');
+            if(img) {
+                img.src = url || '';
+                img.style.display = url ? 'block' : 'none';
+            }
+        }
+
+        function updateBeSpecial(isActive) {
+            var elem = document.getElementById('bespecial');
+            if(elem) {
+                if(isActive) {
+                    elem.classList.add('yes');
+                } else {
+                    elem.classList.remove('yes');
+                }
+            }
+        }
+
+        function updateCharacterData() {
+            var data = {};
+            for(var i = 0; i < arguments.length; i++) {
+                var arg = arguments[i];
+                if(typeof arg === 'string' && arg.indexOf('=') !== -1) {
+                    var parts = arg.split('=');
+                    var key = parts[0];
+                    var value = parts.slice(1).join('=');
+                    data[key] = value;
+                }
+            }
+
+            if('name' in data) updateField('char-name', data.name || '');
+            if('job' in data) updateField('char-job', data.job || 'None');
+            if('faith' in data) updateField('char-faith', data.faith || '');
+            if('species' in data) updateField('char-species', data.species || '');
+            if('patron' in data) updateField('char-patron', data.patron || '');
+            if('pq' in data) updateField('char-pq', data.pq || '');
+            if('age' in data) updateField('char-age', data.age || '');
+            if('domhand' in data) updateField('char-domhand', data.domhand || '');
+            if('pronouns' in data) updateField('char-pronouns', data.pronouns || '');
+            if('family' in data) updateField('char-family', data.family || 'None');
+            if('genderpref' in data) updateField('char-genderpref', data.genderpref || 'Any');
+            if('spouse' in data) updateField('char-spouse', data.spouse || 'None');
+            if('voicetype' in data) updateField('char-voicetype', data.voicetype || '');
+            if('accent' in data) updateField('char-accent', data.accent || '');
+            if('loadout1' in data) updateField('char-loadout1', data.loadout1 || 'None');
+            if('loadout2' in data) updateField('char-loadout2', data.loadout2 || 'None');
+            if('loadout3' in data) updateField('char-loadout3', data.loadout3 || 'None');
+            if('triumphs' in data) updateField('char-triumphs', data.triumphs || '0');
+            if('culture' in data) updateField('char-culture', data.culture || 'None');
+
+            if('headshot' in data) updateHeadshot(data.headshot);
+            if('bespecial' in data) updateBeSpecial(data.bespecial === '1');
+
+            if('gender' in data) {
+                updateField('char-gender', data.gender || '');
+                var silhouette = document.getElementById('silhouette');
+                silhouette.style.backgroundImage = "url('parchment/features/features_bodytype_" + data.gender.toLowerCase() + ".png')";
+                if (data.gender === "F") silhouette.style.width = "15px";
+                if (data.gender === "M") silhouette.style.width = "18px";
+            }
+
+            if('voice_color' in data) {
+                var blob = document.getElementById('voice-blob');
+                if(blob && data.voice_color) {
+                    blob.style.backgroundColor = data.voice_color;
+                }
+            }
+        }
+
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.auto-shrink').forEach(shrinkText);
+        });
+    </script>
+</head>
+<body>
+<div class="ui-container">
+    <div class="sprite header-bg"></div>
+    <div class="sprite preview-bg"></div>
+    <div class="sprite body-bg"></div>
+    <div class="sprite voice-bg"></div>
+    <div class="sprite family-bg"></div>
+    <div class="sprite flavour-bg"></div>
+    <div class="sprite loadout-bg"></div>
+    <div class="sprite triumphs-bg"></div>
+    <div class="sprite headshot-bg" style="padding: 3px; box-sizing: border-box;">
+        <a href='?_src_=prefs;preference=headshot;task=input' style="display: block; width: 100%; height: 100%;">
+            <img id="headshot-img" src="[headshot_link || ""]"
+                 style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; image-rendering: auto;"
+                 onerror="this.style.display='none';">
+        </a>
+    </div>
+    <div class="sprite ooc-bg"></div>
+
+    <div class="sprite" style="top:26px; left:23px; width:92px; height:9px; background-image: url('parchment/header/header_charname.png');">
+        <a href='?_src_=prefs;preference=name;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-name" class="clickable-text auto-shrink" style="width:92px; height:9px;">[real_name]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:11px; left:122px; width:46px; height:9px; background-image: url('parchment/header/header_class.png');">
+        <a href='?_src_=prefs;preference=job;task=menu' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-job" class="clickable-text auto-shrink" style="width:46px; height:9px;">[high_job || "None"]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:11px; left:172px; width:42px; height:9px; background-image: url('parchment/header/header_faith.png');">
+        <a href='?_src_=prefs;preference=faith;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-faith" class="clickable-text auto-shrink" style="width:42px; height:9px;">[selected_faith?.name || ""]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:11px; left:220px; width:31px; height:9px; background-image: url('parchment/header/header_playerckey.png');">
+        <div id="char-ckey" class="clickable-text" style="width:31px; height:9px; cursor: default;">[user.ckey]</div>
+    </div>
+    <div class="sprite" style="top:30px; left:122px; width:46px; height:9px; background-image: url('parchment/header/header_species.png');">
+        <a href='?_src_=prefs;preference=species;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-species" class="clickable-text auto-shrink" style="width:46px; height:9px;">[pref_species.name]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:30px; left:172px; width:42px; height:9px; background-image: url('parchment/header/header_patron.png');">
+        <a href='?_src_=prefs;preference=patron;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-patron" class="clickable-text auto-shrink" style="width:42px; height:9px;">[selected_patron.name]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:30px; left:220px; width:31px; height:9px; background-image: url('parchment/header/header_pq.png');">
+        <a href='?_src_=prefs;preference=playerquality;task=menu' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-pq" class="clickable-text auto-shrink" style="width:31px; height:9px;">[get_playerquality(user.ckey, text = TRUE)]</div>
+        </a>
+    </div>
+
+    <div class="sprite" style="top:70px; left:118px; width:46px; height:9px; background-image: url('parchment/body/body_age.png');">
+        <a href='?_src_=prefs;preference=age;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-age" class="clickable-text auto-shrink" style="width:46px; height:9px;">[age]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:70px; left:168px; width:53px; height:9px; background-image: url('parchment/body/body_flaw.png');">
+        <a href='?_src_=prefs;preference=select_quirks' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div class="clickable-text auto-shrink" style="width:53px; height:9px;">Select Quirks</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:89px; left:119px; width:46px; height:9px; background-image: url('parchment/body/body_dominanthand.png');">
+        <a href='?_src_=prefs;preference=domhand' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-domhand" class="clickable-text auto-shrink" style="width:46px; height:9px;">[domhand == 1 ? "Left" : "Right"]</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:89px; left:168px; width:53px; height:9px; background-image: url('parchment/body/body_ancestry.png');">
+        <a href='?_src_=prefs;preference=s_tone;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div class="clickable-text auto-shrink" style="width:53px; height:9px;">Change</div>
+        </a>
+    </div>
+    <div class="sprite" style="top:108px; left:119px; width:46px; height:9px; background-image: url('parchment/body/body_pronouns.png');">
+        <a href='?_src_=prefs;preference=pronouns;task=input' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-pronouns" class="clickable-text auto-shrink" style="width:46px; height:9px;">[pronouns]</div>
+        </a>
+    </div>
+    <a href='?_src_=prefs;preference=gender'><div class="sprite" style="top:108px; left:169px; width:53px; height:9px; background-image: url('parchment/body/body_bodytype.png');">
+        <div id="char-gender" class="clickable-text auto-shrink" style="width:53px; height:9px;">[gender == MALE ? "M" : "F"]</div>
+    </div></a>
+
+    <a href='?_src_=prefs;preference=family'><div class="sprite" style="top:150px; left:120px; width:73px; height:9px; background-image: url('parchment/family/family_type.png');">
+        <div id="char-family" class="clickable-text auto-shrink" style="width:73px; height:9px;">[family ? family : "None"]</div>
+    </div></a>
+    <a href='?_src_=prefs;preference=gender_choice'><div class="sprite" style="top:169px; left:120px; width:73px; height:9px; background-image: url('parchment/family/gender_pref.png');">
+        <div id="char-genderpref" class="clickable-text auto-shrink" style="width:73px; height:9px;">[gender_choice ? gender_choice : "Any"]</div>
+    </div></a>
+    <a href='?_src_=prefs;preference=setspouse'><div class="sprite" style="top:188px; left:120px; width:73px; height:9px; background-image: url('parchment/family/spouse_pref.png');">
+        <div id="char-spouse" class="clickable-text auto-shrink" style="width:73px; height:9px;">[setspouse ? setspouse : "None"]</div>
+    </div></a>
+
+    <a href='?_src_=prefs;preference=culture;task=input'><div class="sprite" style="top:150px; left:207px; width:51px; height:9px; background-image: url('parchment/flavour/flavour_culture.png');">
+        <div id="char-culture" class="clickable-text auto-shrink" style="width:51px; height:9px;">[culture ? culture::name : "None"]</div>
+    </div></a>
+
+    <a href='?_src_=prefs;preference=voicetype;task=input'><div class="sprite" style="top:154px; left:10px; width:46px; height:9px; background-image: url('parchment/voice/voice_type.png');">
+        <div id="char-voicetype" class="clickable-text auto-shrink" style="width:46px; height:9px;">[voice_type]</div>
+    </div></a>
+    <a href='?_src_=prefs;preference=selected_accent;task=input'><div class="sprite" style="top:154px; left:60px; width:42px; height:9px; background-image: url('parchment/voice/voice_accent.png');">
+        <div id="char-accent" class="clickable-text auto-shrink" style="width:42px; height:9px;">[selected_accent]</div>
+    </div></a>
+
+    <a href='?_src_=prefs;preference=loadout_item;loadout_number=1;task=input'><div class="sprite" style="top:194px; left:10px; width:51px; height:9px; background-image: url('parchment/loadout/loadout_item1.png');">
+        <div id="char-loadout1" class="clickable-text auto-shrink" style="width:51px; height:9px;">[loadout1 ? loadout1.name : "None"]</div>
+    </div></a>
+    <a href='?_src_=prefs;preference=loadout_item;loadout_number=2;task=input'><div class="sprite" style="top:213px; left:10px; width:51px; height:9px; background-image: url('parchment/loadout/loadout_item2.png');">
+        <div id="char-loadout2" class="clickable-text auto-shrink" style="width:51px; height:9px;">[loadout2 ? loadout2.name : "None"]</div>
+    </div></a>
+    <a href='?_src_=prefs;preference=loadout_item;loadout_number=3;task=input'><div class="sprite" style="top:232px; left:10px; width:51px; height:9px; background-image: url('parchment/loadout/loadout_item3.png');">
+        <div id="char-loadout3" class="clickable-text auto-shrink" style="width:51px; height:9px;">[loadout3 ? loadout3.name : "None"]</div>
+    </div></a>
+
+    <div class="sprite" style="top:195px; left:82px; width:22px; height:7px; background-image: url('parchment/triumphs/triumphs_display.png');">
+        <a href='?_src_=prefs;preference=triumphs;task=menu' style="text-decoration: none; display: block; width: 100%; height: 100%;">
+            <div id="char-triumphs" class="clickable-text" style="width:22px; height:7px; font-size: 5px;">[user.get_triumphs() ? "\Roman [user.get_triumphs()]" : "0"]</div>
+        </a>
+    </div>
+
+    <a href='?_src_=prefs;preference=triumph_buy_menu'><div class="sprite tri-shop"></div></a>
+    <a href='?_src_=prefs;preference=descriptors;task=menu'><div class="sprite flav-desc"></div></a>
+    <a href='?_src_=prefs;preference=flavortext;task=input'><div class="sprite flav-text"></div></a>
+    <a href='?_src_=prefs;preference=culinary;task=menu'><div class="sprite flav-food"></div></a>
+    <a href='?_src_=prefs;preference=ooc_preview;task=input'><div class="sprite flav-prev"></div></a>
+    <a href='?_src_=prefs;preference=ooc_notes;task=input'><div class="sprite ooc-notes"></div></a>
+    <a href='?_src_=prefs;preference=ooc_extra;task=input'><div class="sprite ooc-extra"></div></a>
+    <a href='?_src_=prefs;preference=antag;task=menu'><div class="sprite btn-roles"></div></a>
+    <a href='?_src_=prefs;preference=customizers;task=menu'><div class="sprite f-btn"></div></a>
+    <a href='?_src_=prefs;preference=randomiseappearanceprefs;'><div class="sprite f-random"></div></a>
+
+    <div class="sprite features-bg">
+        <div id="silhouette" class="sprite" style="background-image: url('parchment/features/features_bodytype_[gender == MALE ? "m" : "f"].png');"></div>
+    </div>
+
+    <div class="sprite v-color-box">
+        <a href='?_src_=prefs;preference=voice;task=input' style="display: block; width: 100%; height: 100%;">
+            <div id="voice-blob" class="sprite v-blob" style="background-color: [voice_color];"></div>
+        </a>
+    </div>
+    <a href='?_src_=prefs;preference=bespecial'><div id="bespecial" class="sprite [next_special_trait ? "yes" : ""]"></div></a>
+    <a href='?_src_=prefs;preference=multi;task=menu'><div class="sprite menu-ready"></div></a>
+    <a href='?_src_=prefs;preference=changeslot;'><div class="sprite menu-change"></div></a>
+    <a href='?_src_=prefs;preference=keybinds;task=menu'><div class="sprite menu-keybinds"></div></a>
+    <a href='?_src_=prefs;preference=toggles'><div class="sprite menu-toggles"></div></a>
+    <a href='?_src_=prefs;preference=save'><div class="sprite menu-save"></div></a>
+    <a href='?_src_=prefs;preference=load'><div class="sprite menu-undo"></div></a>
+    <a href='?_src_=prefs;preference=finished'><div class="sprite menu-done"></div></a>
+</div>
+</body>
+</html>

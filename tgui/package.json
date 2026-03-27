@@ -16,7 +16,6 @@
 		"sass-loader": "^16.0.6",
 		"typescript": "^5.8.3"
 	},
-	"packageManager": "bun@1.2.16",
 	"private": true,
 	"scripts": {
 		"tgui:analyze": "rspack --analyze",
@@ -27,5 +26,8 @@
 	},
 	"workspaces": [
 		"packages/*"
-	]
+	],
+	"dependencies": {
+		"axios": "^1.13.5"
+	}
 }

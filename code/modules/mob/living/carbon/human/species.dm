@@ -17,6 +17,7 @@ GLOBAL_LIST_EMPTY(roundstart_species)
 	var/limbs_icon_m
 	/// Limb icon to use to build appearance for females
 	var/limbs_icon_f
+	var/fixed_mut_color = ""
 	/// if alien colors are disabled, this is the color that will be used by that race
 	var/default_color = "#FFF"
 	/// List of ages that can be selected in prefs for this species

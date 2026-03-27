@@ -185,4 +185,10 @@
 	organ_type = /obj/item/organ/tail/dracon
 	sprite_accessories = list(
 		/datum/sprite_accessory/tail/lizard/smooth,
+		/datum/sprite_accessory/tail/lizard/dtiger,
+		/datum/sprite_accessory/tail/lizard/ltiger,
+		/datum/sprite_accessory/tail/lizard/spikes,
+		/datum/sprite_accessory/tail/lizard/kobold,
+		/datum/sprite_accessory/tail/lizard,
+		/datum/sprite_accessory/tail/raptor,
 	)

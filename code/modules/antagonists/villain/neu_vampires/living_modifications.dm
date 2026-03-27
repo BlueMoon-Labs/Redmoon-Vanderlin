@@ -43,6 +43,7 @@
 
 	var/frenzy_chance_boost = 10
 	var/humanity = 7
+	var/size_multiplier = 1
 
 	var/potence_weapon_buff = 0
 	var/last_telepathy_use = 0
