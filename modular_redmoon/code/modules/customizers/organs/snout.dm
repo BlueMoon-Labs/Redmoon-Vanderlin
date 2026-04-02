@@ -9,6 +9,8 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/snout/shark,
 		/datum/sprite_accessory/snout/sharp,
+		/datum/sprite_accessory/bm/snouts/mam_snouts/hshark,
+		/datum/sprite_accessory/bm/snouts/mam_snouts/hshark_eyes
 	)
 
 /obj/item/organ/snout/akula

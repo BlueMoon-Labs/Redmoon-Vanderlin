@@ -96,8 +96,6 @@
 
 //КОНЕЦ ПОРТИРОВАНО
 
-// ====== interaction_profile.dm (или твой _onclick_human.dm) ======
-
 /mob/living/carbon/human
     /// Профиль для окна взаимодействия
     var/datum/interaction_profile/interaction_profile

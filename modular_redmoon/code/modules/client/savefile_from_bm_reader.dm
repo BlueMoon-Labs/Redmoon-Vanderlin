@@ -9,7 +9,6 @@
 /// Читает локальный файл preferences.sav и возвращает список /datum/bm_character_export
 /// Один элемент списка = один заполненный characterN
 /proc/read_bm_savefile(path)
-	// Вернём list() из экспортов
 	var/list/characters = list()
 
 	if(!fexists(path))

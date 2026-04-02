@@ -80,3 +80,8 @@ GLOBAL_LIST_INIT(mutant_transform_list, list("wingsopen" = "wings",
 	"waggingtail_lizard" = "tail_lizard",
 	"waggingspines" = "spines",
 	"mam_waggingtail" = "mam_tail"))
+
+GLOBAL_LIST_EMPTY(bm_hair_paths)
+GLOBAL_LIST_EMPTY(bm_tails_lizard)
+GLOBAL_LIST_EMPTY(bm_tails_lizard_animated)
+GLOBAL_LIST_EMPTY(cock_shapes_list_paths)

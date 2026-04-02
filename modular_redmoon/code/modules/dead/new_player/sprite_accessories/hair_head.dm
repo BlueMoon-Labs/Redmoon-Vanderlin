@@ -1127,13 +1127,6 @@
 	name = "Zone"
 	icon_state = "hair_zone"
 
-/datum/sprite_accessory/bm/hair_gradient
-	icon = 'modular_redmoon/icons/from_bluemoon/mob/hairs/hair_gradients.dmi'
-
-/datum/sprite_accessory/bm/hair_gradient/none
-	name = "None"
-	icon_state = "none"
-
 /datum/sprite_accessory/bm/hair_gradient/fadeup
 	name = "Fade Up"
 	icon_state = "fadeup"

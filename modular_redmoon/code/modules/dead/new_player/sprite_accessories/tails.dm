@@ -1,46 +1,28 @@
 /datum/sprite_accessory/bm/tails
+	abstract_type = /datum/sprite_accessory/tail
 	icon = 'icons/mob/mutant_bodyparts.dmi'
-	relevant_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
+	color_key_name = "Tail"
+	relevant_layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
+	color_key_defaults = list(KEY_HAIR_COLOR)
+	var/can_wag = FALSE
 
-// /datum/sprite_accessory/bm/tails/is_not_visible(var/mob/living/carbon/human/H, var/tauric)
-// 	return ((H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR)) || tauric)
+/datum/sprite_accessory/bm/tails/is_visible(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
+	return is_human_part_visible(owner, HIDETAIL)
 
 /datum/sprite_accessory/bm/tails_animated
+	abstract_type = /datum/sprite_accessory/tail
 	icon = 'icons/mob/mutant_bodyparts.dmi'
+	color_key_name = "Tail"
 	// mutant_part_string = "tailwag" //keep this the same, ALWAYS, this is incredibly important for colouring!
-	relevant_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
+	relevant_layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
+	var/can_wag = FALSE
+
+/datum/sprite_accessory/bm/tails_animated/is_visible(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
+	return is_human_part_visible(owner, HIDETAIL)
 
 /******************************************
 ************* Lizard Tails ****************
 *******************************************/
-
-// /datum/sprite_accessory/bm/tails_animated/lizard/is_not_visible(var/mob/living/carbon/human/H, var/tauric)
-// 	return (((H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR)) || tauric) || H.dna.species.mutant_bodyparts["tail_lizard"])
-
-//this goes first regardless of alphabetical order
-/datum/sprite_accessory/bm/tails/lizard/none
-	name = "None"
-	icon_state = "None"
-	relevant_layers = null
-
-/datum/sprite_accessory/bm/tails_animated/lizard/none
-	name = "None"
-	icon_state = "None"
-	relevant_layers = null
-
-/datum/sprite_accessory/bm/tails/lizard/axolotl
-	name = "Axolotl"
-	icon_state = "axolotl"
-	color_src = MATRIXED
-	icon = 'modular_redmoon/icons/from_bluemoon/mob/mam_tails.dmi'
-	matrixed_sections = MATRIX_RED
-
-/datum/sprite_accessory/bm/tails_animated/lizard/axolotl
-	name = "Axolotl"
-	icon_state = "axolotl"
-	color_src = MATRIXED
-	icon = 'modular_redmoon/icons/from_bluemoon/mob/mam_tails.dmi'
-	matrixed_sections = MATRIX_RED
 
 /datum/sprite_accessory/bm/tails/lizard/dtiger
 	name = "Dark Tiger"
@@ -49,20 +31,6 @@
 /datum/sprite_accessory/bm/tails_animated/lizard/dtiger
 	name = "Dark Tiger"
 	icon_state = "dtiger"
-
-/datum/sprite_accessory/bm/tails/lizard/guilmon
-	name = "Guilmon"
-	icon_state = "guilmon"
-	color_src = MATRIXED
-	icon = 'modular_redmoon/icons/from_bluemoon/mob/mam_tails.dmi'
-	matrixed_sections = MATRIX_RED
-
-/datum/sprite_accessory/bm/tails_animated/lizard/guilmon
-	name = "Guilmon"
-	icon_state = "guilmon"
-	color_src = MATRIXED
-	icon = 'modular_redmoon/icons/from_bluemoon/mob/mam_tails.dmi'
-	matrixed_sections = MATRIX_RED
 
 /datum/sprite_accessory/bm/tails/lizard/ltiger
 	name = "Light Tiger"
@@ -109,6 +77,7 @@
 	name = "Axolotl"
 	icon_state = "axolotl"
 	icon = 'modular_redmoon/icons/from_bluemoon/mob/mam_tails.dmi'
+	relevant_layers = list(BODY_FRONT_LAYER)
 	color_src = MATRIXED
 	matrixed_sections = MATRIX_RED
 

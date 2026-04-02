@@ -11,16 +11,10 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/wings, GLOB.wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/wings_open, GLOB.wings_open_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/frills, GLOB.frills_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/spines, GLOB.spines_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/spines_animated, GLOB.animated_spines_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/legs, GLOB.legs_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/wings, GLOB.r_wings_list,roundstart = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/caps, GLOB.caps_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/insect_wings, GLOB.insect_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/insect_fluff, GLOB.insect_fluffs_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/arachnid_legs, GLOB.arachnid_legs_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/arachnid_spinneret, GLOB.arachnid_spinneret_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/arachnid_mandibles, GLOB.arachnid_mandibles_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/deco_wings, GLOB.deco_wings_list)
 
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/bm/mam_body_markings, GLOB.mam_body_markings_list)
@@ -80,3 +74,16 @@
 //any value in a list
 /proc/sort_list(list/L, cmp=GLOBAL_PROC_REF(cmp_text_asc))
 	return sortTim(L.Copy(), cmp)
+
+
+/proc/init_sprite_accessory_paths(prototype, list/path_list)
+    if(!istype(path_list))
+        path_list = list()
+    for(var/accessory_type in subtypesof(prototype))
+        var/datum/sprite_accessory/accessory = accessory_type
+        if(IS_ABSTRACT(accessory))
+            continue
+        if(initial(accessory.locked))
+            continue
+        path_list += accessory_type
+    return path_list

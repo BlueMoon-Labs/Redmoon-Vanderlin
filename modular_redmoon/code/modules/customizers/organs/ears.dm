@@ -24,7 +24,13 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/wolf,
 		/datum/sprite_accessory/ears/bigwolf,
-		/datum/sprite_accessory/ears/husky
+		/datum/sprite_accessory/ears/husky,
+		/datum/sprite_accessory/bm/ears/human/bigwolf,
+		/datum/sprite_accessory/bm/ears/human/bigwolfinner,
+		/datum/sprite_accessory/bm/ears/human/bigwolfdark,
+		/datum/sprite_accessory/bm/ears/human/bigwolfinnerdark,
+		/datum/sprite_accessory/bm/ears/lab,
+		/datum/sprite_accessory/bm/ears/lablight,
 	)
 
 /obj/item/organ/ears/lupian
@@ -41,7 +47,12 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/fox,
 		/datum/sprite_accessory/ears/fennec,
-		/datum/sprite_accessory/ears/husky
+		/datum/sprite_accessory/ears/husky,
+		/datum/sprite_accessory/bm/ears/human/bigwolf,
+		/datum/sprite_accessory/bm/ears/human/bigwolfinner,
+		/datum/sprite_accessory/bm/ears/human/bigwolfdark,
+		/datum/sprite_accessory/bm/ears/human/bigwolfinnerdark,
+		/datum/sprite_accessory/bm/ears/human/eevee,
 	)
 
 /obj/item/organ/ears/vulpkanin
@@ -73,7 +84,8 @@
 	organ_type = /obj/item/organ/ears
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/cobrahood,
-		/datum/sprite_accessory/ears/cobrahoodears
+		/datum/sprite_accessory/ears/cobrahoodears,
+		/datum/sprite_accessory/bm/ears/mam_ears/axolotl,
 	)
 
 /obj/item/organ/ears/dracon

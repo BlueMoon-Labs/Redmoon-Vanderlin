@@ -9,7 +9,10 @@
 	name = "Axian Tail"
 	organ_type = /obj/item/organ/tail/axian
 	generic_random_pick = TRUE
-	sprite_accessories = list(/datum/sprite_accessory/tail/sharknofin, /datum/sprite_accessory/tail/shark)
+	sprite_accessories = list(
+		/datum/sprite_accessory/tail/sharknofin,
+		/datum/sprite_accessory/tail/shark,
+		/datum/sprite_accessory/bm/tails/orca)
 
 /obj/item/organ/tail/axian
 	name = "Axian tail"
@@ -22,7 +25,9 @@
 /datum/customizer_choice/organ/tail/lupian
 	name = "Lupian tail"
 	organ_type = /obj/item/organ/tail/lupian
-	sprite_accessories = list(/datum/sprite_accessory/tail/wolf, /datum/sprite_accessory/tail/husky)
+	sprite_accessories = list(
+		/datum/sprite_accessory/tail/wolf,
+		/datum/sprite_accessory/tail/husky)
 
 /obj/item/organ/tail/lupian
 	name = "Lupian tail"
@@ -35,7 +40,11 @@
 /datum/customizer_choice/organ/tail/vulpkanin
 	name = "Vulpkanin tail"
 	organ_type = /obj/item/organ/tail/vulpkanin
-	sprite_accessories = list(/datum/sprite_accessory/tail/fox, /datum/sprite_accessory/tail/wolf)
+	sprite_accessories = list(
+		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/wolf,
+		/datum/sprite_accessory/bm/tails/human/husky,
+		)
 
 /obj/item/organ/tail/vulpkanin
 	name = "Vulpkanin tail"
@@ -51,7 +60,9 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/tail/catbig,
 		/datum/sprite_accessory/tail/tiger,
-		/datum/sprite_accessory/tail/leopard
+		/datum/sprite_accessory/tail/leopard,
+		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/wolf,
 	)
 
 /obj/item/organ/tail/tabaxi

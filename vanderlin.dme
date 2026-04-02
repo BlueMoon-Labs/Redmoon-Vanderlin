@@ -2260,6 +2260,7 @@
 #include "code\modules\client\customizer\customizer.dm"
 #include "code\modules\client\customizer\customizer_choice.dm"
 #include "code\modules\client\customizer\customizer_entry.dm"
+#include "code\modules\client\customizer\customizers\customizer_bm_additions.dm"
 #include "code\modules\client\customizer\customizers\bodypart_feature\_bodypart_feature.dm"
 #include "code\modules\client\customizer\customizers\bodypart_feature\accessory.dm"
 #include "code\modules\client\customizer\customizers\bodypart_feature\hair.dm"
