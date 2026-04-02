@@ -19,8 +19,8 @@
 	species_traits = list(EYECOLOR, HAIR, LIPS, STUBBLE, OLDGREY)
 	inherent_traits = list(TRAIT_WATER_BREATHING, TRAIT_FISHFACE, TRAIT_GOOD_SWIM)
 	inherent_skills = list(
-		/datum/skill/labor/fishing = 2,
-		/datum/skill/misc/swimming = 3,
+		/datum/attribute/skill/labor/fishing = 2,
+		/datum/attribute/skill/misc/swimming = 3,
 	)
 
 	possible_ages = ALL_AGES_LIST
@@ -138,8 +138,8 @@
 	)
 
 /datum/species/axian/get_possible_names(gender = MALE)
-	var/static/list/male_names = world.file2list("strings/rt/names/axian/axianmale.txt")
-	var/static/list/female_names = world.file2list("strings/rt/names/axian/axianfemale.txt")
+	var/static/list/male_names = file2list("strings/rt/names/axian/axianmale.txt")
+	var/static/list/female_names = file2list("strings/rt/names/axian/axianfemale.txt")
 	return (gender == FEMALE) ? female_names : male_names
 
 /datum/species/axian/on_species_gain(mob/living/carbon/C, datum/species/old_species)
