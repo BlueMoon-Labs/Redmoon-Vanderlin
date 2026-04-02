@@ -86,25 +86,6 @@
 	icon_state = "topfhelm_gold"
 	item_weight = 9 * GOLD_MULITPLIER
 
-// Vampire Lord is no longer as OP, but the armor should protect against dreaded stabs or it makes the vitae spent on it pointless.
-/obj/item/clothing/head/helmet/heavy/vampire
-	name = "savoyard"
-	desc = "A terrifying yet crude helmet shaped like a humen skull. Commands the inspiring terror of inhumen tyrants from yils past."
-	icon_state = "savoyard"
-	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR
-
-	prevent_crits = ALL_CRITICAL_HITS_VAMP
-	max_integrity = INTEGRITY_STRONGEST // steel
-	body_parts_covered = HEAD_NECK
-	block2add = FOV_BEHIND
-
-/obj/item/clothing/head/helmet/heavy/ancient
-	name = "ancient savoyard"
-	desc = "A terrifying old savoyard."
-	icon_state = "ancientsavoyard"
-	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR
-	block2add = FOV_BEHIND
-
 //............... Frog Helmet ............... //
 /obj/item/clothing/head/helmet/heavy/frog
 	name = "frog helmet"
@@ -555,3 +536,19 @@
 	adjustable = CAN_CADJUST
 	block2add = FOV_BEHIND
 	max_integrity = 400
+
+//............... Gronn Heavy Helmet ...............//
+/obj/item/clothing/head/helmet/heavy/ironplate/gronn
+	name = "osslandic horned helmet"
+	desc = "A horned helms of solid iron. \
+		A suitable replacement for the precious skull-helms worn in Ossland. \
+		For of course, to have your skull-helm smashed is the highest of disrespects."
+	icon = 'icons/roguetown/clothing/special/gronn.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/onmob/64x64/gronn.dmi'
+	bloody_icon = 'icons/effects/blood64x64.dmi'
+	icon_state = "gronnplatehelm"
+	item_state = "gronnplatehelm"
+	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR
+	block2add = FOV_BEHIND
+	worn_x_dimension = 64
+	worn_y_dimension = 64

@@ -23,7 +23,7 @@
 	name = "C.C.M.S implant"
 	desc = "Short for Complementary Combat Maneuvering System. Processes spinal nerve signals to enact forced complementary maneuvers, allowing dual wielding of weapons."
 	stability_cost = -20
-	engineering_difficulty = SKILL_LEVEL_EXPERT
+	engineering_difficulty = SKILL_RANK_EXPERT
 	installation_time = 25 SECONDS
 
 /datum/augment/special/dualwield/on_install(mob/living/carbon/human/H)
@@ -34,7 +34,7 @@
 	UnregisterSignal(H, COMSIG_MOB_ITEM_ATTACK)
 	to_chat(H, span_notice("The C.C.M.S implant's connection to your motor systems fades."))
 
-/datum/augment/special/dualwield/proc/on_item_attack(datum/source, mob/target, mob/user, params, obj/item/weapon)
+/datum/augment/special/dualwield/proc/on_item_attack(datum/source, mob/target, mob/user, list/modifiers, obj/item/weapon)
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/H = source
@@ -76,7 +76,7 @@
 	name = "refurbished C.C.M.S implant"
 	desc = "A refurbished dual wielding implant. The nerve filaments have degraded and may misfire or cause damage."
 	stability_cost = -10
-	engineering_difficulty = SKILL_LEVEL_JOURNEYMAN
+	engineering_difficulty = SKILL_RANK_JOURNEYMAN
 	installation_time = 20 SECONDS
 
 /datum/augment/special/dualwield/refurbished/handle_side_effects(mob/living/carbon/human/H, obj/item/item, mob/target)
@@ -118,7 +118,7 @@
 	name = "Militech Apogee Sandevistan"
 	desc = "Experimental timeslowing implant. Activates a localized chrono-distortion field, slowing time for everything around you while you move at normal speed."
 	stability_cost = -25
-	engineering_difficulty = SKILL_LEVEL_MASTER
+	engineering_difficulty = SKILL_RANK_MASTER
 	installation_time = 30 SECONDS
 	granted_actions = list(/datum/action/augment/sandevistan)
 
@@ -181,7 +181,7 @@
 	name = "refurbished sandevistan"
 	desc = "A hastily refurbished sandevistan. The chrono-field generator is unstable and may cause neural feedback."
 	stability_cost = -15
-	engineering_difficulty = SKILL_LEVEL_EXPERT
+	engineering_difficulty = SKILL_RANK_EXPERT
 	cooldown_time = 65 SECONDS
 
 /datum/augment/special/sandevistan/refurbished/activate()

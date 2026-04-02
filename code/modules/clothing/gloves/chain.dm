@@ -10,19 +10,20 @@
 	pickup_sound = "rustle"
 	break_sound = 'sound/foley/breaksound.ogg'
 	drop_sound = 'sound/foley/dropsound/chain_drop.ogg'
-	anvilrepair = /datum/skill/craft/armorsmithing
+	anvilrepair = /datum/attribute/skill/craft/armor_repair
 	smeltresult = null
-	sewrepair = FALSE
 
 	armor_class = AC_MEDIUM
 	armor = ARMOR_MAILLE
 	prevent_crits = ALL_EXCEPT_BLUNT
 	max_integrity = INTEGRITY_STRONGEST
-	sewrepair = FALSE
+	sewrepair = null
 	item_weight = 7 * IRON_MULTIPLIER
 	smeltresult = null
 	melting_material = /datum/material/steel
 	melt_amount = 50
+
+	material_category = ARMOR_MAT_CHAINMAIL
 
 /obj/item/clothing/gloves/chain/psydon
 	name = "grenzelhoftian chain gauntlets"
@@ -49,8 +50,10 @@
 	allowed_race = RACES_PLAYER_ELF_ALL
 	item_weight = 6 * STEEL_MULTIPLIER
 
-/obj/item/clothing/gloves/chain/vampire
-	name = "ancient ceremonial gloves"
-	desc = "A weathered gauntlet with an ancient design."
-	icon_state = "vgloves"
-	item_weight = 6 * STEEL_MULTIPLIER
+/obj/item/clothing/gloves/chain/gronn
+	name = "osslandic chain gloves"
+	desc = "A pair of leather gloves with chain to protects the wrists and back of the hand."
+	icon = 'icons/roguetown/clothing/special/gronn.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/gronn.dmi'
+	icon_state = "gronnchaingloves"
+	item_state = "gronnchaingloves"

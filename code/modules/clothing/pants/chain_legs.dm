@@ -5,7 +5,7 @@
 	gender = PLURAL
 	icon_state = "chain_legs"
 	item_state = "chain_legs"
-	sewrepair = FALSE
+	sewrepair = null
 	resistance_flags = FIRE_PROOF
 	blocksound = CHAINHIT
 	equip_delay_self = 25
@@ -15,7 +15,7 @@
 	drop_sound = 'sound/foley/dropsound/chain_drop.ogg'
 	pickup_sound = "rustle"
 	break_sound = 'sound/foley/breaksound.ogg'
-	anvilrepair = /datum/skill/craft/armorsmithing
+	anvilrepair = /datum/attribute/skill/craft/armor_repair
 	melt_amount = 75
 	melting_material = /datum/material/steel
 	r_sleeve_status = SLEEVE_NOMOD
@@ -26,6 +26,8 @@
 	max_integrity = INTEGRITY_STRONGEST
 	prevent_crits = ALL_EXCEPT_BLUNT
 	item_weight = 6 * STEEL_MULTIPLIER
+
+	material_category = ARMOR_MAT_CHAINMAIL
 
 /obj/item/clothing/pants/chainlegs/Initialize()
 	. = ..()

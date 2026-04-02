@@ -262,9 +262,12 @@
 /mob/proc/resolveRangedClick(atom/clicked_atom, obj/item/held_item, list/modifiers, used_hand)
 	if(!clicked_atom)
 		return
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) && uses_intents && used_intent.rmb_ranged)
-		used_intent.rmb_ranged(clicked_atom, src) //get the message from the intent
-		return
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		if(uses_intents && used_intent.rmb_ranged)
+			used_intent.rmb_ranged(clicked_atom, src) //get the message from the intent
+			return
+		else if(cmode && rmb_intent?.special_attack(src, clicked_atom))
+			return
 	if(held_item)
 		held_item.afterattack(clicked_atom, src, 0, modifiers) // 0: not Adjacent
 	else
@@ -608,7 +611,7 @@
 	icon_state = "catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
-	screen_loc = "CENTER"
+	screen_loc = "1,1"
 	xyoverride = TRUE
 	blockscharging = FALSE
 
@@ -656,6 +659,8 @@
 /mob/living/MouseWheelOn(atom/clicked_atom, delta_x, delta_y, params)
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICKED))
+		cycle_rmb_intent(delta_y)
+	else
 		if(delta_y > 0)
 			aimheight_change("up")
 		else

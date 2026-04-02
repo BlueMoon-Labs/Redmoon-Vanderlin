@@ -122,7 +122,10 @@
 	drop_sound = 'sound/foley/dropsound/cloth_drop.ogg'
 	adjustable = CAN_CADJUST
 	toggle_icon_state = TRUE
-	sewrepair = TRUE
+	sewrepair = /datum/attribute/skill/craft/tanning/patching
+	salvage_amount = 0
+	salvage_result = /obj/item/natural/hide/cured
+	dyeable = TRUE
 	anvilrepair = null
 	resistance_flags = FLAMMABLE // Made of leather
 	smeltresult = /obj/item/fertilizer/ash
@@ -190,7 +193,10 @@
 	pickup_sound = 'sound/foley/equip/cloak_take_off.ogg'
 	break_sound = 'sound/foley/cloth_rip.ogg'
 	drop_sound = 'sound/foley/dropsound/cloth_drop.ogg'
-	sewrepair = TRUE
+	sewrepair = /datum/attribute/skill/craft/tanning/patching
+	salvage_amount = 0
+	salvage_result = /obj/item/natural/hide/cured
+	dyeable = TRUE
 	anvilrepair = null
 	resistance_flags = FLAMMABLE
 	smeltresult = /obj/item/fertilizer/ash
@@ -208,7 +214,10 @@
 	pickup_sound = SFX_JINGLE_BELLS
 	break_sound = 'sound/foley/cloth_rip.ogg'
 	drop_sound = SFX_JINGLE_BELLS
-	sewrepair = TRUE
+	sewrepair = /datum/attribute/skill/craft/tanning/patching
+	salvage_amount = 0
+	salvage_result = /obj/item/natural/hide/cured
+	dyeable = TRUE
 	anvilrepair = null
 	resistance_flags = FLAMMABLE
 	smeltresult = /obj/item/fertilizer/ash
@@ -253,6 +262,7 @@
 	max_integrity = INTEGRITY_STRONGEST
 	prevent_crits = ALL_EXCEPT_BLUNT
 
+	material_category = ARMOR_MAT_CHAINMAIL
 
 /obj/item/clothing/neck/chaincoif/AdjustClothes(mob/user)
 	if(loc == user)
@@ -333,6 +343,8 @@
 	max_integrity = INTEGRITY_STRONGEST
 	prevent_crits = ALL_EXCEPT_STAB
 
+	material_category = ARMOR_MAT_PLATE
+
 /obj/item/clothing/neck/bevor/Initialize()
 	. = ..()
 	ADD_TRAIT(src, TRAIT_HARD_TO_STEAL, TRAIT_GENERIC)
@@ -369,14 +381,11 @@
 	max_integrity = INTEGRITY_STRONG
 	prevent_crits = ALL_EXCEPT_STAB
 
+	material_category = ARMOR_MAT_PLATE
+
 /obj/item/clothing/neck/gorget/Initialize()
 	. = ..()
 	ADD_TRAIT(src, TRAIT_HARD_TO_STEAL, TRAIT_GENERIC)
-
-/obj/item/clothing/neck/gorget/ancient
-	name = "gorget"
-	icon_state = "ancientgorget"
-	desc = "A very old gorget."
 
 /obj/item/clothing/neck/gorget/explosive
 	name = "collar of servitude"
@@ -529,6 +538,8 @@
 	clothing_flags = CANT_SLEEP_IN
 	max_integrity = INTEGRITY_STRONGEST
 	prevent_crits = ALL_EXCEPT_BLUNT
+
+	material_category = ARMOR_MAT_CHAINMAIL
 
 /obj/item/clothing/neck/highcollier/AdjustClothes(mob/user)
 	if(loc == user)

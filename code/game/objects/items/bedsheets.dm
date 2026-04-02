@@ -16,7 +16,9 @@ LINEN BINS
 	throwforce = 0
 	throw_speed = 1
 	throw_range = 2
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
+	grid_width = 64
+	grid_height = 64
 	resistance_flags = FLAMMABLE
 	dying_key = DYE_REGISTRY_BEDSHEET
 
@@ -78,7 +80,7 @@ LINEN BINS
 	UnregisterSignal(sleeper, COMSIG_PARENT_QDELETING)
 	signal_sleeper = null
 
-/obj/item/bedsheet/attack_hand(mob/user, params)
+/obj/item/bedsheet/attack_hand(mob/user, list/modifiers)
 	if(!bed_tucked)
 		return ..()
 	if(do_after(user, 2 SECONDS, src))

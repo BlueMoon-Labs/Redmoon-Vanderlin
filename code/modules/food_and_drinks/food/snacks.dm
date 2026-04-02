@@ -40,13 +40,15 @@ All foods are distributed among various categories. Use common sense.
 	grind_results = list() //To let them be ground up to transfer their reagents
 	possible_item_intents = list(/datum/intent/food)
 	foodtype = GRAIN
-	list_reagents = list(/datum/reagent/consumable/nutriment = 1)
+	list_reagents = list()
+	var/nutrition = 1
 	w_class = WEIGHT_CLASS_SMALL
 	var/transfers_tastes = FALSE
 	var/bitesize = 3 // how many times you need to bite to consume it fully
 	var/bitecount = 0
 	var/trash = null
 	var/slice_path    // for sliceable food. path of the item resulting from the slicing
+	var/slice_skill
 	var/slice_bclass = BCLASS_CUT
 	var/slices_num
 	var/slice_batch = TRUE
@@ -77,7 +79,7 @@ All foods are distributed among various categories. Use common sense.
 	var/rotprocess = FALSE
 	var/become_rot_type = null
 
-	var/mill_result = null
+	var/atom/mill_result = null
 
 	var/fertamount = 50
 
@@ -108,6 +110,93 @@ All foods are distributed among various categories. Use common sense.
 		QDEL_NULL(reagents)
 	deltimer(rot_away_timer)
 	return ..()
+
+/obj/item/reagent_containers/food/snacks/return_recipe_data()
+	var/has_mill  = !isnull(mill_result)
+	var/has_grind = length(grind_results)
+	var/has_juice = length(juice_results)
+	var/has_slice = !isnull(slice_path)
+	var/list/milled_from_paths = GLOB.snack_mill_reverse[type]
+	var/list/sliced_from_paths = GLOB.snack_slice_reverse[type]
+
+	if(!has_mill && !has_grind && !has_juice && !has_slice && !length(milled_from_paths) && !length(sliced_from_paths))
+		return null
+
+	var/list/data = list()
+	data["type"]         = "snack_processing"
+	data["name"]         = name
+	data["category"]     = "Processing"
+	data["_output_path"] = "[type]"
+	data["output_name"]  = name
+	data["output_icon"]  = "[icon]"
+	data["output_state"] = "[icon_state]"
+
+	if(has_mill)
+		data["mill_name"]  = initial(mill_result.name)
+		data["mill_icon"]  = "[initial(mill_result.icon)]"
+		data["mill_state"] = "[initial(mill_result.icon_state)]"
+		data["mill_path"]  = "[mill_result]"
+
+	if(has_grind)
+		var/list/grind = list()
+		for(var/datum/reagent/path as anything in grind_results)
+			grind += list(list("name" = initial(path.name), "amount" = grind_results[path]))
+		data["grind_results"] = grind
+
+	if(has_juice)
+		var/list/juice = list()
+		for(var/datum/reagent/path as anything in juice_results)
+			juice += list(list("name" = initial(path.name), "amount" = juice_results[path]))
+		data["juice_results"] = juice
+
+	if(has_slice)
+		var/atom/slicer = slice_path
+		data["slice_name"]  = initial(slicer.name)
+		data["slice_icon"]  = "[initial(slicer.icon)]"
+		data["slice_state"] = "[initial(slicer.icon_state)]"
+		data["slice_path"]  = "[slice_path]"
+		data["slice_num"]   = slices_num
+		if(slice_skill)
+			data["slice_skill"] = initial(slicer.name)
+
+	if(length(sliced_from_paths))
+		var/list/sliced_from = list()
+		for(var/atom/src_path as anything in sliced_from_paths)
+			sliced_from += list(list(
+				"name"       = initial(src_path.name),
+				"icon"       = "[initial(src_path.icon)]",
+				"icon_state" = "[initial(src_path.icon_state)]",
+				"_path"      = "[src_path]",
+			))
+		data["sliced_from"] = sliced_from
+
+	if(length(milled_from_paths))
+		var/list/milled_from = list()
+		for(var/atom/src_path as anything in milled_from_paths)
+			milled_from += list(list(
+				"name"       = initial(src_path.name),
+				"icon"       = "[initial(src_path.icon)]",
+				"icon_state" = "[initial(src_path.icon_state)]",
+				"_path"      = "[src_path]",
+			))
+		data["milled_from"] = milled_from
+
+	if(length(obtained_from))
+		var/list/sources = list()
+		for(var/list/entry as anything in obtained_from)
+			if(!islist(entry) || length(entry) < 2) continue
+			var/label = entry[1]
+			var/atom/src_path = entry[2]
+			sources += list(list(
+				"label"      = label,
+				"_path"      = "[src_path]",
+				"name"       = initial(src_path.name),
+				"icon"       = "[initial(src_path.icon)]",
+				"icon_state" = "[initial(src_path.icon_state)]",
+			))
+		data["sources"] = sources
+
+	return data
 
 /datum/intent/food
 	name = "feed"
@@ -183,6 +272,7 @@ All foods are distributed among various categories. Use common sense.
 		add_overlay(rotflies)
 		name = "rotten [initial(name)]"
 		eat_effect = /datum/status_effect/debuff/rotfood
+		reagents.add_reagent(/datum/reagent/yuck, 5)
 		slices_num = 0
 		slice_path = null
 		cooktime = 0
@@ -215,7 +305,7 @@ All foods are distributed among various categories. Use common sense.
 
 /obj/item/reagent_containers/food/snacks/heating_act(atom/A)
 	var/obj/item/result = new /obj/item/reagent_containers/food/snacks/badrecipe(A)
-	initialize_cooked_food(result, 1)
+	initialize_cooked_food(list(result), 1)
 	return result
 
 /obj/item/proc/burning(input as num)
@@ -237,15 +327,9 @@ All foods are distributed among various categories. Use common sense.
 			burn()
 
 /obj/item/reagent_containers/food/snacks/add_initial_reagents()
-	if(!LAZYLEN(tastes))
-		return ..()
-	if(list_reagents)
-		for(var/rid in list_reagents)
-			var/amount = list_reagents[rid]
-			if(rid == /datum/reagent/consumable/nutriment || rid == /datum/reagent/consumable/nutriment/vitamin)
-				reagents.add_reagent(rid, amount, tastes.Copy())
-			else
-				reagents.add_reagent(rid, amount)
+	if(nutrition)
+		reagents.add_reagent(/datum/reagent/consumable/nutriment, nutrition, length(tastes) ? list("tastes" = tastes) : null)
+	..()
 
 /obj/item/reagent_containers/food/snacks/on_consume(mob/living/eater)
 	if(!eater)
@@ -379,7 +463,7 @@ All foods are distributed among various categories. Use common sense.
 
 		if(fork_check)
 			if(!plate_check)
-				if(HAS_TRAIT(M,TRAIT_NOBLE))
+				if(HAS_TRAIT(M,TRAIT_NOBLE_BLOOD))
 					M.add_stress(/datum/stress_event/noble_ate_with_just_a_fork)
 			else
 				if(plate_check.dirty)
@@ -517,9 +601,14 @@ All foods are distributed among various categories. Use common sense.
 	if(chopping_sound)
 		playsound(user, 'sound/foley/chopping_block.ogg', 60, TRUE, -1) // added some choppy sound
 	if(slice_batch)
+		var/batch_time = 3 SECONDS
+		if(slice_skill)
+			batch_time *= GET_MOB_SKILL_SPEED_MOD(user, slice_skill)
 		if(!do_after(user, 3 SECONDS, src))
 			return FALSE
 		var/reagents_per_slice = reagents.total_volume/slices_num
+		if(slice_skill)
+			user.adjust_experience(slice_skill, (GET_MOB_ATTRIBUTE_VALUE(user, STAT_INTELLIGENCE)*0.5))
 		for(var/i in 1 to slices_num)
 			var/obj/item/reagent_containers/food/snacks/slice = new slice_path(loc)
 			slice.filling_color = filling_color
@@ -532,6 +621,8 @@ All foods are distributed among various categories. Use common sense.
 		initialize_slice(slice, reagents_per_slice)
 		slices_num--
 		if(slices_num == 1)
+			if(slice_skill)
+				user.adjust_experience(slice_skill, (GET_MOB_ATTRIBUTE_VALUE(user, STAT_INTELLIGENCE)*0.5))
 			slice = new slice_path(loc)
 			slice.filling_color = filling_color
 			initialize_slice(slice, reagents_per_slice)
@@ -569,29 +660,29 @@ All foods are distributed among various categories. Use common sense.
 	add_overlay(filling)
 
 // initialize_cooked_food() is called when microwaving the food
-/obj/item/reagent_containers/food/snacks/proc/initialize_cooked_food(obj/item/reagent_containers/food/snacks/S, cooking_efficiency = 1)
-	if(reagents)
-		reagents.trans_to(S, reagents.total_volume)
-	if(S.bonus_reagents && S.bonus_reagents.len)
-		for(var/r_id in S.bonus_reagents)
-			var/amount = S.bonus_reagents[r_id] * cooking_efficiency
-			if(r_id == /datum/reagent/consumable/nutriment || r_id == /datum/reagent/consumable/nutriment/vitamin)
+/obj/item/reagent_containers/food/snacks/proc/initialize_cooked_food(list/obj/item/reagent_containers/food/snacks/outputs, cooking_efficiency = 1)
+	if(istype(outputs, /obj/item/reagent_containers/food/snacks))
+		outputs = list(outputs)
+	for(var/obj/item/reagent_containers/food/snacks/S in outputs)
+		if(reagents)
+			for(var/datum/reagent/R in reagents.reagent_list)
+				if(istype(R, /datum/reagent/consumable/nutriment))
+					continue
+				reagents.trans_id_to(S, R.type, R.volume / outputs.len)
+			for(var/r_id in bonus_reagents)
+				var/amount = bonus_reagents[r_id] * cooking_efficiency / outputs.len
 				S.reagents.add_reagent(r_id, amount)
-			else
-				S.reagents.add_reagent(r_id, amount)
-
-	if(transfers_tastes)
-		S.foodtype |= foodtype
-		S.tastes |= tastes
-
-	S.filling_color = filling_color
-	S.update_snack_overlays(src)
+		if(transfers_tastes)
+			S.foodtype |= foodtype
+			S.tastes |= tastes
+		S.filling_color = filling_color
+		S.update_snack_overlays(src)
 
 /obj/item/reagent_containers/food/snacks/proc/changefood(path, mob/living/eater)
 	if(!path || !eater)
 		return
 	var/turf/T = get_turf(eater)
-	if(eater.dropItemToGround(src))
+	if(!QDELETED(src) && eater.dropItemToGround(src))
 		qdel(src)
 	var/obj/item/I = new path(T)
 	eater.put_in_active_hand(I, ignore_animation = TRUE)
@@ -671,7 +762,8 @@ All foods are distributed among various categories. Use common sense.
 	name = "burned mess"
 	desc = ""
 	icon_state = "badrecipe"
-	list_reagents = list(/datum/reagent/toxin/bad_food = 30)
+	nutrition = SNACK_POOR
+	list_reagents = list(/datum/reagent/toxin/bad_food = 10)
 	filling_color = "#8B4513"
 	faretype = FARE_IMPOVERISHED
 	foodtype = GROSS

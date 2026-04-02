@@ -338,6 +338,21 @@
 	damage = ARROW_DAMAGE-2
 	woundclass = BCLASS_STAB
 
+//................ Bone Arrow ............... //
+/obj/item/ammo_casing/caseless/arrow/bone
+	name = "bone arrow"
+	desc = "A fletched projectile with a bone tip."
+	icon_state = "bonearrow"
+	projectile_type = /obj/projectile/bullet/reusable/arrow/bone //weaker projectile
+	max_integrity = 15
+
+/obj/projectile/bullet/reusable/arrow/bone
+	ammo_type = /obj/item/ammo_casing/caseless/arrow/bone
+	embedchance = 95
+	armor_penetration = 15
+	damage = ARROW_DAMAGE
+	woundclass = BCLASS_STAB
+
 //................ Poison Arrow ............... //
 /obj/item/ammo_casing/caseless/arrow/poison
 	name = "poison arrow"
@@ -511,7 +526,6 @@
 	armor_penetration = BULLET_PENETRATION
 	speed = 0.3
 	accuracy = 50 //Lower accuracy than an arrow.
-	reduce_crit_chance = 5 //Reduces crit chance
 	dismemberment = 0 //Can't dismember
 
 /obj/projectile/bullet/reusable/bullet/on_hit(atom/target)
@@ -520,6 +534,18 @@
 		var/mob/living/carbon/target_mob = target
 		target_mob.safe_throw_at(throw_target, 1, 4)
 		target_mob.Knockdown(SHOVE_KNOCKDOWN_SOLID)
+
+	if(get_dist(get_turf(firer), get_turf(target)) <= 3)
+		var/mob/living/carbon/C = target
+		var/obj/item/bodypart/BP = C.get_bodypart(def_zone)
+		if(BP)
+			var/fracture_type = /datum/wound/fracture
+			switch(BP.body_zone)
+				if(BODY_ZONE_HEAD)
+					fracture_type = /datum/wound/fracture/head
+				if(BODY_ZONE_CHEST)
+					fracture_type = /datum/wound/fracture/chest
+			BP.add_wound(fracture_type)
 	..()
 
 /obj/projectile/bullet/fragment

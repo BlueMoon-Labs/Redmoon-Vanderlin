@@ -14,15 +14,18 @@
 		/datum/language/dwarvish,
 		/datum/language/elvish,
 		/datum/language/oldpsydonic,
+		/datum/language/newpsydonic,
 		/datum/language/zalad,
 		/datum/language/celestial,
 		/datum/language/hellspeak,
 		/datum/language/beast,
+		/datum/language/rousman,
 		/datum/language/thievescant,
 		/datum/language/orcish,
 		/datum/language/deepspeak,
 		/datum/language/undead,
-		/datum/language/halfling
+		/datum/language/halfling,
+		/datum/language/gronnic,
 	))
 
 /obj/item/organ/tongue/Initialize(mapload)
