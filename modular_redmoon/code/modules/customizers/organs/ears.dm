@@ -8,9 +8,10 @@
 	generic_random_pick = TRUE
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/shark,
+		/datum/sprite_accessory/ears/sergal,
 		)
 
-/obj/item/organ/ears/akula
+/obj/item/organ/ears/axian
 	name = "Axian Ears"
 	accessory_type = /datum/sprite_accessory/ears/shark
 
@@ -22,15 +23,13 @@
 	name = "Lupian ears"
 	organ_type = /obj/item/organ/ears
 	sprite_accessories = list(
-		/datum/sprite_accessory/ears/wolf,
 		/datum/sprite_accessory/ears/bigwolf,
+		/datum/sprite_accessory/ears/bigwolf_inner,
+		/datum/sprite_accessory/ears/fox,
 		/datum/sprite_accessory/ears/husky,
-		/datum/sprite_accessory/bm/ears/human/bigwolf,
-		/datum/sprite_accessory/bm/ears/human/bigwolfinner,
-		/datum/sprite_accessory/bm/ears/human/bigwolfdark,
-		/datum/sprite_accessory/bm/ears/human/bigwolfinnerdark,
-		/datum/sprite_accessory/bm/ears/lab,
-		/datum/sprite_accessory/bm/ears/lablight,
+		/datum/sprite_accessory/ears/otie,
+		/datum/sprite_accessory/ears/wolf,
+		/datum/sprite_accessory/ears/lab
 	)
 
 /obj/item/organ/ears/lupian
@@ -46,13 +45,14 @@
 	organ_type = /obj/item/organ/ears
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/fox,
-		/datum/sprite_accessory/ears/fennec,
+		/datum/sprite_accessory/ears/vulp,
+		/datum/sprite_accessory/ears/big/sandfox_large,
+		/datum/sprite_accessory/ears/bigwolf,
+		/datum/sprite_accessory/ears/bigwolf_inner,
+		/datum/sprite_accessory/ears/fox,
 		/datum/sprite_accessory/ears/husky,
-		/datum/sprite_accessory/bm/ears/human/bigwolf,
-		/datum/sprite_accessory/bm/ears/human/bigwolfinner,
-		/datum/sprite_accessory/bm/ears/human/bigwolfdark,
-		/datum/sprite_accessory/bm/ears/human/bigwolfinnerdark,
-		/datum/sprite_accessory/bm/ears/human/eevee,
+		/datum/sprite_accessory/ears/otie,
+		/datum/sprite_accessory/ears/wolf
 	)
 
 /obj/item/organ/ears/vulpkanin
@@ -85,7 +85,6 @@
 	sprite_accessories = list(
 		/datum/sprite_accessory/ears/cobrahood,
 		/datum/sprite_accessory/ears/cobrahoodears,
-		/datum/sprite_accessory/bm/ears/mam_ears/axolotl,
 	)
 
 /obj/item/organ/ears/dracon

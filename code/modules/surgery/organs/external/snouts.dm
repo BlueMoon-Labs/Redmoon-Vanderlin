@@ -9,8 +9,8 @@
 /obj/item/organ/snout/beak
 	name = "beak"
 
-/obj/item/organ/snout/akula
-	name = "Akula snout"
+/obj/item/organ/snout/axian
+	name = "axian snout"
 	accessory_type = /datum/sprite_accessory/snout/shark
 
 /obj/item/organ/snout/lupian

@@ -143,7 +143,10 @@
 	name = "Axian Tail"
 	organ_type = /obj/item/organ/tail/axian
 	generic_random_pick = TRUE
-	sprite_accessories = list(/datum/sprite_accessory/tail/sharknofin, /datum/sprite_accessory/tail/shark)
+	sprite_accessories = list(
+		/datum/sprite_accessory/tail/sharknofin,
+		/datum/sprite_accessory/tail/shark
+		)
 
 /datum/customizer/organ/tail/lupian
 	customizer_choices = list(/datum/customizer_choice/organ/tail/lupian)
@@ -152,7 +155,16 @@
 /datum/customizer_choice/organ/tail/lupian
 	name = "Lupian tail"
 	organ_type = /obj/item/organ/tail/lupian
-	sprite_accessories = list(/datum/sprite_accessory/tail/wolf, /datum/sprite_accessory/tail/husky)
+	sprite_accessories = list(
+		/datum/sprite_accessory/tail/otie,
+		/datum/sprite_accessory/tail/shepherd,
+		/datum/sprite_accessory/tail/australian_shepherd,
+		/datum/sprite_accessory/tail/jackal,
+		/datum/sprite_accessory/tail/wolf,
+		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/fox2,
+		/datum/sprite_accessory/tail/husky
+		)
 
 /datum/customizer/organ/tail/vulpkanin
 	customizer_choices = list(/datum/customizer_choice/organ/tail/vulpkanin)
@@ -161,7 +173,14 @@
 /datum/customizer_choice/organ/tail/vulpkanin
 	name = "Vulpkanin tail"
 	organ_type = /obj/item/organ/tail/vulpkanin
-	sprite_accessories = list(/datum/sprite_accessory/tail/fox, /datum/sprite_accessory/tail/wolf)
+	sprite_accessories = list(
+		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/fox2,
+		/datum/sprite_accessory/tail/eevee,
+		/datum/sprite_accessory/tail/fennec,
+		/datum/sprite_accessory/tail/jackal,
+		/datum/sprite_accessory/tail/tamamo_kitsune
+		)
 
 /datum/customizer/organ/tail/tabaxi
 	customizer_choices = list(/datum/customizer_choice/organ/tail/tabaxi)
@@ -172,8 +191,10 @@
 	organ_type = /obj/item/organ/tail/tabaxi
 	sprite_accessories = list(
 		/datum/sprite_accessory/tail/catbig,
+		/datum/sprite_accessory/tail/cat,
 		/datum/sprite_accessory/tail/tiger,
-		/datum/sprite_accessory/tail/leopard
+		/datum/sprite_accessory/tail/leopard,
+		/datum/sprite_accessory/tail/lynx,
 	)
 
 /datum/customizer/organ/tail/dracon

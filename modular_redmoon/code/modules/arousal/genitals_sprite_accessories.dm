@@ -6,12 +6,6 @@
 	name = "Член"
 	organ_type = /obj/item/organ/genital/penis
 
-/datum/customizer_choice/organ/penis/New()
-	GLOB.cock_shapes_list = init_sprite_accessory_paths(/datum/sprite_accessory/bm/penis, GLOB.cock_shapes_list_paths)
-	for(var/path in GLOB.bm_hair_paths)
-		if(!(path in sprite_accessories))
-			sprite_accessories += path
-
 /datum/sprite_accessory
 	var/alt_aroused = FALSE //CIT CODE if this is TRUE, then the genitals will use an alternate icon_state when aroused.
 	var/taur_icon //leave null if the genital doesn't have a taur counterpart.
@@ -32,6 +26,9 @@
  * It would be best to just have 1 set of icon states that apply themselves normally to both custom skin tone users and match default skin tone users,
  * effectively removing the need of using the extra "_s". - Goku
  */
+
+/datum/sprite_accessory/bm
+	var/color_src
 
 //DICKS,COCKS,PENISES,WHATEVER YOU WANT TO CALL THEM
 /datum/sprite_accessory/bm/penis

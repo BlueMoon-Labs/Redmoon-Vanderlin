@@ -1,6 +1,13 @@
 /mob/living/carbon/human/species/dracon
 	race = /datum/species/dracon
 
+/datum/attribute_holder/sheet/job/species/dracon
+	raw_attribute_list = list(
+		STAT_PERCEPTION = 1,
+		STAT_INTELLIGENCE = 1,
+		STAT_SPEED = 1,
+	)
+
 /datum/species/dracon
 	name = "Drakian"
 	id = SPEC_ID_DRACON
@@ -56,8 +63,6 @@
 		OFFSET_ARMOR = list(0,0),\
 		OFFSET_UNDIES = list(0,0),\
 	)
-	specstats_m = list(STATKEY_STR = 1, STATKEY_PER = 0, STATKEY_INT = 0, STATKEY_CON = 0, STATKEY_END = 0, STATKEY_SPD = 0, STATKEY_LCK = 0)
-	specstats_f = list(STATKEY_STR = 1, STATKEY_PER = 0, STATKEY_INT = 0, STATKEY_CON = 0, STATKEY_END = 0, STATKEY_SPD = 0, STATKEY_LCK = 0)
 
 	enflamed_icon = "widefire"
 

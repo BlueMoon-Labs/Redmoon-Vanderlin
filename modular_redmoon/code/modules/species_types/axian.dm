@@ -1,6 +1,14 @@
 /mob/living/carbon/human/species/axian
 	race = /datum/species/axian
 
+
+/datum/attribute_holder/sheet/job/species/axian
+	raw_attribute_list = list(
+		STAT_PERCEPTION = 1,
+		STAT_INTELLIGENCE = 1,
+		STAT_SPEED = 1,
+	)
+
 /datum/species/axian
 	name = "Axian"
 	id = SPEC_ID_AXIAN
@@ -18,10 +26,6 @@
 	allowed_pronouns = PRONOUNS_LIST
 	species_traits = list(EYECOLOR, HAIR, LIPS, STUBBLE, OLDGREY)
 	inherent_traits = list(TRAIT_WATER_BREATHING, TRAIT_FISHFACE, TRAIT_GOOD_SWIM)
-	inherent_skills = list(
-		/datum/attribute/skill/labor/fishing = 2,
-		/datum/attribute/skill/misc/swimming = 3,
-	)
 
 	possible_ages = ALL_AGES_LIST
 	use_skintones = TRUE
@@ -69,8 +73,6 @@
 		OFFSET_ARMOR = list(0,0),\
 		OFFSET_UNDIES = list(0,0),\
 	)
-	specstats_m = list(STATKEY_STR = 0, STATKEY_PER = 0, STATKEY_INT = 0, STATKEY_CON = 1, STATKEY_END = 1, STATKEY_SPD = 0, STATKEY_LCK = 0)
-	specstats_f = list(STATKEY_STR = 0, STATKEY_PER = 0, STATKEY_INT = 0, STATKEY_CON = 1, STATKEY_END = 1, STATKEY_SPD = 0, STATKEY_LCK = 0)
 
 	enflamed_icon = "widefire"
 
@@ -79,9 +81,9 @@
 		ORGAN_SLOT_HEART = /obj/item/organ/heart,
 		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
 		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
-		ORGAN_SLOT_EARS = /obj/item/organ/ears/akula,
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/axian,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
-		ORGAN_SLOT_SNOUT = /obj/item/organ/snout/akula,
+		ORGAN_SLOT_SNOUT = /obj/item/organ/snout/axian,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_GUTS = /obj/item/organ/guts,
@@ -105,7 +107,7 @@
 		/datum/customizer/bodypart_feature/hair/head/humanoid,
 		/datum/customizer/bodypart_feature/accessory,
 		/datum/customizer/bodypart_feature/face_detail,
-		/datum/customizer/organ/snout/akula,
+		/datum/customizer/organ/snout/axian,
 		/datum/customizer/organ/tail/axian,
 		/datum/customizer/organ/ears/axian,
 		)

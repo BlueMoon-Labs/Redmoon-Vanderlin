@@ -10,9 +10,9 @@
 	organ_type = /obj/item/organ/tail/axian
 	generic_random_pick = TRUE
 	sprite_accessories = list(
-		/datum/sprite_accessory/tail/sharknofin,
 		/datum/sprite_accessory/tail/shark,
-		/datum/sprite_accessory/bm/tails/orca)
+		/datum/sprite_accessory/tail/sharknofin,
+		)
 
 /obj/item/organ/tail/axian
 	name = "Axian tail"
@@ -26,8 +26,15 @@
 	name = "Lupian tail"
 	organ_type = /obj/item/organ/tail/lupian
 	sprite_accessories = list(
+		/datum/sprite_accessory/tail/otie,
+		/datum/sprite_accessory/tail/shepherd,
+		/datum/sprite_accessory/tail/australian_shepherd,
+		/datum/sprite_accessory/tail/jackal,
 		/datum/sprite_accessory/tail/wolf,
-		/datum/sprite_accessory/tail/husky)
+		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/fox2,
+		/datum/sprite_accessory/tail/husky
+		)
 
 /obj/item/organ/tail/lupian
 	name = "Lupian tail"
@@ -41,9 +48,14 @@
 	name = "Vulpkanin tail"
 	organ_type = /obj/item/organ/tail/vulpkanin
 	sprite_accessories = list(
-		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/otie,
+		/datum/sprite_accessory/tail/shepherd,
+		/datum/sprite_accessory/tail/australian_shepherd,
+		/datum/sprite_accessory/tail/jackal,
 		/datum/sprite_accessory/tail/wolf,
-		/datum/sprite_accessory/bm/tails/human/husky,
+		/datum/sprite_accessory/tail/fox,
+		/datum/sprite_accessory/tail/fox2,
+		/datum/sprite_accessory/tail/husky
 		)
 
 /obj/item/organ/tail/vulpkanin
@@ -59,10 +71,10 @@
 	organ_type = /obj/item/organ/tail/tabaxi
 	sprite_accessories = list(
 		/datum/sprite_accessory/tail/catbig,
+		/datum/sprite_accessory/tail/cat,
 		/datum/sprite_accessory/tail/tiger,
 		/datum/sprite_accessory/tail/leopard,
-		/datum/sprite_accessory/tail/fox,
-		/datum/sprite_accessory/tail/wolf,
+		/datum/sprite_accessory/tail/lynx,
 	)
 
 /obj/item/organ/tail/tabaxi
@@ -78,6 +90,9 @@
 	organ_type = /obj/item/organ/tail/dracon
 	sprite_accessories = list(
 		/datum/sprite_accessory/tail/lizard/smooth,
+		/datum/sprite_accessory/tail/lizard/dtiger,
+		/datum/sprite_accessory/tail/lizard/ltiger,
+		/datum/sprite_accessory/tail/lizard/spikes,
 	)
 
 /obj/item/organ/tail/dracon
