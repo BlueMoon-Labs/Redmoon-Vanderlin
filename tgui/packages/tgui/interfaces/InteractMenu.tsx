@@ -12,16 +12,6 @@ import {
 import { Window } from '../layouts';
 import { useBackend } from '../backend';
 
-type BodyPartId =
-  | 'head'
-  | 'chest'
-  | 'groin'
-  | 'left_arm'
-  | 'right_arm'
-  | 'left_leg'
-  | 'right_leg'
-  | 'tail';
-
 type TabId = 'main' | 'builder';
 
 const BODY_PART_LABELS: Record<BodyPartId, string> = {
@@ -35,21 +25,30 @@ const BODY_PART_LABELS: Record<BodyPartId, string> = {
   tail: 'Хвост',
 };
 
-const BODY_PART_ACTIONS: Record<BodyPartId, string[]> = {
-  head: ['Погладить по голове', 'Повернуть голову', 'Осмотреть лицо'],
-  chest: ['Потрогать грудь1', 'Проверить дыхание'],
-  groin: ['1'],
-  left_arm: ['Пожать руку', 'Поднять руку'],
-  right_arm: ['Пожать руку', 'Опустить руку'],
-  left_leg: ['Пнуть', 'Поднять ногу'],
-  right_leg: ['Пнуть', 'Пошевелить стопой'],
-  tail: ['1'],
+type BodyPartId =
+  | 'head'
+  | 'chest'
+  | 'groin'
+  | 'left_arm'
+  | 'right_arm'
+  | 'left_leg'
+  | 'right_leg'
+  | 'tail';
+
+interface InteractionAction {
+  id: string;          // byond path или уникальный id
+  name: string;        // отображаемое название действия
+}
+
+type InteractionActionsByPart = {
+  [K in BodyPartId]?: InteractionAction[];
 };
 
 interface InteractMenuData {
   entity_from: string;
   entity_to: string;
   character_ref: any;
+  actions_by_part: InteractionActionsByPart;
 }
 
 // Обёртка для hover (обычный div, чтобы TS не ругался)
@@ -70,7 +69,7 @@ const HoverWrapper = (props: {
 };
 
 export const InteractMenu = (props, context) => {
-  const { data, config } = useBackend<InteractMenuData>();
+  const { data, config, act } = useBackend<InteractMenuData>();
   const { entity_from, entity_to, character_ref } = data;
 
   const [selectedPart, setSelectedPart] = useState<BodyPartId>('chest');
@@ -106,22 +105,21 @@ export const InteractMenu = (props, context) => {
     tail: [],
   });
 
-  const baseActions = BODY_PART_ACTIONS[selectedPart] || [];
+  const baseActions = data.actions_by_part?.[selectedPart] || [];
   const favForPart = favorites[selectedPart] || [];
 
-  // Список действий: сначала избранные, затем остальные
   const actions = [
-    ...favForPart.filter((a) => baseActions.includes(a)),
-    ...baseActions.filter((a) => !favForPart.includes(a)),
+    ...baseActions.filter(a => favForPart.includes(a.id)),
+    ...baseActions.filter(a => !favForPart.includes(a.id)),
   ];
 
-  const toggleFavorite = (part: BodyPartId, action: string) => {
+  const toggleFavorite = (part: BodyPartId, actionId: string) => {
     setFavorites((prev) => {
       const list = prev[part] || [];
-      const isFav = list.includes(action);
+      const isFav = list.includes(actionId);
       const nextList = isFav
-        ? list.filter((a) => a !== action)
-        : [...list, action];
+        ? list.filter((id) => id !== actionId)
+        : [...list, actionId];
       return { ...prev, [part]: nextList };
     });
   };
@@ -180,220 +178,265 @@ export const InteractMenu = (props, context) => {
               <Stack fill>
                 {/* Левая колонка: модель персонажа / хитбоксы */}
                 <Stack.Item grow={0}>
-                  <HoverWrapper onHoverChange={setShowHitboxes}>
-                    <Section title="Тело" fill textAlign="center">
+                <Section title="Тело" textAlign="center">
+                  <Stack vertical align="center">
+                    {/* Верх: ByondUi с персонажем */}
+                    <Stack.Item>
                       <Box
                         position="relative"
                         style={{
-                          width: '150px',
-                          height: '150px',
+                          width: '128px',
+                          height: '128px',
                           margin: '0 auto',
                         }}
                       >
-                        {/* Пока не наведено — показываем ByondUi */}
-                        {!showHitboxes && (
-                          <ByondUi
-                            height="128px"
-                            width="128px"
-                            params={{ id: character_ref, type: 'map' }}
-                          />
-                        )}
-
-                        {/* При hover — скрываем ByondUi, показываем слой хитбоксов */}
-                        {showHitboxes && (
-                          <Box
-                            position="absolute"
-                            style={{
-                              inset: 0,
-                              background: 'rgba(0, 0, 0, 0.6)',
-                            }}
-                          >
-                            {/* Голова */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                left: '40%',
-                                top: '7%',
-                                width: '20%',
-                                height: '20%',
-                                clipPath:
-                                  'polygon(50% 0%, 100% 40%, 80% 100%, 20% 100%, 0% 40%)',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('head')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Грудь */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                left: '35%',
-                                top: '30%',
-                                width: '30%',
-                                height: '25%',
-                                borderRadius: '20%',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('chest')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Пах */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                left: '36%',
-                                top: '55%',
-                                width: '28%',
-                                height: '15%',
-                                borderRadius: '20%',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('groin')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Левая рука */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                left: '25%',
-                                top: '34%',
-                                width: '9%',
-                                height: '30%',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('left_arm')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Правая рука */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                right: '25%',
-                                top: '34%',
-                                width: '9%',
-                                height: '30%',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('right_arm')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Левая нога */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                left: '51%',
-                                bottom: '-6%',
-                                width: '12%',
-                                height: '35%',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('left_leg')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Правая нога */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                right: '51%',
-                                bottom: '-6%',
-                                width: '12%',
-                                height: '35%',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('right_leg')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-
-                            {/* Хвост */}
-                            <Box
-                              position="absolute"
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.6)',
-                                right: '63%',
-                                bottom: '-6%',
-                                width: '34%',
-                                height: '25%',
-                                clipPath:
-                                  'polygon(100% 23%, 0% 100%, 100% 100%)',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => setSelectedPart('tail')}
-                              onMouseOver={handleMouseOver}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          </Box>
-                        )}
+                        <ByondUi
+                          height="128px"
+                          width="128px"
+                          params={{ id: character_ref, type: 'map' }}
+                        />
                       </Box>
-                    </Section>
-                  </HoverWrapper>
-                </Stack.Item>
+                    </Stack.Item>
 
+                    {/* Низ: отдельный слой с хитбоксами такого же размера */}
+                    <Stack.Item>
+                      <Box
+                        position="relative"
+                        style={{
+                          width: '128px',
+                          height: '128px',
+                          marginTop: '30px',
+                          marginLeft: '20x',
+                          marginRight: 'auto',
+                          background: 'rgba(0, 0, 0, 0.6)',
+                        }}
+                      >
+                        {/* Голова */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'head'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            left: '40%',
+                            top: '7%',
+                            width: '20%',
+                            height: '20%',
+                            clipPath:
+                              'polygon(50% 0%, 100% 40%, 80% 100%, 20% 100%, 0% 40%)',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('head')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Грудь */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'chest'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            left: '35%',
+                            top: '30%',
+                            width: '30%',
+                            height: '25%',
+                            borderRadius: '20%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('chest')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Пах */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'groin'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            left: '36%',
+                            top: '55%',
+                            width: '28%',
+                            height: '15%',
+                            borderRadius: '20%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('groin')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Левая рука */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'left_arm'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            left: '25%',
+                            top: '34%',
+                            width: '9%',
+                            height: '30%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('left_arm')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Правая рука */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'right_arm'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            right: '25%',
+                            top: '34%',
+                            width: '9%',
+                            height: '30%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('right_arm')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Левая нога */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'left_leg'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            left: '51%',
+                            bottom: '-6%',
+                            width: '12%',
+                            height: '35%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('left_leg')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Правая нога */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'right_leg'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            right: '51%',
+                            bottom: '-6%',
+                            width: '12%',
+                            height: '35%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('right_leg')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+
+                        {/* Хвост */}
+                        <Box
+                          position="absolute"
+                          style={{
+                            background:
+                              selectedPart === 'tail'
+                                ? 'rgba(255, 255, 255, 0.9)'
+                                : 'rgba(255, 255, 255, 0.4)',
+                            right: '63%',
+                            bottom: '-6%',
+                            width: '34%',
+                            height: '25%',
+                            clipPath: 'polygon(100% 23%, 0% 100%, 100% 100%)',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => setSelectedPart('tail')}
+                          onMouseOver={handleMouseOver}
+                          onMouseLeave={handleMouseLeave}
+                        />
+                      </Box>
+                    </Stack.Item>
+                  </Stack>
+                </Section>
+              </Stack.Item>
                 {/* Правая колонка: действия */}
                 <Stack.Item grow={1}>
-                  <Section title={`Действия: ${BODY_PART_LABELS[selectedPart]}`}>
+                  <Section title={`Действия: ${BODY_PART_LABELS[selectedPart]}`} fill>
                     {actions.length === 0 ? (
                       <Box color="label">
                         Нет доступных действий (заглушка).
                       </Box>
                     ) : (
-                      <Stack vertical>
-                        {actions.map((action, i) => {
-                          const isFav =
-                            favorites[selectedPart]?.includes(action);
-                          return (
-                            <Stack.Item key={i}>
-                              <Stack align="center">
-                                {/* Кнопка слева: play */}
-                                <Stack.Item>
-                                  <Button
-                                    icon="play"
-                                    onClick={() => null}
-                                    width="24px"
-                                  />
-                                </Stack.Item>
+                      // Оборачиваем список в Box с прокруткой
+                      <Box
+                        style={{
+                          maxHeight: '500px',        // подбери под своё окно
+                          overflowY: 'auto',
+                        }}
+                      >
+                        <Stack vertical>
+                          {actions.map((action) => {
+                            const isFav = favorites[selectedPart]?.includes(action.id);
+                            return (
+                              <Stack.Item key={action.id}>
+                                <Stack align="center">
+                                  <Stack.Item>
+                                    <Button
+                                      icon="play"
+                                      onClick={() =>
+                                        act('run_action_once', {
+                                          part: selectedPart,
+                                          action_id: action.id,
+                                          duration,
+                                        })
+                                      }
+                                      width="24px"
+                                    />
+                                  </Stack.Item>
 
-                                {/* Центральная большая кнопка действия */}
-                                <Stack.Item grow>
-                                  <Button fluid onClick={() => null}>
-                                    {action}
-                                  </Button>
-                                </Stack.Item>
+                                  <Stack.Item grow>
+                                    <Button
+                                      fluid
+                                      onClick={() =>
+                                        act('run_action_once', {
+                                          part: selectedPart,
+                                          action_id: action.id,
+                                          duration,
+                                        })
+                                      }
+                                    >
+                                      {action.name}
+                                    </Button>
+                                  </Stack.Item>
 
-                                {/* Кнопка справа: избранное (звезда) */}
-                                <Stack.Item>
-                                  <Button
-                                    icon={isFav ? 'star' : 'star-o'}
-                                    onClick={() =>
-                                      toggleFavorite(selectedPart, action)
-                                    }
-                                    width="24px"
-                                  />
-                                </Stack.Item>
-                              </Stack>
-                            </Stack.Item>
-                          );
-                        })}
-                      </Stack>
+                                  <Stack.Item>
+                                    <Button
+                                      icon={isFav ? 'star' : 'star-o'}
+                                      onClick={() =>
+                                        toggleFavorite(selectedPart, action.id)
+                                      }
+                                      width="24px"
+                                    />
+                                  </Stack.Item>
+                                </Stack>
+                              </Stack.Item>
+                            );
+                          })}
+                        </Stack>
+                      </Box>
                     )}
                   </Section>
                 </Stack.Item>

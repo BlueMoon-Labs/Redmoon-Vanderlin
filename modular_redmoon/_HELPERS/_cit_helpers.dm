@@ -1,3 +1,5 @@
+#define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) } ; x = null }
+
 //THIS FILE CONTAINS CONSTANTS, PROCS, AND OTHER THINGS//
 /////////////////////////////////////////////////////////
 
@@ -107,3 +109,15 @@ GLOBAL_VAR_INIT(miscreants_allowed, FALSE)
 	if (a > b)
 		return percentage_between(x, b, a, centesimal)
 	return clamp((x-a)/(b-a),0,1) * (centesimal ? 100 : 1)
+
+/mob/proc/has_tail()
+	return FALSE
+
+/mob/living/carbon/human/has_tail()
+	if(!dna || !dna.species)
+		return ..()
+	var/list/F = dna.features
+	for(var/tail in list("mam_tail", "tail_human", "tail_lizard", "taur", "xenotail"))
+		if(F[tail] && (F[tail] != "None"))
+			return TRUE
+	return	FALSE

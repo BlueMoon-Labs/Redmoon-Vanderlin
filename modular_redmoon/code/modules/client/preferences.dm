@@ -28,3 +28,5 @@
 	var/tattoopref = "Ask"					//BLUEMOON ADD - Tattoo consent preference
 	var/extremepref = "No" 					//This is for extreme shit, maybe even literal shit, better to keep it on no by default
 	var/extremeharm = "No"
+	var/unholypref = "No"
+	var/list/gfluid_blacklist = list()
