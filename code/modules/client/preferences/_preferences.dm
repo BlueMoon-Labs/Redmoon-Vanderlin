@@ -229,6 +229,9 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	var/has_spawned = FALSE
 	///our selected accent
 	var/selected_accent = ACCENT_DEFAULT
+
+	var/preview_direction = SOUTH
+
 	/// If our owner is patreon or twitch sub
 	var/donator = FALSE
 	/// If our owner is from a race that has more than one accent
@@ -325,6 +328,31 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 	send_character_ui_resources(user)
 	build_and_show_menu(user)
+
+/datum/preferences/proc/get_next_dir(current_dir, invert = FALSE)
+	var/list/dirs = list(NORTH, EAST, SOUTH, WEST)
+
+	var/idx = dirs.Find(current_dir)
+	if(!idx)
+		idx = 1
+
+	if(invert)
+		idx--
+		if(idx < 1)
+			idx = dirs.len
+	else
+		idx++
+		if(idx > dirs.len)
+			idx = 1
+
+	return dirs[idx]
+
+/datum/preferences/proc/handle_preview_dir_click(mob/user, href_list)
+	var/start_dir = text2num(href_list["dir"]) || preview_direction
+	var/invert = text2num(href_list["invert"]) ? TRUE : FALSE
+
+	preview_direction = get_next_dir(start_dir, invert)
+	update_preview_icon(preview_direction)
 
 /datum/preferences/proc/build_and_show_menu(mob/user)
 	var/list/dat = list()
@@ -447,12 +475,12 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 		.v-color-box { top: 136px; left: 34px; width: 48px; height: 15px; background-image: url('voice_colour.png'); }
 		.v-blob      { top: 4px;   left: 35px; width: 8px;  height: 7px;
-		               background-image: url('voice_colour_blob.png');
-		               background-blend-mode: multiply; }
+					   background-image: url('voice_colour_blob.png');
+					   background-blend-mode: multiply; }
 		.v-color-box-body { top: 54px; left: 138px; width: 48px; height: 15px; background-image: url('voice_colour.png'); }
 		.v-blob-body      { top: 4px;   left: 35px; width: 8px;  height: 7px;
-		               background-image: url('voice_colour_blob.png');
-		               background-blend-mode: multiply; }
+					   background-image: url('voice_colour_blob.png');
+					   background-blend-mode: multiply; }
 		.menu-keybinds {
 			top: 280px;
 			left: 78px;
@@ -597,6 +625,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	<div class="sprite header-bg"></div>
 	<div class="sprite preview-bg"></div>
 	<div class="sprite body-bg"></div>
+	<a href='?_src_=prefs;preference=preview_dir;dir=[preview_direction];invert=0'>
+		<div class="sprite" style="top: 292px; left: 119px; width: 37px; height: 10px; background-image: url('preview_rotate.png');">
+		</div>
+	</a>
+	<a href='?_src_=prefs;preference=preview_dir;dir=[preview_direction];invert=1'>
+		<div class="sprite" style="top: 292px; left: 160px; width: 37px; height: 10px; background-image: url('preview_rotate_inv.png');">
+		</div>
+	</a>
 	<div class="sprite voice-bg"></div>
 	<div class="sprite family-bg"></div>
 	<div class="sprite flavour-bg"></div>
@@ -750,7 +786,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	winshow(user, "stonekeep_prefwin.character_preview_map", TRUE)
 	// This should really be a browser datum
 	user << browse(dat.Join(), "window=preferences_browser;size=816x950")
-	update_preview_icon()
+	update_preview_icon(preview_direction)
 	// onclose(user, "stonekeep_prefwin", src)
 
 /datum/preferences/proc/update_menu_data(mob/user, list/fields_to_update)
@@ -1338,6 +1374,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	popup.open(use_onclose = FALSE)
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
+	if(href_list["preference"] == "preview_dir")
+		handle_preview_dir_click(user, href_list)
+		build_and_show_menu(user)
+		return
 
 	if(href_list["bancheck"])
 		var/list/ban_details = is_banned_from_with_details(user.ckey, user.client.address, user.client.computer_id, href_list["bancheck"])
@@ -1355,14 +1395,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				expires = " The ban is for [DisplayTimeText(text2num(ban_details["duration"]) MINUTES)] and expires on [ban_details["expiration_time"]] (server time)."
 			to_chat(user, "<span class='danger'>You, or another user of this computer or connection ([ban_details["key"]]) is banned from playing [href_list["bancheck"]].<br>The ban reason is: [ban_details["reason"]]<br>This ban (BanID #[ban_details["id"]]) was applied by [ban_details["admin_key"]] on [ban_details["bantime"]] during round ID [ban_details["round_id"]].<br>[expires]</span>")
 			return
+
 	if(href_list["preference"] == "job")
 		switch(href_list["task"])
 			if("close")
 				user << browse(null, "window=mob_occupation")
-				show_choices(user,4)
+				show_choices(user, 4)
 			if("reset")
 				reset_jobs(user, TRUE)
-
 			if("triumphthing")
 				reset_last_class(user)
 			if("nojob")
@@ -1386,7 +1426,9 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				update_job_preference(user, href_list["text"], text2num(href_list["level"]))
 			else
 				set_choices(user)
+		build_and_show_menu(user)
 		return 1
+
 	else if(href_list["preference"] == "multi")
 		if(isnewplayer(user))
 			var/mob/dead/new_player/player = user
@@ -1410,12 +1452,16 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				set_antag(user)
 			else
 				set_antag(user)
+		build_and_show_menu(user)
+		return
 
 	else if(href_list["preference"] == "triumphs")
 		user.show_triumphs_list()
+		return
 
 	else if(href_list["preference"] == "playerquality")
 		check_pq_menu(user.ckey)
+		return
 
 	else if(href_list["preference"] == "culinary")
 		show_culinary_ui(user)
@@ -1424,6 +1470,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	else if(href_list["preference"] == "markings")
 		ShowMarkings(user)
 		return
+
 	else if(href_list["preference"] == "descriptors")
 		show_descriptors_ui(user)
 		return
@@ -1431,10 +1478,13 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	else if(href_list["preference"] == "customizers")
 		ShowCustomizers(user)
 		return
+
 	else if(href_list["preference"] == "triumph_buy_menu")
 		SStriumphs.startup_triumphs_menu(user.client)
+		return
 
 	else if(href_list["preference"] == "keybinds")
+		// keybinds работают в своём отдельном окне
 		switch(href_list["task"])
 			if("close")
 				user << browse(null, "window=keybind_setup")
@@ -1446,7 +1496,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				var/old_key = href_list["old_key"]
 				capture_keybinding(user, kb, old_key)
 				return
-
 			if("keybindings_set")
 				var/kb_name = href_list["keybinding"]
 				if(!kb_name)
@@ -1471,7 +1520,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				var/CtrlMod = text2num(href_list["ctrl"]) ? "Ctrl" : ""
 				var/ShiftMod = text2num(href_list["shift"]) ? "Shift" : ""
 				var/numpad = text2num(href_list["numpad"]) ? "Numpad" : ""
-				// var/key_code = text2num(href_list["key_code"])
 
 				if(GLOB._kbMap[new_key])
 					new_key = GLOB._kbMap[new_key]
@@ -1510,6 +1558,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				set_keybinds(user)
 			else
 				set_keybinds(user)
+		// keybinds — другое окно, основной prefs‑HTML тут не трогаем
 		return TRUE
 
 	else if(href_list["preference"] == "toggles")
@@ -1526,8 +1575,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		var/new_toggles = input_bitfield(user, toggle_type, bitfield, prefs_variable, nheight = 500)
 		if(!isnull(new_toggles))
 			if(toggle_type == "Default Toggles")
-				// Reset all fields we touch to 0 first because we don't use a full set to do toggles = X
-				// And don't want to override them
 				for(var/field in GLOB.bitfields[bitfield])
 					toggles &= ~GLOB.bitfields[bitfield][field]
 				toggles ^= new_toggles
@@ -1542,7 +1589,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					user.cancel_looping_ambience()
 
 				user.client?.update_ambience_pref()
-
 			else if(toggle_type == "Maptext Toggles")
 				toggles_maptext = new_toggles
 
@@ -1568,7 +1614,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		if("random")
 			switch(href_list["preference"])
 				if("name")
-					real_name = pref_species.random_name(gender,1)
+					real_name = pref_species.random_name(gender, 1)
 				if("age")
 					age = pick(pref_species.possible_ages)
 				if("eyes")
@@ -1580,7 +1626,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					random_species()
 				if("all")
 					apply_character_randomization_prefs()
-
 		if("input")
 
 			if(href_list["preference"] in GLOB.preferences_custom_names)
@@ -2268,6 +2313,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 						current_tab = text2num(href_list["tab"])
 
 	update_menu_data(user)
+	build_and_show_menu(user)
 	return 1
 
 

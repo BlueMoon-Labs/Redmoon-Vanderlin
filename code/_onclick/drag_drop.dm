@@ -43,6 +43,7 @@
 
 /client
 	var/list/atom/selected_target[2]
+	var/atom/movable/screen/char_preview/char_preview_holder
 	var/obj/item/active_mousedown_item = null
 	var/mouseParams = ""
 	///Used in MouseDrag to preserve the last mouse-entered location. Weakref

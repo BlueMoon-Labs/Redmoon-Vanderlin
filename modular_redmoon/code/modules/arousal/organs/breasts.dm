@@ -22,6 +22,7 @@
 	orgasm_verb = "leaking"
 	fluid_transfer_factor = 0.5
 	layer_index = BREASTS_LAYER_INDEX
+	accessory_type = /datum/sprite_accessory/bm/breasts/pair
 	var/prev_size //former cached_size value, to allow update_size() to early return should be there no significant changes.
 
 /obj/item/organ/genital/breasts/update_appearance()

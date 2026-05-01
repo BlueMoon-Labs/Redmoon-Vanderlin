@@ -4065,6 +4065,7 @@
 #include "modular_redmoon\code\datums\interactions\interaction_datums\lewd\self\jack.dm"
 #include "modular_redmoon\code\modules\arousal\arousal.dm"
 #include "modular_redmoon\code\modules\arousal\genitals.dm"
+#include "modular_redmoon\code\modules\arousal\genitals_customizer_chooses.dm"
 #include "modular_redmoon\code\modules\arousal\genitals_sprite_accessories.dm"
 #include "modular_redmoon\code\modules\arousal\organs\anus.dm"
 #include "modular_redmoon\code\modules\arousal\organs\belly.dm"

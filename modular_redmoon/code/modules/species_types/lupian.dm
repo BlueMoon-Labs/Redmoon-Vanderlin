@@ -27,7 +27,7 @@
 	use_skintones = TRUE
 	possible_ages = ALL_AGES_LIST
 	changesource_flags = WABBAJACK
-
+	species_traits = list(NO_UNDERWEAR)
 	limbs_icon_m = 'icons/roguetown/mob/bodies/m/mm.dmi'
 	limbs_icon_f = 'icons/roguetown/mob/bodies/f/fm.dmi'
 	dam_icon_m = 'icons/roguetown/mob/bodies/dam/dam_male.dmi'
@@ -86,13 +86,7 @@
 		ORGAN_SLOT_GUTS = /obj/item/organ/guts,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_TAIL = /obj/item/organ/tail/lupian,
-		ORGAN_SLOT_BUTT = /obj/item/organ/genital/butt,
-		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
-		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
-		ORGAN_SLOT_VAGINA = /obj/item/organ/genital/vagina,
-		ORGAN_SLOT_WOMB = /obj/item/organ/genital/womb,
-		ORGAN_SLOT_PENIS = /obj/item/organ/genital/penis,
-		ORGAN_SLOT_TESTICLES = /obj/item/organ/genital/testicles
+
 	)
 
 	bodypart_features = list(
@@ -107,6 +101,13 @@
 		/datum/customizer/organ/snout/lupian,
 		/datum/customizer/organ/tail/lupian,
 		/datum/customizer/organ/ears/lupian,
+		/datum/customizer/organ/penis,
+		/datum/customizer/organ/testicles,
+		/datum/customizer/organ/vagina,
+		/datum/customizer/organ/breasts,
+		/datum/customizer/organ/butt,
+		/datum/customizer/organ/belly,
+		/datum/customizer/organ/anus
 		)
 
 	body_marking_sets = list(
@@ -145,6 +146,7 @@
 
 /datum/species/lupian/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	..()
+	C.grant_language(/datum/language/common)
 	RegisterSignal(C, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/species/lupian/on_species_loss(mob/living/carbon/C)

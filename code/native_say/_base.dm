@@ -577,16 +577,27 @@
 			editor.focus();
 		}
 
-		function submitEntry() {
-			let entry = window.realText.trim();
-			if (entry.length > 0 && entry.length < 1024) {
-				window.chatHistory.unshift(entry);
-				if (window.chatHistory.length > 5) window.chatHistory.pop();
+			function submitEntry() {
+				let entry = window.realText.trim();
+				if (entry.length > 0 && entry.length < 1024) {
+					window.chatHistory.unshift(entry);
+					if (window.chatHistory.length > 5) window.chatHistory.pop();
 
-				window.location = 'byond://?src=' + encodeURIComponent('[ref(src)]') + ';action=entry;channel=' + encodeURIComponent(window.currentChannel) + ';entry=' + encodeURIComponent(entry);
+					if (window.BYOND && typeof BYOND.topic === 'function') {
+						BYOND.topic({
+							src: '[ref(src)]',
+							action: 'entry',
+							channel: window.currentChannel,
+							entry: entry,
+						});
+					} else {
+						window.location = 'byond://?src=' + encodeURIComponent('[ref(src)]')
+							+ ';action=entry;channel=' + encodeURIComponent(window.currentChannel)
+							+ ';entry=' + encodeURIComponent(entry);
+					}
+				}
+				closeWindow();
 			}
-			closeWindow();
-		}
 
 		// ===== EVENT HANDLERS =====
 		button.addEventListener('mousedown', function(e) {

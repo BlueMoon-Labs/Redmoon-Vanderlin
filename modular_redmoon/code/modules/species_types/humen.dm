@@ -2,6 +2,7 @@
 	possible_ages = NORMAL_AGES_LIST
 
 /datum/species/human
+	species_traits = list(NO_UNDERWEAR)
 	organs = list(
 		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
 		ORGAN_SLOT_HEART = /obj/item/organ/heart,
@@ -12,11 +13,4 @@
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_GUTS = /obj/item/organ/guts,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
-		ORGAN_SLOT_BUTT = /obj/item/organ/genital/butt,
-		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
-		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
-		ORGAN_SLOT_VAGINA = /obj/item/organ/genital/vagina,
-		ORGAN_SLOT_WOMB = /obj/item/organ/genital/womb,
-		ORGAN_SLOT_PENIS = /obj/item/organ/genital/penis,
-		ORGAN_SLOT_TESTICLES = /obj/item/organ/genital/testicles
 	)

@@ -3,6 +3,19 @@
 	This file has the basic atom/movable level speech procs.
 	And the base of the send_speech() proc, which is the core of saycode.
 */
+
+/proc/text_to_char_list(t)
+    var/list/L = list()
+    if(isnull(t))
+        return L
+
+    t = "[t]"
+
+    var/len = length(t)
+    for(var/i = 1 to len)
+        L += copytext_char(t, i, i+1)
+    return L
+
 /atom/movable/proc/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null)
 	if(!can_speak())
 		return
@@ -134,9 +147,11 @@
 		var/middle = copytext(word, 2, length(word))
 
 		if(length(middle) > 0)
-			var/list/middle_chars = splittext(middle, "")
+			var/list/middle_chars = text_to_char_list(middle)
 			middle_chars = shuffle(middle_chars)
-			middle = jointext(middle_chars, "")
+			middle = ""
+			for(var/c in middle_chars)
+				middle += c
 
 		jumbled_words += "[first][middle][last]"
 

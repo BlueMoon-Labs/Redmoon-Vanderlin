@@ -136,7 +136,7 @@
 	if(randomise[RANDOM_NAME])
 		real_name = pref_species.random_name(gender, TRUE)
 
-/datum/preferences/proc/update_preview_icon()
+/datum/preferences/proc/update_preview_icon(var/dir)
 	set waitfor = 0
 	if(!parent)
 		return
@@ -157,5 +157,5 @@
 		mannequin.job = previewJob.title
 		mannequin.dress_up_as_job(previewJob, TRUE)
 
-	parent.show_character_previews(new /mutable_appearance(mannequin))
+	parent.show_character_previews(new /mutable_appearance(mannequin), dir)
 	unset_busy_human_dummy(DUMMY_HUMAN_SLOT_PREFERENCES)

@@ -1,11 +1,3 @@
-/datum/customizer/organ/penis
-	customizer_choices = list(/datum/customizer_choice/organ/penis)
-	allows_disabling = TRUE
-
-/datum/customizer_choice/organ/penis
-	name = "Член"
-	organ_type = /obj/item/organ/genital/penis
-
 /datum/sprite_accessory
 	var/alt_aroused = FALSE //CIT CODE if this is TRUE, then the genitals will use an alternate icon_state when aroused.
 	var/taur_icon //leave null if the genital doesn't have a taur counterpart.
@@ -29,6 +21,7 @@
 
 /datum/sprite_accessory/bm
 	var/color_src
+
 
 //DICKS,COCKS,PENISES,WHATEVER YOU WANT TO CALL THEM
 /datum/sprite_accessory/bm/penis

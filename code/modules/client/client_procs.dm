@@ -1308,29 +1308,24 @@ GLOBAL_LIST_EMPTY(respawncounts)
 	if(prefs && prefs.chat_toggles & CHAT_PULLR)
 		to_chat(src, announcement)
 
-/client/proc/show_character_previews(mutable_appearance/MA)
-	var/pos = 0
-	for(var/D in GLOB.cardinals)
-		pos++
-		var/atom/movable/screen/char_preview/O = LAZYACCESS(char_render_holders, "[D]")
-		if(O)
-			screen -= O
-			// no need to remove it from char_render_holders, it gets overwritten a few lines down
-			qdel(O)
-		O = new
-		LAZYSET(char_render_holders, "[D]", O)
-		screen += O
-		O.appearance = MA
-		O.dir = D
-		switch(pos)
-			if(1)
-				O.screen_loc = "character_preview_map:2:4,4:-36"
-			if(2)
-				O.screen_loc = "character_preview_map:0:4,4:-36"
-			if(3)
-				O.screen_loc = "character_preview_map:2:4,0:26"
-			if(4)
-				O.screen_loc = "character_preview_map:0:4,0:26"
+/client/proc/show_character_previews(mutable_appearance/MA, var/dir)
+    var/atom/movable/screen/char_preview/O = char_preview_holder
+    if(O)
+        screen -= O
+        qdel(O)
+
+    O = new
+    char_preview_holder = O
+
+    screen += O
+    O.appearance = MA
+    O.dir = dir
+
+    var/matrix/M = matrix()
+    M.Scale(2)
+    O.transform = M
+
+    O.screen_loc = "character_preview_map:1:1,3:-32"
 
 /client/proc/clear_character_previews()
 	for(var/index in char_render_holders) // associative list, have to index

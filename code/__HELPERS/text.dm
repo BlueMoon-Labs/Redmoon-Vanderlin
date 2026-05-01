@@ -275,8 +275,24 @@
 
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(t as text)
-	return uppertext(copytext(t, 1, 2)) + copytext(t, 2)
+    if(!t)
+        return t
 
+    t = "[t]"
+
+    var/len = length(t)
+    if(len <= 0)
+        return t
+
+    var/first = copytext_char(t, 1, 2)
+    var/rest  = copytext_char(t, 2, len + 1)
+
+    // Капим только латинские буквы, кириллицу не трогаем
+    var/ascii = text2ascii(first)
+    if(ascii >= 97 && ascii <= 122) // 'a'..'z'
+        first = uppertext(first)
+
+    return "[first][rest]"
 
 //Like capitalize, but you capitalize EVERYTHING
 /proc/capitalize_like_old_man(t)

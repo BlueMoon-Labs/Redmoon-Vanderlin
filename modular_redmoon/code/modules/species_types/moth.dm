@@ -17,7 +17,7 @@
 	allowed_pronouns = PRONOUNS_LIST
 	species_traits = list(EYECOLOR, HAIR, LIPS, STUBBLE, OLDGREY)
 	use_skintones = TRUE
-
+	species_traits = list(NO_UNDERWEAR)
 	possible_ages = ALL_AGES_LIST
 	use_skintones = TRUE
 	changesource_flags = WABBAJACK
@@ -80,13 +80,7 @@
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_NECK_FEATURE = /obj/item/organ/neck_feature/moth,
 		ORGAN_SLOT_WINGS = /obj/item/organ/wings/moth,
-		ORGAN_SLOT_BUTT = /obj/item/organ/genital/butt,
-		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
-		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
-		ORGAN_SLOT_VAGINA = /obj/item/organ/genital/vagina,
-		ORGAN_SLOT_WOMB = /obj/item/organ/genital/womb,
-		ORGAN_SLOT_PENIS = /obj/item/organ/genital/penis,
-		ORGAN_SLOT_TESTICLES = /obj/item/organ/genital/testicles
+
 	)
 
 	bodypart_features = list(
@@ -100,7 +94,14 @@
 		/datum/customizer/bodypart_feature/face_detail,
 		/datum/customizer/organ/ears/moth,
 		/datum/customizer/organ/neck_feature/moth,
-		/datum/customizer/organ/wings/moth
+		/datum/customizer/organ/wings/moth,
+		/datum/customizer/organ/penis,
+		/datum/customizer/organ/testicles,
+		/datum/customizer/organ/vagina,
+		/datum/customizer/organ/breasts,
+		/datum/customizer/organ/butt,
+		/datum/customizer/organ/belly,
+		/datum/customizer/organ/anus
 		)
 
 	body_marking_sets = list(
@@ -119,6 +120,7 @@
 
 /datum/species/moth/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	..()
+	C.grant_language(/datum/language/common)
 	RegisterSignal(C, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
 /datum/species/moth/on_species_loss(mob/living/carbon/C)
