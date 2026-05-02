@@ -7,6 +7,7 @@
 
 	write_log_user = "ass-slapped"
 	write_log_target = "was ass-slapped by"
+	body_parts = list(BODY_PART_GROIN)
 
 /datum/interaction/lewd/grope_ass
 	description = "Попа. Полапать задницу."
@@ -16,6 +17,7 @@
 	interaction_sound = 'modular_redmoon/sound/interactions/thudswoosh.ogg'
 	write_log_user = "ass-gropped"
 	write_log_target = "was ass-gropped by"
+	body_parts = list(BODY_PART_GROIN)
 
 /datum/interaction/lewd/slap_breasts
 	description = "Грудь. Шлёпнуть по груди."

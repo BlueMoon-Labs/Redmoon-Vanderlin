@@ -13,12 +13,14 @@
 			"color" = "white"
 		)
 	)
+	body_parts = list(BODY_PART_HEAD)
 
 /datum/interaction/lewd/earfuck/earsocketfuck
 	description = "Убийственно. Изнасиловать в ушную раковину."
 	required_from_target_exposed = INTERACTION_REQUIRE_EARSOCKETS
 	write_log_user = "earsocket fucked"
 	write_log_target = "had their earsocket fucked by"
+	body_parts = list(BODY_PART_HEAD)
 
 /datum/interaction/lewd/earfuck/display_interaction(mob/living/user, mob/living/partner)
 	var/message

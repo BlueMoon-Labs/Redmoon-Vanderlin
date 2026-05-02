@@ -13,12 +13,14 @@
 			"color" = "white"
 		)
 	)
+	body_parts = list(BODY_PART_HEAD)
 
 /datum/interaction/lewd/eyefuck/eyesocketfuck
 	description = "Убийственно. Изнасиловать в глазницу."
 	required_from_target_exposed = INTERACTION_REQUIRE_EYESOCKETS
 	write_log_user = "eyesocketfucked"
 	write_log_target = "had their eyesocket fucked by"
+	body_parts = list(BODY_PART_HEAD)
 
 /datum/interaction/lewd/eyefuck/display_interaction(mob/living/user, mob/living/partner)
 	var/message
