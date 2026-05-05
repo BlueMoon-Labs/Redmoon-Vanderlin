@@ -40,7 +40,7 @@
 	else
 		message = "грубо прижимает свою киску к киске <b>[partner]</b>."
 		partner.set_is_fucking(user, CUM_TARGET_VAGINA, partner.getorganslot(ORGAN_SLOT_VAGINA))
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/squelch1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/squelch1.ogg',
 						'modular_redmoon/sound/interactions/squelch2.ogg',
 						'modular_redmoon/sound/interactions/squelch3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())

@@ -8,7 +8,7 @@
 	ru_name_capital = "Грудь" // BLUEMOON ADD
 	desc = "Female milk producing organs."
 	icon_state = "breasts"
-	icon = 'modular_redmoon/icons/from_bluemoon/mob/genitals/breasts.dmi'
+	icon = 'modular_redmoon/icons/from_bluemoon/mob/genitals/breasts_onmob_good_tg.dmi'
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_BREASTS
 	size = 3

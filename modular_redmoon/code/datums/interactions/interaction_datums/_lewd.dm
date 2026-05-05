@@ -178,17 +178,17 @@
 	if(!message)
 		return ..()
 	if(gender == MALE || (gender == PLURAL && ismasculine(src)))
-		playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/final_m1.ogg',
+		playsound(loc, pick('modular_redmoon/sound/interactions/final_m1.ogg',
 							'modular_redmoon/sound/interactions/final_m2.ogg',
 							'modular_redmoon/sound/interactions/final_m3.ogg',
 							'modular_redmoon/sound/interactions/final_m4.ogg',
 							'modular_redmoon/sound/interactions/final_m5.ogg'), 90, 1, 0)
 	else if(gender == FEMALE || (gender == PLURAL && isfeminine(src)))
-		playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/final_f1.ogg',
+		playsound(loc, pick('modular_redmoon/sound/interactions/final_f1.ogg',
 							'modular_redmoon/sound/interactions/final_f2.ogg',
 							'modular_redmoon/sound/interactions/final_f3.ogg'), 70, 1, 0)
 	else
-		playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/final_f1.ogg',
+		playsound(loc, pick('modular_redmoon/sound/interactions/final_f1.ogg',
 							'modular_redmoon/sound/interactions/final_f2.ogg',
 							'modular_redmoon/sound/interactions/final_f3.ogg'), 70, 1, 0)
 	visible_message(message = "<span class='userlove'><b>\The [src]</b> [message]</span>", ignored_mobs = get_unconsenting())
@@ -336,7 +336,7 @@
 						peepee = pardner.getorganslot(ORGAN_SLOT_PENIS)
 		user.set_is_fucking(src, CUM_TARGET_MOUTH, peepee)
 
-	playlewdinteractionsound(get_turf(src), pick('modular_redmoon/sound/interactions/bj1.ogg',
+	playsound(get_turf(src), pick('modular_redmoon/sound/interactions/bj1.ogg',
 									'modular_redmoon/sound/interactions/bj2.ogg',
 									'modular_redmoon/sound/interactions/bj3.ogg',
 									'modular_redmoon/sound/interactions/bj4.ogg',
@@ -372,7 +372,7 @@
 		//BLUEMOON EDIT END
 		set_is_fucking(user, CUM_TARGET_BREASTS, getorganslot(ORGAN_SLOT_PENIS) ? getorganslot(ORGAN_SLOT_PENIS) : null)
 
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	visible_message(message = span_lewd("<b>\The [src]</b> [message]"), ignored_mobs = get_unconsenting())
@@ -414,7 +414,7 @@
 		message = "приподнимает свой [genital_name] и вводит его в ожидающий пупок \the <b>[partner]</b>."
 		set_is_fucking(partner, CUM_TARGET_BELLY, getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/champ1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/champ1.ogg',
 						'modular_redmoon/sound/interactions/champ2.ogg'), 50, 1, -1)
 	visible_message(message = "<span class='lewd'><b>\The [src]</b> [message]</span>", ignored_mobs = get_unconsenting())
 	if(can_penetrating_genital_cum())
@@ -432,7 +432,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 
@@ -446,7 +446,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
+	playsound(loc, 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
 
 /mob/living/proc/smother_armpit(mob/living/target)
 	var/message
@@ -460,7 +460,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick(
+	playsound(loc, pick(
 		'modular_redmoon/sound/interactions/squelch1.ogg',
 		'modular_redmoon/sound/interactions/squelch2.ogg',
 		'modular_redmoon/sound/interactions/squelch3.ogg'), 50, 1, -1)
@@ -477,7 +477,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick(
+	playsound(loc, pick(
 		'modular_redmoon/sound/interactions/squelch1.ogg',
 		'modular_redmoon/sound/interactions/squelch2.ogg',
 		'modular_redmoon/sound/interactions/squelch3.ogg'), 50, 1, -1)
@@ -512,7 +512,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b>[pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	if(can_penetrating_genital_cum())
@@ -548,7 +548,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	if(target.can_penetrating_genital_cum())
@@ -579,7 +579,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	if(target.can_penetrating_genital_cum())
@@ -611,7 +611,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1)
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1)
 	target.handle_post_sex(HAS_TRAIT(target, TRAIT_NYMPHO) ? NORMAL_LUST : LOW_LUST, NUTS_TO_FACE, src, ORGAN_SLOT_PENIS) // BLUEMOON EDIT
 	if(HAS_TRAIT(src, TRAIT_NYMPHO))
 		handle_post_sex(LOW_LUST, partner = target)
@@ -654,7 +654,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(src, pick(noises), 70, 1, -1)
+	playsound(src, pick(noises), 70, 1, -1)
 	if(can_penetrating_genital_cum()) // PENIS + PENIS || STRAPON
 		handle_post_sex(NORMAL_LUST, CUM_TARGET_URETHRA, target, ORGAN_SLOT_PENIS)
 		if(target.can_penetrating_genital_cum()) // PENIS + PENIS
@@ -694,7 +694,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(src, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(src, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	if(can_penetrating_genital_cum())
@@ -724,7 +724,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>" //BLUEMOON EDIT
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	if(can_penetrating_genital_cum())
@@ -754,7 +754,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(lines)]</span>" //BLUEMOON EDIT
 	visible_message(message, ignored_mobs = get_unconsenting())
-	playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 								'modular_redmoon/sound/interactions/bang2.ogg',
 								'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	handle_post_sex(LOW_LUST, CUM_TARGET_PENIS, target)
@@ -790,8 +790,8 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b>[pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
@@ -810,7 +810,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b>[pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
@@ -863,11 +863,11 @@
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg',
 						'modular_redmoon/sound/interactions/bang4.ogg',
@@ -901,8 +901,8 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
@@ -927,8 +927,8 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
 						'modular_redmoon/sound/interactions/asscrap2.ogg',
 						'modular_redmoon/sound/interactions/asscrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
@@ -947,7 +947,7 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
 						'modular_redmoon/sound/interactions/asscrap2.ogg',
 						'modular_redmoon/sound/interactions/asscrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
@@ -978,11 +978,11 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE), ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
 						'modular_redmoon/sound/interactions/asscrap2.ogg',
 						'modular_redmoon/sound/interactions/asscrap3.ogg'),
 						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 					'modular_redmoon/sound/interactions/bang2.ogg',
 					'modular_redmoon/sound/interactions/bang3.ogg',
 					'modular_redmoon/sound/interactions/bang4.ogg',
@@ -1015,8 +1015,8 @@
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/crapjob.ogg',
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/crapjob.ogg',
 									'modular_redmoon/sound/interactions/crapjob1.ogg'), 90, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
 	target.handle_post_sex(NORMAL_LUST, null, src, ORGAN_SLOT_ANUS)
 
@@ -1033,7 +1033,7 @@
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
 	//BLUEMOON EDIT START
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/watering1.ogg',
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/watering1.ogg',
 											'modular_redmoon/sound/interactions/watering2.ogg',
 											'modular_redmoon/sound/interactions/watering3.ogg'), 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
 	handle_post_sex(LOW_LUST, CUM_TARGET_BREASTS, target, pee_pee)
@@ -1051,8 +1051,8 @@
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
 	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
 	//BLUEMOON EDIT START
-	playlewdinteractionsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 100, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playlewdinteractionsound(target.loc, pick('modular_redmoon/sound/interactions/watering1.ogg',
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 100, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	playsound(target.loc, pick('modular_redmoon/sound/interactions/watering1.ogg',
 											'modular_redmoon/sound/interactions/watering2.ogg',
 											'modular_redmoon/sound/interactions/watering3.ogg'), 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
 	//BLUEMOON EDIT END

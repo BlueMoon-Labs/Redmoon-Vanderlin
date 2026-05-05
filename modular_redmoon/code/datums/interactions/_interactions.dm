@@ -118,7 +118,7 @@
 		if(user == target) //tactical href fix
 			to_chat(user, span_warning("Ты не можешь нацелиться на себя."))
 			return FALSE
-	if(get_dist(user, target) > max_distance)
+	if(get_dist(user, target) > max_distance && user != target)
 		to_chat(user, span_warning("Слишком далеко."))
 		return FALSE
 	if(interaction_flags & INTERACTION_FLAG_ADJACENT && !(user.Adjacent(target) && target.Adjacent(user) || isbelly(user.loc) && user.loc:owner == target || isbelly(target.loc) && target.loc:owner == user)) // BLUEMOON EDIT can interact if in belly
@@ -164,7 +164,7 @@
 		else
 			soundfile_to_play = interaction_sound
 		if(interaction_flags & INTERACTION_FLAG_OOC_CONSENT)
-			playlewdinteractionsound(get_turf(massage_by_user ? user : target), soundfile_to_play, interaction_sound_volume, 1, -1)
+			playsound(get_turf(massage_by_user ? user : target), soundfile_to_play, interaction_sound_volume, 1, -1)
 		else
 			playsound(get_turf(massage_by_user ? user : target), soundfile_to_play, interaction_sound_volume, 1, -1)
 	return

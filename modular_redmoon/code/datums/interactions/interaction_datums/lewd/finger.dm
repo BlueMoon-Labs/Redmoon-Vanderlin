@@ -33,7 +33,7 @@
 		message += " над [liquid_container]"
 
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]."), ignored_mobs = user.get_unconsenting())
-	playlewdinteractionsound(get_turf(user), 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
+	playsound(get_turf(user), 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
 	partner.handle_post_sex(NORMAL_LUST, CUM_TARGET_HAND, liquid_container ? liquid_container : user, ORGAN_SLOT_VAGINA) //SPLURT edit
 
 /datum/interaction/lewd/fingerass
@@ -47,5 +47,5 @@
 	user.visible_message("<span class='lewd'><b>\The [user]</b> [pick("погружает палец в сфинктер <b>[partner]</b>.",
 		"суёт палец в анальное колечко <b>[partner]</b>.",
 		"разрабатывает анальное кольцо <b>[partner]</b> при помощи собственного пальца.")]</span>", ignored_mobs = user.get_unconsenting())
-	playlewdinteractionsound(get_turf(user), 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
+	playsound(get_turf(user), 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
 	partner.handle_post_sex(NORMAL_LUST, null, user, ORGAN_SLOT_ANUS) //SPLURT edit

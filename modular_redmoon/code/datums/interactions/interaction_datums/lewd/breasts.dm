@@ -37,7 +37,7 @@
 		message = "<span class='lewd'>\The <b>[user]</b> [pick(lines)]</span>"
 		user.visible_message(message, ignored_mobs = user.get_unconsenting())
 		user.handle_post_sex(LOW_LUST, null, target, ORGAN_SLOT_BREASTS)
-		playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
+		playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 							'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 
 		target.reagents.add_reagent(milktype, rand(1,3 * milkers.get_lactation_amount_modifier()))
@@ -49,7 +49,7 @@
 		message = "<span class='lewd'>\The <b>[user]</b> [pick(lines)]</span>"
 		user.visible_message(message, ignored_mobs = user.get_unconsenting())
 		user.handle_post_sex(LOW_LUST, null, target, ORGAN_SLOT_BREASTS)
-		playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
+		playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 							'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 
 /datum/interaction/lewd/titgrope
@@ -85,11 +85,11 @@
 				liquid_container.reagents.add_reagent(milktype, rand(1,3 * milkers.get_lactation_amount_modifier()))
 				user.visible_message(span_lewd("<b>\The [user]</b> выдавливает содержимое груди <b>[target]</b> в [liquid_container]."), ignored_mobs = user.get_unconsenting())
 				target.handle_post_sex(LOW_LUST, null, user, ORGAN_SLOT_BREASTS)
-				playlewdinteractionsound(get_turf(user), 'modular_redmoon/sound/interactions/squelch1.ogg', 50, 1, -1)
+				playsound(get_turf(user), 'modular_redmoon/sound/interactions/squelch1.ogg', 50, 1, -1)
 			else
 				user.visible_message(span_lewd("<b>[user]</b> пытается выдоить содержимое груди <b>[target]</b> в [liquid_container], но ничего не выходит...."), ignored_mobs = user.get_unconsenting())
 				target.handle_post_sex(LOW_LUST, null, user, ORGAN_SLOT_BREASTS)
-				playlewdinteractionsound(get_turf(user), 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
+				playsound(get_turf(user), 'modular_redmoon/sound/interactions/champ_fingering.ogg', 50, 1, -1)
 
 	else
 		target.handle_post_sex(NORMAL_LUST, CUM_TARGET_HAND, user, CUM_TARGET_BREASTS)

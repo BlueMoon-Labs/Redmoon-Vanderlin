@@ -19,7 +19,7 @@
 	else
 		message = "резко всовывает [genital_name] <b>[partner]</b> в своё влагалище и удовлетворённо выдыхает."
 		partner.set_is_fucking(user, CUM_TARGET_VAGINA, partner.getorganslot(ORGAN_SLOT_PENIS))
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
@@ -45,7 +45,7 @@
 	else
 		message = "резко всовывает [genital_name] <b>[partner]</b> в своё анальное кольцо и удовлетворённо выдыхает."
 		partner.set_is_fucking(user, CUM_TARGET_ANUS, partner.getorganslot(ORGAN_SLOT_PENIS))
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
@@ -73,7 +73,7 @@
 			"присаживается своей задницей прямо на лицо <b>[partner]</b> и начинает тереться о физиономию.")]"
 		user.set_is_fucking(partner, GRINDING_FACE_WITH_ANUS, null)
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/squelch1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/squelch1.ogg',
 						'modular_redmoon/sound/interactions/squelch2.ogg',
 						'modular_redmoon/sound/interactions/squelch3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
@@ -161,10 +161,10 @@
 					'modular_redmoon/sound/interactions/bj3.ogg',
 					'modular_redmoon/sound/interactions/foot_wet1.ogg',
 					'modular_redmoon/sound/interactions/foot_dry3.ogg')
-	playlewdinteractionsound(get_turf(user), file, 70, 1, -1)
+	playsound(get_turf(user), file, 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
 	// BLUEMOON EDIT START
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 						'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 	if(fucktarget == "penis")
 		user.handle_post_sex(NORMAL_LUST, THIGH_SMOTHERING, partner, genital)

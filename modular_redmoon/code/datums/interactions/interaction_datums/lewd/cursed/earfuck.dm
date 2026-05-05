@@ -47,7 +47,7 @@
 		message = "с силой загоняет свой орган внутрь ушной раковины \the <b>[partner]</b> и громко вздыхает."
 		user.set_is_fucking(partner, CUM_TARGET_EARS, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/champ1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/champ1.ogg',
 												'modular_redmoon/sound/interactions/champ2.ogg'), 50, 1, -1)
 	user.visible_message(message = span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting(interaction_flags))
 	if(user.can_penetrating_genital_cum())

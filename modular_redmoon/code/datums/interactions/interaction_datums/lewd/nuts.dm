@@ -24,7 +24,7 @@
 			"встает так, чтобы пах находился в нескольких сантиметрах от лица <b>[partner]</b>, затем толкает свои бедра вперед и начинает тереться своими яйцами об лицо <b>[partner]</b>."))
 		user.set_is_fucking(partner, NUTS_TO_FACE, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/oral1.ogg',
 						'modular_redmoon/sound/interactions/oral2.ogg',), 70, 1, -1) //These files don't even exist but nobody noticed because double-quotes were used instead of single.
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())

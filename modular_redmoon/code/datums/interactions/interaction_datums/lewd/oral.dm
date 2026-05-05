@@ -121,7 +121,7 @@
 					genital = partner.getorganslot(ORGAN_SLOT_PENIS)
 		partner.set_is_fucking(user, CUM_TARGET_MOUTH, genital)
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/bj1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/bj1.ogg',
 									'modular_redmoon/sound/interactions/bj2.ogg',
 									'modular_redmoon/sound/interactions/bj3.ogg',
 									'modular_redmoon/sound/interactions/bj4.ogg',

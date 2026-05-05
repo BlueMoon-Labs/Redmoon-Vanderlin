@@ -5,22 +5,22 @@
 */
 //I'm sorry, lewd should not have mob procs such as life() and such in it. //NO SHIT IT SHOULDNT I REMOVED THEM
 
-/proc/playlewdinteractionsound(turf/turf_source, soundin, vol as num, vary, extrarange as num, frequency, falloff_exponent = SOUND_FALLOFF_EXPONENT, channel = 0, pressure_affected = TRUE, sound/S, envwet = -10000, envdry = 0, manual_x, manual_y, list/ignored_mobs)
-	if(!turf_source || !soundin)
-		return
-	var/sound/sound_to_play = sound(get_sfx(soundin))
-	var/max_distance = SOUND_RANGE + extrarange
-	var/falloff_distance = 3 // Full volume within 3 tiles (lewd sounds are close-range)
-	channel = channel || SSsounds.random_available_channel()
-	var/list/hearing_mobs
-	for(var/mob/H in get_hearers_in_view(max_distance, turf_source))
-		if(!H.client || !(H.client.prefs.toggles & LEWD_VERB_SOUNDS))
-			continue
-		LAZYADD(hearing_mobs, H)
-	if(ignored_mobs?.len)
-		LAZYREMOVE(hearing_mobs, ignored_mobs)
-	for(var/mob/H in hearing_mobs)
-		H.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, sound_to_play, max_distance, falloff_distance)
+// /proc/playlewdinteractionsound(turf/turf_source, soundin, vol as num, vary, extrarange as num, frequency, falloff_exponent = SOUND_FALLOFF_EXPONENT, channel = 0, pressure_affected = TRUE, sound/S, envwet = -10000, envdry = 0, manual_x, manual_y, list/ignored_mobs)
+// 	if(!turf_source || !soundin)
+// 		return
+// 	var/sound/sound_to_play = sound(get_sfx(soundin))
+// 	var/max_distance = SOUND_RANGE + extrarange
+// 	var/falloff_distance = 3 // Full volume within 3 tiles (lewd sounds are close-range)
+// 	channel = channel || SSsounds.random_available_channel()
+// 	var/list/hearing_mobs
+// 	for(var/mob/H in get_hearers_in_view(max_distance, turf_source))
+// 		if(!H.client || !(H.client.prefs.toggles & LEWD_VERB_SOUNDS))
+// 			continue
+// 		LAZYADD(hearing_mobs, H)
+// 	if(ignored_mobs?.len)
+// 		LAZYREMOVE(hearing_mobs, ignored_mobs)
+// 	for(var/mob/H in hearing_mobs)
+// 		H.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, sound_to_play, max_distance, falloff_distance)
 
 /mob/living
 	var/has_penis = FALSE
@@ -110,6 +110,7 @@
 
 /mob/living/proc/has_penis()
 	var/mob/living/carbon/C = src
+	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_penis= [has_genital(ORGAN_SLOT_PENIS)]"))
 	if(has_penis && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_PENIS)
@@ -122,29 +123,34 @@
 
 /mob/living/proc/has_balls()
 	var/mob/living/carbon/C = src
+	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_balls= [has_genital(ORGAN_SLOT_TESTICLES)]"))
 	if(has_balls && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_TESTICLES)
 
 /mob/living/proc/has_vagina()
 	var/mob/living/carbon/C = src
+	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_vagina= [has_genital(ORGAN_SLOT_VAGINA)]"))
 	if(has_vagina && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_VAGINA)
 
 /mob/living/proc/has_breasts()
 	var/mob/living/carbon/C = src
+	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_breasts= [has_genital(ORGAN_SLOT_BREASTS)]"))
 	if(has_breasts && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_BREASTS)
 
 /mob/living/proc/has_butt()
 	var/mob/living/carbon/C = src
+	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_butt= [has_genital(ORGAN_SLOT_BUTT)]"))
 	if(has_butt && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_BUTT)
 
 /mob/living/proc/has_anus()
+	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_anus= [has_anus]"))
 	if(has_anus && !iscarbon(src))
 		return TRUE
 	if (has_anus && anus_always_accessible)
@@ -302,7 +308,7 @@
 	if (lastmoan == sound)
 		sound = pick(LAZYCOPY(moans) - lastmoan)
 
-	playlewdinteractionsound(loc, sound, 80, 0, 0)
+	playsound(loc, sound, 80, 0, 0)
 	lastmoan = sound
 
 /mob/living/proc/cum(mob/living/partner, target_orifice, cum_inside = FALSE, anonymous = FALSE)
@@ -793,13 +799,13 @@
 			if(CUM_TARGET_MOUTH)	//Why wasn't it here?! - Gardelin0
 				target_gen = c_partner.getorganslot(ORGAN_SLOT_STOMACH)
 	if(gender == MALE || (gender == PLURAL && ismasculine(src)))
-		playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/final_m1.ogg',
+		playsound(loc, pick('modular_redmoon/sound/interactions/final_m1.ogg',
 							'modular_redmoon/sound/interactions/final_m2.ogg',
 							'modular_redmoon/sound/interactions/final_m3.ogg',
 							'modular_redmoon/sound/interactions/final_m4.ogg',
 							'modular_redmoon/sound/interactions/final_m5.ogg'), 90, 1, 0)
 	else if(gender != MALE || (gender == PLURAL && isfeminine(src)))
-		playlewdinteractionsound(loc, pick('modular_redmoon/sound/interactions/final_f1.ogg',
+		playsound(loc, pick('modular_redmoon/sound/interactions/final_f1.ogg',
 							'modular_redmoon/sound/interactions/final_f2.ogg',
 							'modular_redmoon/sound/interactions/final_f3.ogg'), 70, 1, 0)
 	// BLUEMOON ADD хвостики!

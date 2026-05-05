@@ -2,6 +2,7 @@
 	color = "#fcccb3"
 	w_class = WEIGHT_CLASS_SMALL
 	organ_flags = ORGAN_NO_DISMEMBERMENT|ORGAN_EDIBLE|HAS_EQUIPMENT //Maay edit it for other genitals later
+	visible_organ = TRUE //иначе на спрайте видно не будет
 	var/shape
 	var/ru_name
 	var/ru_name_v

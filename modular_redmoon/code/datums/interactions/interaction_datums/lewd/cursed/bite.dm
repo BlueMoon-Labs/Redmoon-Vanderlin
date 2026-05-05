@@ -39,7 +39,7 @@
 					new/obj/effect/decal/cleanable/blood
 
 	user.visible_message(message = span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
-	playlewdinteractionsound(get_turf(user), 'modular_redmoon/sound/interactions/squelch1.ogg', 50, 1, -1)
+	playsound(get_turf(user), 'modular_redmoon/sound/interactions/squelch1.ogg', 50, 1, -1)
 	var/lust_amount = NORMAL_LUST //если наша цель довести до пика, то не стоит это закрывать за кучей укусов
 	if(HAS_TRAIT(partner, TRAIT_MASO))
 		lust_amount *= 2

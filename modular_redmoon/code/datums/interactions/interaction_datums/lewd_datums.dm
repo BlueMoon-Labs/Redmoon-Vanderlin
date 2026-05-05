@@ -71,7 +71,7 @@
 	new /obj/effect/temp_visual/heart(user.loc)
 	new /obj/effect/temp_visual/heart(partner.loc)
 	. = ..()
-	playlewdinteractionsound(user.loc, pick(GLOB.lewd_kiss_sounds), 90, 1, -1)
+	playsound(user.loc, pick(GLOB.lewd_kiss_sounds), 90, 1, -1)
 
 /datum/interaction/lewd/oral/selfsuck
 	description = "Член. Отсосать самому себе."

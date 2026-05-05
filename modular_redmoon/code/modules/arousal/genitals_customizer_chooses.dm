@@ -1,4 +1,4 @@
-/datum/customizer/organ/penis
+/datum/customizer/organ/genital/penis
 	name = "Penis"
 	customizer_choices = list(/datum/customizer_choice/organ/penis)
 	allows_disabling = TRUE
@@ -11,7 +11,7 @@
 		/datum/sprite_accessory/bm/penis/human,
 	)
 
-/datum/customizer/organ/testicles
+/datum/customizer/organ/genital/testicles
 	name = "Testicles"
 	customizer_choices = list(/datum/customizer_choice/organ/testicles)
 	allows_disabling = TRUE
@@ -24,7 +24,7 @@
 		/datum/sprite_accessory/bm/testicles,
 	)
 
-/datum/customizer/organ/vagina
+/datum/customizer/organ/genital/vagina
 	name = "Vagina"
 	customizer_choices = list(/datum/customizer_choice/organ/vagina)
 	allows_disabling = TRUE
@@ -37,7 +37,7 @@
 		/datum/sprite_accessory/bm/vagina/human,
 	)
 
-/datum/customizer/organ/breasts
+/datum/customizer/organ/genital/breasts
 	name = "Breasts"
 	customizer_choices = list(/datum/customizer_choice/organ/breasts)
 	allows_disabling = TRUE
@@ -50,7 +50,7 @@
 		/datum/sprite_accessory/bm/breasts/pair
 	)
 
-/datum/customizer/organ/butt
+/datum/customizer/organ/genital/butt
 	name = "Butt"
 	customizer_choices = list(/datum/customizer_choice/organ/butt)
 	allows_disabling = TRUE
@@ -63,7 +63,7 @@
 		/datum/sprite_accessory/bm/butt/pair
 	)
 
-/datum/customizer/organ/belly
+/datum/customizer/organ/genital/belly
 	name = "Belly"
 	customizer_choices = list(/datum/customizer_choice/organ/belly)
 	allows_disabling = TRUE
@@ -76,7 +76,7 @@
 		/datum/sprite_accessory/bm/belly
 	)
 
-/datum/customizer/organ/anus
+/datum/customizer/organ/genital/anus
 	name = "Anus"
 	customizer_choices = list(/datum/customizer_choice/organ/anus)
 	allows_disabling = TRUE

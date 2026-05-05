@@ -103,7 +103,7 @@
 					genital = partner.getorganslot(ORGAN_SLOT_PENIS)
 		user.set_is_fucking(partner, CUM_TARGET_MOUTH, genital)
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 						'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
 	if(retaliation_message)
@@ -168,7 +168,7 @@
 			genital = check
 		user.set_is_fucking(partner, CUM_TARGET_THROAT, genital)
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 						'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 	user.visible_message(message = span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
 	if(retaliation_message)
@@ -205,7 +205,7 @@
 			"плотно берёт <b>[partner]</b> за голову и начинает мягко насаживать на оба [shape_desc].")
 		user.set_is_fucking(partner, CUM_TARGET_MOUTH, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/oral1.ogg',
 		'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 
@@ -250,7 +250,7 @@
 			"чувствует тепло рта <b>[partner]</b> и медленно начинает двигаться.")
 		user.set_is_fucking(partner, CUM_TARGET_MOUTH, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/champ1.ogg',
 		'modular_redmoon/sound/interactions/champ2.ogg'), 70, 1, -1)
 

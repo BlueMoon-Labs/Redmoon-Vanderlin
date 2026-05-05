@@ -44,7 +44,7 @@
 
 		user.set_is_fucking(partner, GRINDING_FACE_WITH_FEET, null)
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry2.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_dry4.ogg'), 70, 1, -1)
@@ -103,7 +103,7 @@
 				"закрывает носик и ротик <b>[partner]</b> своей ножкой, пока [t_He] не начнёт вздыхать от недостатка воздуха, а после, вставляет обе ножки в рот <b>[partner]</b>, до того как [t_He] сможет откликнуться."))]</span>"
 		user.set_is_fucking(partner, GRINDING_MOUTH_WITH_FEET, null)
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_wet1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg',
 						'modular_redmoon/sound/interactions/foot_wet3.ogg'), 70, 1, -1)
 	user.visible_message(message = span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
@@ -135,7 +135,7 @@
 			"начинает играться с пенисом <b>[partner]</b> своими [shoes ? shoes :"ногами"].")]"
 		partner.set_is_fucking(user, CUM_TARGET_FEET, partner.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg'), 70, 1, -1)
@@ -164,7 +164,7 @@
 			"начинает играться с <b>[partner]</b>'s [genital_name], своими [shoes ? shoes :"ногами"].")]"
 		partner.set_is_fucking(user, CUM_TARGET_FEET, partner.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg'), 70, 1, -1)
@@ -194,7 +194,7 @@
 			"начинает играться с киской <b>[partner]</b> своими '[shoes ? shoes : "ногами"]'.")]"
 		partner.set_is_fucking(user, CUM_TARGET_FEET, partner.getorganslot(ORGAN_SLOT_VAGINA))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg'), 70, 1, -1)

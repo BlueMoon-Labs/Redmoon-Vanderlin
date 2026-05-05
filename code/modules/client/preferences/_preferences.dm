@@ -367,8 +367,9 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	user?.client.acquire_dpi()
 
 	dat += {"
-<html lang="en">
+<html lang="ru">
 <head>
+	<meta charset="utf-8">
 	<style>
 		body {
 			background-color: #1a1a1a;

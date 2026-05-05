@@ -45,7 +45,7 @@
 	if(liquid_container)
 		message += " прямо в [liquid_container]"
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>[user]</b> [message]."), ignored_mobs = user.get_unconsenting())

@@ -94,13 +94,13 @@
 		/datum/customizer/organ/snout/dracon,
 		/datum/customizer/organ/tail/dracon,
 		/datum/customizer/organ/ears/dracon,
-		/datum/customizer/organ/penis,
-		/datum/customizer/organ/testicles,
-		/datum/customizer/organ/vagina,
-		/datum/customizer/organ/breasts,
-		/datum/customizer/organ/butt,
-		/datum/customizer/organ/belly,
-		/datum/customizer/organ/anus
+		/datum/customizer/organ/genital/penis,
+		/datum/customizer/organ/genital/testicles,
+		/datum/customizer/organ/genital/vagina,
+		/datum/customizer/organ/genital/breasts,
+		/datum/customizer/organ/genital/butt,
+		/datum/customizer/organ/genital/belly,
+		/datum/customizer/organ/genital/anus
 		)
 
 	body_marking_sets = list(

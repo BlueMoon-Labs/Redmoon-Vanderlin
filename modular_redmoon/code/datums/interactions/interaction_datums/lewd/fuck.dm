@@ -33,7 +33,7 @@
 			"ловко находит нужный угол и начинает проникновение в киску <b>[partner]</b>.")
 		user.set_is_fucking(partner, CUM_TARGET_VAGINA, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/champ1.ogg',
 		'modular_redmoon/sound/interactions/champ2.ogg'), 70, 1, -1)
 
@@ -92,7 +92,7 @@
 	//BLUEMOON EDIT END
 		user.set_is_fucking(partner, CUM_TARGET_ANUS, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
@@ -146,7 +146,7 @@
 		message = "игриво толкает <b>[partner]</b>, крепко хватается за грудь и сжимает ими свой [genital_name]."
 		user.set_is_fucking(partner, CUM_TARGET_BREASTS, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 	user.visible_message(span_lewd("<b>\The [user]</b> [message]"), ignored_mobs = user.get_unconsenting())
@@ -185,7 +185,7 @@
 	//BLUEMOON EDIT END
 		user.set_is_fucking(partner, CUM_TARGET_FEET, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg'), 70, 1, -1)
@@ -219,7 +219,7 @@
 	//BLUEMOON EDIT END
 		user.set_is_fucking(partner, CUM_TARGET_FEET, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg'), 70, 1, -1)
@@ -251,7 +251,7 @@
 	//BLUEMOON EDIT END
 		user.set_is_fucking(partner, CUM_TARGET_FEET, user.getorganslot(ORGAN_SLOT_VAGINA))
 
-	playlewdinteractionsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
+	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/foot_dry1.ogg',
 						'modular_redmoon/sound/interactions/foot_dry3.ogg',
 						'modular_redmoon/sound/interactions/foot_wet1.ogg',
 						'modular_redmoon/sound/interactions/foot_wet2.ogg'), 70, 1, -1)
@@ -290,7 +290,7 @@
 		user.set_is_fucking(partner, CUM_TARGET_VAGINA, user.getorganslot(ORGAN_SLOT_PENIS))
 		user.set_is_fucking(partner, CUM_TARGET_ANUS, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/champ1.ogg',
 		'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 
@@ -338,7 +338,7 @@
 			"ловко вводит оба члена в киску <b>[partner]</b>, чувствуя её сжатие.")
 		user.set_is_fucking(partner, CUM_TARGET_VAGINA, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/champ1.ogg',
 		'modular_redmoon/sound/interactions/champ2.ogg'), 70, 1, -1)
 
@@ -381,7 +381,7 @@
 			"совмещает движения, проникая сразу двумя членами внутрь.")
 		user.set_is_fucking(partner, CUM_TARGET_ANUS, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/bang1.ogg',
 		'modular_redmoon/sound/interactions/bang2.ogg'), 70, 1, -1)
 
@@ -425,7 +425,7 @@
 			"вводит [shape_desc], чувствуя, как узел плотно обхватывается мышцами <b>[partner]</b>.")
 		user.set_is_fucking(partner, CUM_TARGET_VAGINA, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/champ1.ogg',
 		'modular_redmoon/sound/interactions/champ2.ogg'), 70, 1, -1)
 
@@ -462,7 +462,7 @@
 			"чувствует, как мышцы ануса <b>[partner]</b> обхватывают его [shape_desc].")
 		user.set_is_fucking(partner, CUM_TARGET_ANUS, user.getorganslot(ORGAN_SLOT_PENIS))
 
-	playlewdinteractionsound(get_turf(user), pick(
+	playsound(get_turf(user), pick(
 		'modular_redmoon/sound/interactions/champ1.ogg',
 		'modular_redmoon/sound/interactions/bang3.ogg'), 70, 1, -1)
 
