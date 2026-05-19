@@ -59,7 +59,7 @@
 		return
 	G.color = color_list[1]
 
-/datum/customizer_choice/organ/genital/customize_organ(obj/item/organ/organ/organ, datum/customizer_entry/entry)
+/datum/customizer_choice/organ/genital/customize_organ(obj/item/organ/organ, datum/customizer_entry/entry)
 	if(entry?.accessory_type)
 		organ.set_accessory_type(entry.accessory_type, entry.accessory_colors)
 	if(!istype(organ, /obj/item/organ/genital))
