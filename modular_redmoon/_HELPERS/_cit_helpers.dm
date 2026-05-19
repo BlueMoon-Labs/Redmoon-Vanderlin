@@ -69,7 +69,7 @@ GLOBAL_LIST_EMPTY(anus_shapes_list)
 				"Massive" = BALLS_SIZE_3,
 				"Gigantic" = BALLS_SIZE_MAX,
 			)
-		if("butt", "anus")
+		if("butt")
 			return list(
 				"Flat" = 0,
 				"Medium" = 1,

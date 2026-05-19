@@ -1,7 +1,3 @@
-/datum/customizer/organ/genital
-	name = "Genital"
-	customizer_choices = list(/datum/customizer_choice/organ/penis)
-
 /datum/customizer_entry/organ/genital
 	var/genital_size
 	var/show_size_dropdown = FALSE
@@ -42,16 +38,53 @@
 			size_names += size_name
 		genital_entry.genital_size = pick(size_names)
 
-/datum/customizer_choice/organ/genital/customize_organ(obj/item/organ/organ, datum/customizer_entry/entry)
+/datum/customizer_choice/organ/genital/proc/apply_genital_colors_to_dna(mob/living/carbon/human/human, datum/customizer_entry/entry)
+	if(!human?.dna || !entry?.accessory_type)
+		return
+	var/datum/sprite_accessory/bm/accessory = SPRITE_ACCESSORY(entry.accessory_type)
+	if(!accessory?.color_src || !entry.accessory_colors)
+		return
+	var/list/color_list = color_string_to_list(entry.accessory_colors)
+	if(!length(color_list))
+		return
+	human.dna.features[accessory.color_src] = copytext(color_list[1], 2)
+
+/datum/customizer_choice/organ/genital/proc/apply_genital_colors_to_organ(obj/item/organ/genital/G, datum/customizer_entry/entry)
+	if(!entry?.accessory_type || !entry.accessory_colors)
+		return
+	if(G.owner?.dna?.species?.use_skintones && G.owner.dna.features["genitals_use_skintone"])
+		return
+	var/list/color_list = color_string_to_list(entry.accessory_colors)
+	if(!length(color_list))
+		return
+	G.color = color_list[1]
+
+/datum/customizer_choice/organ/genital/customize_organ(obj/item/organ/organ/organ, datum/customizer_entry/entry)
 	if(entry?.accessory_type)
 		organ.set_accessory_type(entry.accessory_type, entry.accessory_colors)
-	if(istype(organ, /obj/item/organ/genital))
-		apply_genital_size(organ, entry)
+	if(!istype(organ, /obj/item/organ/genital))
+		return
+	var/obj/item/organ/genital/G = organ
+	apply_genital_colors_to_organ(G, entry)
+	apply_genital_size(G, entry)
+	G.update()
 
 /datum/customizer_choice/organ/genital/apply_customizer_to_character(mob/living/carbon/human/human, datum/preferences/prefs, datum/customizer_entry/entry)
+	if(entry.disabled)
+		var/obj/item/organ/genital/G = human.getorganslot(organ_slot)
+		if(G)
+			G.Remove(human, TRUE)
+			qdel(G)
+			human.update_genitals()
+		return
+	apply_genital_colors_to_dna(human, entry)
 	var/obj/item/organ/genital/G = human.getorganslot(organ_slot)
-	if(G)
+	if(!G)
+		G = new organ_type()
 		customize_organ(G, entry)
+		G.Insert(human, TRUE, FALSE)
+		return
+	customize_organ(G, entry)
 
 /datum/customizer_choice/organ/genital/proc/apply_genital_size(obj/item/organ/genital/G, datum/customizer_entry/entry)
 	var/datum/customizer_entry/organ/genital/genital_entry = entry
@@ -66,6 +99,8 @@
 	G.update()
 
 /datum/customizer_choice/organ/genital/generate_pref_choices(list/dat, datum/preferences/prefs, datum/customizer_entry/entry, customizer_type)
+	if(length(sprite_accessories) > 1)
+		dat += "<div style='text-align:center; margin:5px 0;'><b>Shape:</b></div>"
 	..()
 	if(!length(size_options_list))
 		return
@@ -154,6 +189,7 @@
 	name = "Penis"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/penis)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
 /datum/customizer_choice/organ/genital/penis
 	name = "Penis"
@@ -183,6 +219,7 @@
 	name = "Testicles"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/testicles)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
 /datum/customizer_choice/organ/genital/testicles
 	name = "Balls"
@@ -198,10 +235,11 @@
 
 /datum/customizer/organ/genital/vagina
 	name = "Vagina"
-	customizer_choices = list(/datum/customizer_choice/organ/vagina)
+	customizer_choices = list(/datum/customizer_choice/organ/genital/vagina)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
-/datum/customizer_choice/organ/vagina
+/datum/customizer_choice/organ/genital/vagina
 	name = "Vagina"
 	organ_type = /obj/item/organ/genital/vagina
 	organ_slot = ORGAN_SLOT_VAGINA
@@ -209,17 +247,11 @@
 		/datum/sprite_accessory/bm/vagina/human,
 	)
 
-/datum/customizer_choice/organ/vagina/customize_organ(obj/item/organ/organ, datum/customizer_entry/entry)
-	if(entry?.accessory_type)
-		organ.set_accessory_type(entry.accessory_type, entry.accessory_colors)
-		var/obj/item/organ/genital/genital = organ
-		if(genital)
-			genital.update()
-
 /datum/customizer/organ/genital/breasts
 	name = "Breasts"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/breasts)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
 /datum/customizer_choice/organ/genital/breasts
 	name = "Breasts"
@@ -243,6 +275,7 @@
 	name = "Butt"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/butt)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
 /datum/customizer_choice/organ/genital/butt
 	name = "Butt"
@@ -250,6 +283,9 @@
 	organ_slot = ORGAN_SLOT_BUTT
 	default_genital_size = "Flat"
 	size_options_category = "butt"
+	sprite_accessories = list(
+		/datum/sprite_accessory/bm/butt/pair,
+	)
 
 /datum/customizer_choice/organ/genital/butt/apply_genital_size_value(obj/item/organ/genital/G, value)
 	var/obj/item/organ/genital/butt/B = G
@@ -262,6 +298,7 @@
 	name = "Belly"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/belly)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
 /datum/customizer_choice/organ/genital/belly
 	name = "Belly"
@@ -269,6 +306,9 @@
 	organ_slot = ORGAN_SLOT_BELLY
 	default_genital_size = "Medium"
 	size_options_category = "belly"
+	sprite_accessories = list(
+		/datum/sprite_accessory/bm/belly/pair,
+	)
 
 /datum/customizer_choice/organ/genital/belly/apply_genital_size_value(obj/item/organ/genital/G, value)
 	var/obj/item/organ/genital/belly/B = G
@@ -281,19 +321,13 @@
 	name = "Anus"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/anus)
 	allows_disabling = TRUE
+	default_disabled = TRUE
 
 /datum/customizer_choice/organ/genital/anus
 	name = "Anus"
 	organ_type = /obj/item/organ/genital/anus
 	organ_slot = ORGAN_SLOT_ANUS
-	default_genital_size = "Flat"
-	size_options_category = "anus"
 	sprite_accessories = list(
 		/datum/sprite_accessory/bm/anus/donut,
 		/datum/sprite_accessory/bm/anus/squished,
 	)
-
-/datum/customizer_choice/organ/genital/anus/apply_genital_size_value(obj/item/organ/genital/G, value)
-	var/obj/item/organ/genital/anus/A = G
-	A.size = value
-	A.update()

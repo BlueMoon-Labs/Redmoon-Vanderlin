@@ -29,12 +29,23 @@
 		return
 
 /obj/item/organ/genital/belly/modify_size(modifier, min = -INFINITY, max = BELLY_SIZE_MAX)
+	if(modifier < 0 && size_cached <= 0)
+		if(owner)
+			to_chat(owner, "<span class='warning'>You feel your [pick(list("stomach", "belly", "gut", "midsection", "rolls"))] go completely flat.</span>")
+		QDEL_IN(src, 1)
+		return
 	var/new_value = clamp(size_cached + modifier, max(min, min_size ? min_size : -INFINITY), min(max_size ? max_size : INFINITY, max))
 	if(new_value == size_cached)
 		return
 	prev_size = size_cached
 	size_cached = new_value
 	size = round(size_cached)
+	if(modifier < 0 && size_cached <= 0)
+		update()
+		if(owner)
+			to_chat(owner, "<span class='warning'>You feel your [pick(list("stomach", "belly", "gut", "midsection", "rolls"))] go completely flat.</span>")
+		QDEL_IN(src, 1)
+		return
 	update()
 	..()
 

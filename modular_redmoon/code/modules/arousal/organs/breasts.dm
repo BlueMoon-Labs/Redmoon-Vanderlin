@@ -12,6 +12,8 @@
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_BREASTS
 	size = 3
+	max_size = 30
+	min_size = 0
 	fluid_id = /datum/reagent/consumable/milk
 	fluid_rate = MILK_RATE
 	shape = DEF_BREASTS_SHAPE
@@ -90,9 +92,12 @@
 			best_value = state_value
 	return best_state
 
+/obj/item/organ/genital/get_availability(datum/species/owner_species)
+	// Genitals are opt-in via the character customizer, not species default organs.
+	return FALSE
+
 /obj/item/organ/genital/breasts/get_overlay_size()
-	var/size_state = size_to_state()
-	return clamp(GLOB.breast_values[size_state], BREASTS_ICON_MIN_SIZE, BREASTS_ICON_MAX_SIZE)
+	return size_to_state()
 
 /obj/item/organ/genital/breasts/update_size()//wah
 	var/rounded_size = round(size)

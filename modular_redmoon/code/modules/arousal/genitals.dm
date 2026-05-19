@@ -273,6 +273,10 @@
 /obj/item/organ/genital/proc/upon_link()
 	return
 
+/obj/item/organ/genital/get_availability(datum/species/owner_species)
+	// Genitals only exist when enabled via the character customizer (accessory imprinted from organ DNA).
+	return !isnull(accessory_type)
+
 /obj/item/organ/genital/Insert(mob/living/carbon/M, special = FALSE, drop_if_replaced = TRUE)
 	. = ..()
 	if(.)
@@ -367,7 +371,6 @@
 		for(var/A in genitals_to_add)
 			var/obj/item/organ/genital/G = A
 			var/datum/sprite_accessory/bm/S
-			var/size = G.get_overlay_size()
 			switch(G.type)
 				if(/obj/item/organ/genital/penis)
 					S = GLOB.cock_shapes_list[G.shape]
@@ -384,8 +387,16 @@
 				if(/obj/item/organ/genital/anus)
 					S = GLOB.anus_shapes_list[G.shape]
 
+			if(!S && G.accessory_type)
+				S = SPRITE_ACCESSORY(G.accessory_type)
+
 			if(!S || S.icon_state == "none")
 				continue
+
+			var/size = G.get_overlay_size()
+			if(isnum(size) && size <= 0 && (ispath(G.type, /obj/item/organ/genital/belly) || ispath(G.type, /obj/item/organ/genital/butt)))
+				continue
+
 			var/aroused_state = G.aroused_state && S.alt_aroused
 			var/accessory_icon = S.icon
 			var/do_center = FALSE
