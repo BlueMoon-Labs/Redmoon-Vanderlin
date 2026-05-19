@@ -44,6 +44,14 @@
 		else
 			size_name = "плоского"
 
+/obj/item/organ/genital/testicles/modify_size(modifier, min = -INFINITY, max = BALLS_SIZE_MAX)
+	var/new_value = clamp(size + modifier, max(min, min_size ? min_size : -INFINITY), min(max_size ? max_size : INFINITY, max))
+	if(new_value == size)
+		return
+	size = new_value
+	update()
+	..()
+
 /obj/item/organ/genital/testicles/update_appearance()
 	. = ..()
 

@@ -231,6 +231,15 @@
 /obj/item/organ/genital/proc/update_size()
 	return
 
+/obj/item/organ/genital/proc/get_overlay_size()
+	return size_to_state()
+
+/obj/item/organ/genital/set_accessory_type(new_accessory_type, colors)
+	. = ..()
+	var/datum/sprite_accessory/bm/accessory = accessory_type ? SPRITE_ACCESSORY(accessory_type) : null
+	if(accessory)
+		shape = get_genital_shape_key(accessory)
+
 /obj/item/organ/genital/proc/update_appearance_genitals()
 	if(!owner || owner.stat == DEAD)
 		aroused_state = FALSE
@@ -321,6 +330,7 @@
 /mob/living/carbon/human/proc/update_genitals()
 	if(QDELETED(src))
 		return
+	init_bm_genital_shapes_lists()
 	var/static/list/relevant_layers = list("[GENITALS_BEHIND_LAYER]" = "BEHIND", "[GENITALS_FRONT_LAYER]" = "FRONT")
 	var/static/list/layers_num
 	if(!layers_num)
@@ -357,7 +367,7 @@
 		for(var/A in genitals_to_add)
 			var/obj/item/organ/genital/G = A
 			var/datum/sprite_accessory/bm/S
-			var/size = G.size_to_state()
+			var/size = G.get_overlay_size()
 			switch(G.type)
 				if(/obj/item/organ/genital/penis)
 					S = GLOB.cock_shapes_list[G.shape]

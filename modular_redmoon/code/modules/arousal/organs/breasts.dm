@@ -81,11 +81,18 @@
 
 /obj/item/organ/genital/breasts/size_to_state()
 	var/rounded = clamp(round(size), 0, INFINITY)
-	for(var/size_index in length(GLOB.breast_values) to 1 step -1) // This should go in the reverse of the defined order (i.e. greatest-to-least).
-		var/size_state = GLOB.breast_values[size_index]
-		if(GLOB.breast_values[size_state] <= rounded) // Return the greatest (last) size value that's less than or equal to our numerical size.
-			return size_state
-	return "плоского" // Even flat was too large for you, I guess...? This should never happen.
+	var/best_state = "плоского"
+	var/best_value = -1
+	for(var/state in GLOB.breast_values)
+		var/state_value = GLOB.breast_values[state]
+		if(state_value <= rounded && state_value > best_value)
+			best_state = state
+			best_value = state_value
+	return best_state
+
+/obj/item/organ/genital/breasts/get_overlay_size()
+	var/size_state = size_to_state()
+	return clamp(GLOB.breast_values[size_state], BREASTS_ICON_MIN_SIZE, BREASTS_ICON_MAX_SIZE)
 
 /obj/item/organ/genital/breasts/update_size()//wah
 	var/rounded_size = round(size)

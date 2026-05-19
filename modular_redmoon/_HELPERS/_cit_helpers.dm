@@ -41,6 +41,115 @@ GLOBAL_LIST_EMPTY(vagina_shapes_list)
 GLOBAL_LIST_EMPTY(belly_shapes_list)
 GLOBAL_LIST_EMPTY(anus_shapes_list)
 
+/proc/get_genital_shape_key(datum/sprite_accessory/bm/accessory)
+	if(!accessory)
+		return null
+	if(istype(accessory, /datum/sprite_accessory/bm/penis) || istype(accessory, /datum/sprite_accessory/bm/anus))
+		return accessory.icon_state
+	return accessory.name
+
+/// Size options for genital customizers (display name -> numeric value).
+/proc/get_genital_size_options(genital_category)
+	switch(genital_category)
+		if("breasts")
+			return GLOB.breast_values.Copy()
+		if("penis")
+			return list(
+				"Small" = 6,
+				"Medium" = 18,
+				"Large" = 30,
+				"Massive" = 60,
+				"Comical" = 100,
+			)
+		if("testicles")
+			return list(
+				"Average" = BALLS_SIZE_MIN,
+				"Heavy" = BALLS_SIZE_DEF,
+				"Large" = BALLS_SIZE_2,
+				"Massive" = BALLS_SIZE_3,
+				"Gigantic" = BALLS_SIZE_MAX,
+			)
+		if("butt", "anus")
+			return list(
+				"Flat" = 0,
+				"Medium" = 1,
+				"Clenching" = 2,
+				"Large" = 3,
+				"Big" = 4,
+				"Massive" = 5,
+				"Giant" = 6,
+				"Extreme" = 7,
+				"Ultra" = 8,
+			)
+		if("belly")
+			return list(
+				"Flat" = 0,
+				"Medium" = 1,
+				"Clenching" = 2,
+				"Large" = 3,
+				"Big" = 4,
+				"Massive" = 5,
+				"Giant" = 6,
+				"Huge" = 7,
+				"Extreme" = 8,
+				"Ultra" = 9,
+				"Impossible" = 10,
+			)
+	return null
+
+/proc/init_bm_genital_shapes_lists()
+	if(LAZYLEN(GLOB.cock_shapes_list))
+		return
+
+	for(var/datum/sprite_accessory/bm/penis/path as anything in subtypesof(/datum/sprite_accessory/bm/penis))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/penis/penis_shape = new path()
+		GLOB.cock_shapes_list[penis_shape.icon_state] = penis_shape
+		GLOB.cock_shapes_list[lowertext(penis_shape.name)] = penis_shape
+
+	for(var/datum/sprite_accessory/bm/testicles/path as anything in subtypesof(/datum/sprite_accessory/bm/testicles))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/testicles/balls_shape = new path()
+		GLOB.balls_shapes_list[balls_shape.name] = balls_shape
+		GLOB.balls_shapes_list[lowertext(balls_shape.icon_state)] = balls_shape
+
+	for(var/datum/sprite_accessory/bm/breasts/path as anything in subtypesof(/datum/sprite_accessory/bm/breasts))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/breasts/breasts_shape = new path()
+		GLOB.breasts_shapes_list[breasts_shape.name] = breasts_shape
+		GLOB.breasts_shapes_list[lowertext(breasts_shape.icon_state)] = breasts_shape
+
+	for(var/datum/sprite_accessory/bm/butt/path as anything in subtypesof(/datum/sprite_accessory/bm/butt))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/butt/butt_shape = new path()
+		GLOB.butt_shapes_list[butt_shape.name] = butt_shape
+		GLOB.butt_shapes_list[lowertext(butt_shape.icon_state)] = butt_shape
+
+	for(var/datum/sprite_accessory/bm/belly/path as anything in subtypesof(/datum/sprite_accessory/bm/belly))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/belly/belly_shape = new path()
+		GLOB.belly_shapes_list[belly_shape.name] = belly_shape
+		GLOB.belly_shapes_list[lowertext(belly_shape.icon_state)] = belly_shape
+
+	for(var/datum/sprite_accessory/bm/vagina/path as anything in subtypesof(/datum/sprite_accessory/bm/vagina))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/vagina/vagina_shape = new path()
+		GLOB.vagina_shapes_list[vagina_shape.name] = vagina_shape
+		GLOB.vagina_shapes_list[lowertext(vagina_shape.icon_state)] = vagina_shape
+
+	for(var/datum/sprite_accessory/bm/anus/path as anything in subtypesof(/datum/sprite_accessory/bm/anus))
+		if(IS_ABSTRACT(path))
+			continue
+		var/datum/sprite_accessory/bm/anus/anus_shape = new path()
+		GLOB.anus_shapes_list[anus_shape.icon_state] = anus_shape
+		GLOB.anus_shapes_list[anus_shape.name] = anus_shape
+
 //longcat memes.
 GLOBAL_LIST_INIT(dick_nouns, list("фаллос", "член", "хрен", "пенис", "агрегат", "половой орган", "хер", "детородный орган", "болт", "джойстик", "елдык", "конец", "стояк", "любовный свисток", "стейк из трубки", "кукан", "мужской член", "причиндал"))
 
