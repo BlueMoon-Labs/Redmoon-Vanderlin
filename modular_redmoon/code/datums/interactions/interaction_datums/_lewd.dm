@@ -789,12 +789,12 @@
 	)
 
 	message = "<span class='lewd'>\The <b>[src]</b>[pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 	if(!is_fucking(target, GRINDING_FACE_WITH_ANUS))
 		set_is_fucking(target, GRINDING_FACE_WITH_ANUS, null)
 	handle_post_sex(LOW_LUST, null, src)
@@ -809,11 +809,11 @@
 	)
 
 	message = "<span class='lewd'>\The <b>[src]</b>[pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 	if(!target.is_fucking(src, CUM_TARGET_ANUS))
 		var/obj/item/organ/genital/genital = target.has_penis() == HAS_EXPOSED_GENITAL ? target.getorganslot(ORGAN_SLOT_PENIS) : (target.has_vagina() == HAS_EXPOSED_GENITAL ? target.getorganslot(ORGAN_SLOT_VAGINA) : null)
 		target.set_is_fucking(src, CUM_TARGET_ANUS, genital)
@@ -861,18 +861,18 @@
 		set_is_fucking(target, CUM_TARGET_ANUS, getorganslot(ORGAN_SLOT_PENIS))
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
+	visible_message(message, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 						'modular_redmoon/sound/interactions/bang2.ogg',
 						'modular_redmoon/sound/interactions/bang3.ogg',
 						'modular_redmoon/sound/interactions/bang4.ogg',
 						'modular_redmoon/sound/interactions/bang5.ogg',
-						'modular_redmoon/sound/interactions/bang6.ogg'), 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						'modular_redmoon/sound/interactions/bang6.ogg'), 70, 1, -1, )
 	if(can_penetrating_genital_cum())
 		handle_post_sex(NORMAL_LUST, CUM_TARGET_ANUS, target, ORGAN_SLOT_PENIS)
 	target.handle_post_sex(NORMAL_LUST, null, src)
@@ -900,12 +900,12 @@
 		set_is_fucking(target, GRINDING_FACE_WITH_ANUS, null)
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/assbrap1.ogg',
 						'modular_redmoon/sound/interactions/assbrap2.ogg',
 						'modular_redmoon/sound/interactions/assbrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 	target.handle_post_sex(NORMAL_LUST, null, src)
 
 /mob/living/proc/do_faceshit(mob/living/carbon/target)
@@ -926,12 +926,12 @@
 	)
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
 						'modular_redmoon/sound/interactions/asscrap2.ogg',
 						'modular_redmoon/sound/interactions/asscrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 	if(!is_fucking(target, GRINDING_FACE_WITH_ANUS))
 		set_is_fucking(target, GRINDING_FACE_WITH_ANUS, null)
 	handle_post_sex(LOW_LUST, null, src)
@@ -946,11 +946,11 @@
 	)
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
 						'modular_redmoon/sound/interactions/asscrap2.ogg',
 						'modular_redmoon/sound/interactions/asscrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 
 	var/obj/item/organ/genital/G = target.has_penis() == HAS_EXPOSED_GENITAL ? target.getorganslot(ORGAN_SLOT_PENIS) : (target.has_vagina() == HAS_EXPOSED_GENITAL ? target.getorganslot(ORGAN_SLOT_VAGINA) : null)
 	if(!target.is_fucking(src, CUM_TARGET_ANUS))
@@ -977,17 +977,17 @@
 		set_is_fucking(target, CUM_TARGET_ANUS, getorganslot(ORGAN_SLOT_PENIS))
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE), ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, , )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/asscrap1.ogg',
 						'modular_redmoon/sound/interactions/asscrap2.ogg',
 						'modular_redmoon/sound/interactions/asscrap3.ogg'),
-						70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+						70, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/bang1.ogg',
 					'modular_redmoon/sound/interactions/bang2.ogg',
 					'modular_redmoon/sound/interactions/bang3.ogg',
 					'modular_redmoon/sound/interactions/bang4.ogg',
 					'modular_redmoon/sound/interactions/bang5.ogg',
-					'modular_redmoon/sound/interactions/bang6.ogg'), 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+					'modular_redmoon/sound/interactions/bang6.ogg'), 70, 1, -1, )
 	if(can_penetrating_genital_cum())
 		handle_post_sex(NORMAL_LUST, CUM_TARGET_ANUS, target, ORGAN_SLOT_PENIS)
 	target.handle_post_sex(NORMAL_LUST, null, src)
@@ -1014,10 +1014,10 @@
 		set_is_fucking(target, GRINDING_FACE_WITH_ANUS, null)
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
-	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 70, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/crapjob.ogg',
-									'modular_redmoon/sound/interactions/crapjob1.ogg'), 90, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+									'modular_redmoon/sound/interactions/crapjob1.ogg'), 90, 1, -1, )
 	target.handle_post_sex(NORMAL_LUST, null, src, ORGAN_SLOT_ANUS)
 
 /mob/living/proc/piss_over(mob/living/target)
@@ -1031,11 +1031,11 @@
 	)
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
 	//BLUEMOON EDIT START
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/watering1.ogg',
 											'modular_redmoon/sound/interactions/watering2.ogg',
-											'modular_redmoon/sound/interactions/watering3.ogg'), 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+											'modular_redmoon/sound/interactions/watering3.ogg'), 70, 1, -1, )
 	handle_post_sex(LOW_LUST, CUM_TARGET_BREASTS, target, pee_pee)
 	//BLUEMOON EDIT END
 
@@ -1049,12 +1049,12 @@
 	)
 
 	message = "<span class='lewd'>\The <b>[src]</b> [pick(hell)]</span>"
-	visible_message(message, ignored_mobs = get_unconsenting(unholy = TRUE))
+	visible_message(message, )
 	//BLUEMOON EDIT START
-	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 100, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+	playsound(loc, 'modular_redmoon/sound/interactions/swallow.ogg', 100, 1, -1, )
 	playsound(target.loc, pick('modular_redmoon/sound/interactions/watering1.ogg',
 											'modular_redmoon/sound/interactions/watering2.ogg',
-											'modular_redmoon/sound/interactions/watering3.ogg'), 70, 1, -1, ignored_mobs = get_unconsenting(unholy = TRUE))
+											'modular_redmoon/sound/interactions/watering3.ogg'), 70, 1, -1, )
 	//BLUEMOON EDIT END
 	if(!is_fucking(target, CUM_TARGET_MOUTH))
 		set_is_fucking(target, CUM_TARGET_MOUTH, pee_pee)

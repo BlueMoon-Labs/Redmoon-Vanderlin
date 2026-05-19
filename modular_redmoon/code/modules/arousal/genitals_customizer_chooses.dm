@@ -1,3 +1,7 @@
+/datum/customizer/organ/genital
+	name = "Genital"
+	customizer_choices = list(/datum/customizer_choice/organ/penis)
+
 /datum/customizer/organ/genital/penis
 	name = "Penis"
 	customizer_choices = list(/datum/customizer_choice/organ/penis)

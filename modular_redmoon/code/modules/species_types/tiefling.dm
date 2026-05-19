@@ -11,5 +11,27 @@
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_GUTS = /obj/item/organ/guts,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_BREASTS = /obj/item/organ/genital/breasts,
+		ORGAN_SLOT_BUTT = /obj/item/organ/genital/butt,
+		ORGAN_SLOT_VAGINA = /obj/item/organ/genital/vagina,
+		ORGAN_SLOT_PENIS = /obj/item/organ/genital/penis,
+		ORGAN_SLOT_TESTICLES = /obj/item/organ/genital/testicles,
+		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
+		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
 	)
 
+	customizers = list(
+		/datum/customizer/organ/eyes/humanoid,
+		/datum/customizer/bodypart_feature/hair/head/humanoid,
+		/datum/customizer/bodypart_feature/accessory,
+		/datum/customizer/bodypart_feature/face_detail,
+		/datum/customizer/organ/snout/vulpkanin,
+		/datum/customizer/organ/tail/vulpkanin,
+		/datum/customizer/organ/genital/penis,
+		/datum/customizer/organ/genital/testicles,
+		/datum/customizer/organ/genital/vagina,
+		/datum/customizer/organ/genital/breasts,
+		/datum/customizer/organ/genital/butt,
+		/datum/customizer/organ/genital/belly,
+		/datum/customizer/organ/genital/anus
+		)

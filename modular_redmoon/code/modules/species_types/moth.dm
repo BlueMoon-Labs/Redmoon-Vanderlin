@@ -80,7 +80,13 @@
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_NECK_FEATURE = /obj/item/organ/neck_feature/moth,
 		ORGAN_SLOT_WINGS = /obj/item/organ/wings/moth,
-
+		ORGAN_SLOT_BREASTS = /obj/item/organ/genital/breasts,
+		ORGAN_SLOT_BUTT = /obj/item/organ/genital/butt,
+		ORGAN_SLOT_VAGINA = /obj/item/organ/genital/vagina,
+		ORGAN_SLOT_PENIS = /obj/item/organ/genital/penis,
+		ORGAN_SLOT_TESTICLES = /obj/item/organ/genital/testicles,
+		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
+		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
 	)
 
 	bodypart_features = list(
