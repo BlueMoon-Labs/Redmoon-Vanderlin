@@ -20,3 +20,21 @@
 		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
 		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
 	)
+
+	customizers = list(
+		/datum/customizer/organ/eyes/humanoid,
+		/datum/customizer/bodypart_feature/hair/head/humanoid,
+		/datum/customizer/bodypart_feature/hair/facial/humanoid,
+		/datum/customizer/bodypart_feature/accessory,
+		/datum/customizer/bodypart_feature/face_detail,
+		/datum/customizer/organ/ears/demihuman,
+		/datum/customizer/organ/horns/demihuman,
+		/datum/customizer/organ/tail/demihuman,
+		/datum/customizer/organ/genital/penis,
+		/datum/customizer/organ/genital/testicles,
+		/datum/customizer/organ/genital/vagina,
+		/datum/customizer/organ/genital/breasts,
+		/datum/customizer/organ/genital/butt,
+		/datum/customizer/organ/genital/belly,
+		/datum/customizer/organ/genital/anus
+	)
