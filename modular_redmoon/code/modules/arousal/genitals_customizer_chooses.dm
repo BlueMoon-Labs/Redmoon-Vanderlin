@@ -1,6 +1,6 @@
 /datum/customizer/organ/genital
 	name = "Genital"
-	customizer_choices = list(/datum/customizer_choice/organ/penis)
+	customizer_choices = list(/datum/customizer_choice/organ/genital/penis)
 
 /datum/customizer_entry/organ/genital
 	var/genital_size
