@@ -13,7 +13,12 @@
 
 /datum/customizer_choice/organ/genital/New()
 	. = ..()
-	if(size_options_category && !length(size_options_list))
+	ensure_size_options_list()
+
+/datum/customizer_choice/organ/genital/proc/ensure_size_options_list()
+	if(length(size_options_list))
+		return
+	if(size_options_category)
 		size_options_list = get_genital_size_options(size_options_category)
 
 /datum/customizer_choice/organ/genital/make_default_customizer_entry(datum/preferences/prefs, customizer_type, changed_entry = TRUE)
@@ -23,6 +28,7 @@
 		genital_entry.genital_size = default_genital_size
 
 /datum/customizer_choice/organ/genital/validate_entry(datum/preferences/prefs, datum/customizer_entry/entry)
+	ensure_size_options_list()
 	..()
 	if(!length(size_options_list))
 		return
@@ -59,7 +65,7 @@
 		return
 	G.color = color_list[1]
 
-/datum/customizer_choice/organ/genital/customize_organ(obj/item/organ/organ/organ, datum/customizer_entry/entry)
+/datum/customizer_choice/organ/genital/customize_organ(obj/item/organ/organ, datum/customizer_entry/entry)
 	if(entry?.accessory_type)
 		organ.set_accessory_type(entry.accessory_type, entry.accessory_colors)
 	if(!istype(organ, /obj/item/organ/genital))
@@ -99,6 +105,7 @@
 	G.update()
 
 /datum/customizer_choice/organ/genital/generate_pref_choices(list/dat, datum/preferences/prefs, datum/customizer_entry/entry, customizer_type)
+	ensure_size_options_list()
 	if(length(sprite_accessories) > 1)
 		dat += "<div style='text-align:center; margin:5px 0;'><b>Shape:</b></div>"
 	..()
@@ -145,6 +152,7 @@
 		dat += "</div>"
 
 /datum/customizer_choice/organ/genital/handle_topic(mob/user, list/href_list, datum/preferences/prefs, datum/customizer_entry/entry, customizer_type)
+	ensure_size_options_list()
 	..()
 	if(!length(size_options_list))
 		return
@@ -211,7 +219,18 @@
 
 /datum/customizer_choice/organ/genital/penis/apply_genital_size_value(obj/item/organ/genital/G, value)
 	var/obj/item/organ/genital/penis/P = G
-	P.length = value
+	// value is the onmob sprite stage (1-5); length drives descriptions and update_size()
+	switch(value)
+		if(1)
+			P.length = 6
+		if(2)
+			P.length = 18
+		if(3)
+			P.length = 30
+		if(4)
+			P.length = 60
+		if(5)
+			P.length = 100
 	P.prev_length = P.length
 	P.update()
 
@@ -257,7 +276,7 @@
 	name = "Breasts"
 	organ_type = /obj/item/organ/genital/breasts
 	organ_slot = ORGAN_SLOT_BREASTS
-	default_genital_size = BREASTS_SIZE_DEF
+	default_genital_size = "C"
 	size_options_category = "breasts"
 	sprite_accessories = list(
 		/datum/sprite_accessory/bm/breasts/pair,
@@ -281,7 +300,7 @@
 	name = "Butt"
 	organ_type = /obj/item/organ/genital/butt
 	organ_slot = ORGAN_SLOT_BUTT
-	default_genital_size = "Flat"
+	default_genital_size = "Medium"
 	size_options_category = "butt"
 	sprite_accessories = list(
 		/datum/sprite_accessory/bm/butt/pair,

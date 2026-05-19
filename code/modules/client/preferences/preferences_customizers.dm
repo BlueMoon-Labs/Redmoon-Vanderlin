@@ -164,6 +164,7 @@
 			customizer_entries += customizer.create_customizer_entry(src, choice_type)
 		else
 			choice.handle_topic(user, href_list, src, entry, customizer_type)
+	update_preview_icon()
 
 /datum/preferences/proc/reset_all_customizer_accessory_colors()
 	for(var/datum/customizer_entry/entry as anything in customizer_entries)

@@ -25,6 +25,9 @@
 	var/diameter = 4.38
 	var/diameter_ratio = COCK_DIAMETER_RATIO_DEF //0.25; check citadel_defines.dm
 
+/obj/item/organ/genital/penis/get_overlay_size()
+	return size
+
 /obj/item/organ/genital/penis/modify_size(modifier, min = -INFINITY, max = INFINITY)
 	var/new_value = clamp(length + modifier, max(min, min_size ? min_size : -INFINITY), min(max_length ? max_length : INFINITY, max))
 	if(new_value == length)

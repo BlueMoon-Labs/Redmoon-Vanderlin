@@ -22,6 +22,9 @@
 	layer_index = BELLY_LAYER_INDEX
 
 
+/obj/item/organ/genital/belly/get_overlay_size()
+	return round(size)
+
 /obj/item/organ/genital/belly/on_life()
 	if(QDELETED(src))
 		return

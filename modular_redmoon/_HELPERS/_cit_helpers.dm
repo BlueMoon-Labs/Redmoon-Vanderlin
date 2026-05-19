@@ -48,18 +48,40 @@ GLOBAL_LIST_EMPTY(anus_shapes_list)
 		return accessory.icon_state
 	return accessory.name
 
-/// Size options for genital customizers (display name -> numeric value).
+/// Size options for genital customizers (display name -> value applied to the organ).
 /proc/get_genital_size_options(genital_category)
 	switch(genital_category)
 		if("breasts")
-			return GLOB.breast_values.Copy()
-		if("penis")
 			return list(
-				"Small" = 6,
-				"Medium" = 18,
-				"Large" = 30,
-				"Massive" = 60,
-				"Comical" = 100,
+				"Flat" = 0,
+				"A" = 1,
+				"B" = 2,
+				"C" = 3,
+				"D" = 4,
+				"E" = 5,
+				"F" = 6,
+				"G" = 7,
+				"H" = 8,
+				"I" = 9,
+				"J" = 10,
+				"K" = 11,
+				"L" = 12,
+				"M" = 13,
+				"N" = 14,
+				"O" = 15,
+				"Huge" = 16,
+				"Massive" = 17,
+				"Giga" = 25,
+				"Impossible" = 30,
+			)
+		if("penis")
+			// Sprite stages used in penis_onmob icon states (penis_human_1_0_FRONT, etc.)
+			return list(
+				"Small" = 1,
+				"Medium" = 2,
+				"Large" = 3,
+				"Massive" = 4,
+				"Comical" = 5,
 			)
 		if("testicles")
 			return list(

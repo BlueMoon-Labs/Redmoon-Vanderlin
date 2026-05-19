@@ -92,10 +92,6 @@
 			best_value = state_value
 	return best_state
 
-/obj/item/organ/genital/get_availability(datum/species/owner_species)
-	// Genitals are opt-in via the character customizer, not species default organs.
-	return FALSE
-
 /obj/item/organ/genital/breasts/get_overlay_size()
 	return size_to_state()
 

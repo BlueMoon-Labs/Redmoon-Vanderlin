@@ -394,8 +394,6 @@
 				continue
 
 			var/size = G.get_overlay_size()
-			if(isnum(size) && size <= 0 && (ispath(G.type, /obj/item/organ/genital/belly) || ispath(G.type, /obj/item/organ/genital/butt)))
-				continue
 
 			var/aroused_state = G.aroused_state && S.alt_aroused
 			var/accessory_icon = S.icon
