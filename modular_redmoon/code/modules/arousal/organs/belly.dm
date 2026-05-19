@@ -5,7 +5,7 @@
 	ru_name_capital 		= "Живот"
 	desc 					= "You see a belly on their midsection."
 	icon_state 				= "belly"
-	icon 					= 'modular_redmoon/icons/from_bluemoon/mob/genitals/breasts.dmi' // I have no idea why it's set up like this on hyper
+	icon 					= 'modular_redmoon/icons/from_bluemoon/mob/genitals/belly_onmob.dmi' // I have no idea why it's set up like this on hyper
 	zone 					= BODY_ZONE_CHEST
 	slot 					= ORGAN_SLOT_BELLY
 	w_class 				= WEIGHT_CLASS_NORMAL
