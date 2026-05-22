@@ -124,6 +124,13 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/needs_update = savefile_needs_update(S)
 	if(needs_update == -2)		//fatal, can't load any data
 		return FALSE
+	//ERP PREF REDMOON
+	S["erppref"]			>> erppref
+	S["nonconpref"]			>> nonconpref
+	S["unholypref"]			>> unholypref
+	S["extremepref"]		>> extremepref
+	S["extremeharm"]		>> extremeharm
+	//REDMOON END
 
 	//general preferences
 	S["asaycolor"]			>> asaycolor
@@ -238,6 +245,15 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX)		//updates (or failing that the sanity checks) will ensure data is not invalid at load. Assume up-to-date
 
 	//general preferences
+
+	//ERP PREF REDMOON
+	WRITE_FILE(S["erppref"], erppref)
+	WRITE_FILE(S["nonconpref"], nonconpref)
+	WRITE_FILE(S["unholypref"], unholypref)
+	WRITE_FILE(S["extremepref"], extremepref)
+	WRITE_FILE(S["extremeharm"], extremeharm)
+	//REDMOON END
+
 	WRITE_FILE(S["asaycolor"], asaycolor)
 	WRITE_FILE(S["triumphs"], triumphs)
 	WRITE_FILE(S["musicvol"], musicvol)
