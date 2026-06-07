@@ -110,7 +110,6 @@
 
 /mob/living/proc/has_penis()
 	var/mob/living/carbon/C = src
-	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_penis= [has_genital(ORGAN_SLOT_PENIS)]"))
 	if(has_penis && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_PENIS)
@@ -123,34 +122,29 @@
 
 /mob/living/proc/has_balls()
 	var/mob/living/carbon/C = src
-	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_balls= [has_genital(ORGAN_SLOT_TESTICLES)]"))
 	if(has_balls && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_TESTICLES)
 
 /mob/living/proc/has_vagina()
 	var/mob/living/carbon/C = src
-	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_vagina= [has_genital(ORGAN_SLOT_VAGINA)]"))
 	if(has_vagina && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_VAGINA)
 
 /mob/living/proc/has_breasts()
 	var/mob/living/carbon/C = src
-	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_breasts= [has_genital(ORGAN_SLOT_BREASTS)]"))
 	if(has_breasts && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_BREASTS)
 
 /mob/living/proc/has_butt()
 	var/mob/living/carbon/C = src
-	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_butt= [has_genital(ORGAN_SLOT_BUTT)]"))
 	if(has_butt && !istype(C))
 		return TRUE
 	return has_genital(ORGAN_SLOT_BUTT)
 
 /mob/living/proc/has_anus()
-	to_chat(src, span_alertwarning("ОТКЛАДКА: ЗНАЧЕНИЕ has_anus= [has_anus]"))
 	if(has_anus && !iscarbon(src))
 		return TRUE
 	if (has_anus && anus_always_accessible)

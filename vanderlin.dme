@@ -4075,6 +4075,7 @@
 #include "modular_redmoon\code\modules\arousal\organs\vagina.dm"
 #include "modular_redmoon\code\modules\arousal\organs\womb.dm"
 #include "modular_redmoon\code\modules\client\preferences.dm"
+#include "modular_redmoon\code\modules\client\preferences_erp.dm"
 #include "modular_redmoon\code\modules\client\pronouns_ru.dm"
 #include "modular_redmoon\code\modules\customizers\features\neck.dm"
 #include "modular_redmoon\code\modules\customizers\organs\ears.dm"

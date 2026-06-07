@@ -193,6 +193,9 @@
 				target_index = length(size_names)
 			genital_entry.genital_size = size_names[target_index]
 
+/datum/customizer/organ/genital
+	abstract_type = /datum/customizer/organ/genital
+
 /datum/customizer/organ/genital/penis
 	name = "Penis"
 	customizer_choices = list(/datum/customizer_choice/organ/genital/penis)

@@ -42,6 +42,8 @@
 	user << browse_rsc('html/character_ui/dusty/family/family_type.png', "family_type.png")
 	user << browse_rsc('html/character_ui/dusty/family/gender_pref.png', "gender_pref.png")
 	user << browse_rsc('html/character_ui/dusty/family/spouse_pref.png', "spouse_pref.png")
+	user << browse_rsc('html/character_ui/dusty/family/erp_prefs.png', "erp_prefs.png")
+	user << browse_rsc('html/character_ui/dusty/family/erp_prefs_hover.png', "erp_prefs_hover.png")
 	// Flavour
 	user << browse_rsc('html/character_ui/dusty/flavour/0_flavour_bg.png', "0_flavour_bg.png")
 	user << browse_rsc('html/character_ui/dusty/flavour/flavour_culture.png', "flavour_culture.png")
@@ -135,6 +137,8 @@
 	user << browse_rsc('html/character_ui/grimshart/family/family_type.png', "family_type.png")
 	user << browse_rsc('html/character_ui/grimshart/family/gender_pref.png', "gender_pref.png")
 	user << browse_rsc('html/character_ui/grimshart/family/spouse_pref.png', "spouse_pref.png")
+	user << browse_rsc('html/character_ui/grimshart/family/erp_prefs.png', "erp_prefs.png")
+	user << browse_rsc('html/character_ui/grimshart/family/erp_prefs_hover.png', "erp_prefs_hover.png")
 	// Flavour
 	user << browse_rsc('html/character_ui/grimshart/flavour/0_flavour_bg.png', "0_flavour_bg.png")
 	user << browse_rsc('html/character_ui/grimshart/flavour/flavour_culture.png', "flavour_culture.png")
@@ -228,6 +232,8 @@
 	user << browse_rsc('html/character_ui/parchment/family/family_type.png', "family_type.png")
 	user << browse_rsc('html/character_ui/parchment/family/gender_pref.png', "gender_pref.png")
 	user << browse_rsc('html/character_ui/parchment/family/spouse_pref.png', "spouse_pref.png")
+	user << browse_rsc('html/character_ui/parchment/family/erp_prefs.png', "erp_prefs.png")
+	user << browse_rsc('html/character_ui/parchment/family/erp_prefs_hover.png', "erp_prefs_hover.png")
 	// Flavour
 	user << browse_rsc('html/character_ui/parchment/flavour/0_flavour_bg.png', "0_flavour_bg.png")
 	user << browse_rsc('html/character_ui/parchment/flavour/flavour_culture.png', "flavour_culture.png")
@@ -321,6 +327,8 @@
 	user << browse_rsc('html/character_ui/paper/family/family_type.png', "family_type.png")
 	user << browse_rsc('html/character_ui/paper/family/gender_pref.png', "gender_pref.png")
 	user << browse_rsc('html/character_ui/paper/family/spouse_pref.png', "spouse_pref.png")
+	user << browse_rsc('html/character_ui/paper/family/erp_prefs.png', "erp_prefs.png")
+	user << browse_rsc('html/character_ui/paper/family/erp_prefs_hover.png', "erp_prefs_hover.png")
 	// Flavour
 	user << browse_rsc('html/character_ui/paper/flavour/0_flavour_bg.png', "0_flavour_bg.png")
 	user << browse_rsc('html/character_ui/paper/flavour/flavour_culture.png', "flavour_culture.png")

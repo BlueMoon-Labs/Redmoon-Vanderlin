@@ -52,6 +52,212 @@
 	/// Additional details to be shown in the interaction menu, accepts more than one entry
 	var/list/additional_details
 
+/datum/interaction/proc/requirement_label(requirement_flag)
+	switch(requirement_flag)
+		if(INTERACTION_REQUIRE_ANUS)
+			return "анус"
+		if(INTERACTION_REQUIRE_BALLS)
+			return "семенники"
+		if(INTERACTION_REQUIRE_BREASTS)
+			return "грудь"
+		if(INTERACTION_REQUIRE_EARS)
+			return "уши"
+		if(INTERACTION_REQUIRE_EARSOCKETS)
+			return "ушные раковины"
+		if(INTERACTION_REQUIRE_EYES)
+			return "глаза"
+		if(INTERACTION_REQUIRE_EYESOCKETS)
+			return "глазницы"
+		if(INTERACTION_REQUIRE_FEET)
+			return "ступни"
+		if(INTERACTION_REQUIRE_PENIS)
+			return "пенис"
+		if(INTERACTION_REQUIRE_VAGINA)
+			return "вагина"
+		if(INTERACTION_REQUIRE_BELLY)
+			return "живот"
+	return "часть тела"
+
+/datum/interaction/proc/get_requirement_state(mob/living/subject, requirement_flag)
+	if(!subject)
+		return FALSE
+	switch(requirement_flag)
+		if(INTERACTION_REQUIRE_ANUS)
+			return subject.has_anus()
+		if(INTERACTION_REQUIRE_BALLS)
+			return subject.has_balls()
+		if(INTERACTION_REQUIRE_BREASTS)
+			return subject.has_breasts()
+		if(INTERACTION_REQUIRE_EARS)
+			return subject.has_ears()
+		if(INTERACTION_REQUIRE_EARSOCKETS)
+			// Отдельной проверки раковин нет, используем уши.
+			return subject.has_ears()
+		if(INTERACTION_REQUIRE_EYES)
+			return subject.has_eyes()
+		if(INTERACTION_REQUIRE_EYESOCKETS)
+			// Отдельной проверки глазниц нет, используем глаза.
+			return subject.has_eyes()
+		if(INTERACTION_REQUIRE_FEET)
+			return subject.has_feet()
+		if(INTERACTION_REQUIRE_PENIS)
+			return subject.has_penis()
+		if(INTERACTION_REQUIRE_VAGINA)
+			return subject.has_vagina()
+		if(INTERACTION_REQUIRE_BELLY)
+			return subject.has_belly()
+	return FALSE
+
+/datum/interaction/proc/check_single_exposure_requirement(mob/living/subject, requirement_flag, require_exposed = TRUE, silent = TRUE, subject_label = "Субъект")
+	var/state = get_requirement_state(subject, requirement_flag)
+	if(require_exposed)
+		if(state != HAS_EXPOSED_GENITAL)
+			if(!silent)
+				to_chat(subject, span_warning("[subject_label] [require_exposed ? "не имеет открытой части тела" : "не имеет скрытой части тела"]: [requirement_label(requirement_flag)]."))
+			return FALSE
+	else
+		if(state != HAS_UNEXPOSED_GENITAL)
+			if(!silent)
+				to_chat(subject, span_warning("[subject_label] [require_exposed ? "не имеет открытой части тела" : "не имеет скрытой части тела"]: [requirement_label(requirement_flag)]."))
+			return FALSE
+	return TRUE
+
+/datum/interaction/proc/check_exposure_requirements(mob/living/subject, exposed_flags, unexposed_flags, silent = TRUE, subject_label = "Субъект")
+	if(exposed_flags & INTERACTION_REQUIRE_ANUS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_ANUS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_BALLS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BALLS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_BREASTS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BREASTS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_EARS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_EARSOCKETS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARSOCKETS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_EYES)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYES, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_EYESOCKETS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYESOCKETS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_FEET)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_FEET, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_PENIS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_PENIS, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_VAGINA)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_VAGINA, TRUE, silent, subject_label))
+			return FALSE
+	if(exposed_flags & INTERACTION_REQUIRE_BELLY)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BELLY, TRUE, silent, subject_label))
+			return FALSE
+
+	if(unexposed_flags & INTERACTION_REQUIRE_ANUS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_ANUS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_BALLS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BALLS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_BREASTS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BREASTS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_EARS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_EARSOCKETS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARSOCKETS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_EYES)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYES, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_EYESOCKETS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYESOCKETS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_FEET)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_FEET, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_PENIS)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_PENIS, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_VAGINA)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_VAGINA, FALSE, silent, subject_label))
+			return FALSE
+	if(unexposed_flags & INTERACTION_REQUIRE_BELLY)
+		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BELLY, FALSE, silent, subject_label))
+			return FALSE
+	return TRUE
+
+/datum/interaction/proc/evaluate_extended_requirements(mob/living/user, mob/living/target, silent = TRUE)
+	if(required_from_user & INTERACTION_REQUIRE_TOPLESS)
+		if(!user.is_topless())
+			if(!silent)
+				to_chat(user, span_warning("Верхняя одежда мешает действию."))
+			return FALSE
+	if(required_from_user & INTERACTION_REQUIRE_BOTTOMLESS)
+		if(!user.is_bottomless())
+			if(!silent)
+				to_chat(user, span_warning("Нижняя одежда мешает действию."))
+			return FALSE
+	if(required_from_user & INTERACTION_REQUIRE_TAIL)
+		if(!user.has_tail())
+			if(!silent)
+				to_chat(user, span_warning("У вас нет хвоста."))
+			return FALSE
+
+	if(!check_exposure_requirements(user, required_from_user_exposed, required_from_user_unexposed, silent, "Вы"))
+		return FALSE
+	if(!check_exposure_requirements(target, required_from_target_exposed, required_from_target_unexposed, silent, "Цель"))
+		return FALSE
+
+	if(require_user_legs)
+		if(!user.has_legs(require_user_legs))
+			if(!silent)
+				to_chat(user, span_warning("Недостаточно подходящих ног для действия."))
+			return FALSE
+	if(require_target_legs)
+		if(!target.has_legs(require_target_legs))
+			if(!silent)
+				to_chat(user, span_warning("У цели недостаточно подходящих ног для действия."))
+			return FALSE
+	if(require_user_num_legs)
+		var/user_legs_count = user.has_legs(require_user_legs ? require_user_legs : REQUIRE_ANY)
+		if(user_legs_count < require_user_num_legs)
+			if(!silent)
+				to_chat(user, span_warning("Для действия нужно больше ног."))
+			return FALSE
+	if(require_target_num_legs)
+		var/target_legs_count = target.has_legs(require_target_legs ? require_target_legs : REQUIRE_ANY)
+		if(target_legs_count < require_target_num_legs)
+			if(!silent)
+				to_chat(user, span_warning("У цели недостаточно ног для действия."))
+			return FALSE
+	if(require_user_num_feet)
+		if(user.get_num_feet() < require_user_num_feet)
+			if(!silent)
+				to_chat(user, span_warning("Для действия нужно больше ступней."))
+			return FALSE
+	if(require_target_num_feet)
+		if(target.get_num_feet() < require_target_num_feet)
+			if(!silent)
+				to_chat(user, span_warning("У цели недостаточно ступней для действия."))
+			return FALSE
+
+	if((interaction_flags & INTERACTION_FLAG_USER_NOT_TIRED) && user.get_refraction_dif() > 0)
+		if(!silent)
+			to_chat(user, span_warning("Вы слишком утомлены для этого действия."))
+		return FALSE
+	if((interaction_flags & INTERACTION_FLAG_TARGET_NOT_TIRED) && target.get_refraction_dif() > 0)
+		if(!silent)
+			to_chat(user, span_warning("Цель слишком утомлена для этого действия."))
+		return FALSE
+
+	return TRUE
+
 /// Checks if user can do an interaction, action_check is for whether you're actually doing it or not (useful for the menu and not removing the buttons)
 /datum/interaction/proc/evaluate_user(mob/living/user, silent = TRUE, apply_cooldown = TRUE)
 	if(SSinteractions.is_blacklisted(user))
@@ -73,6 +279,9 @@
 			if(!silent)
 				to_chat(user, span_warning("У вас нет рук."))
 			return FALSE
+
+	if(!check_exposure_requirements(user, required_from_user_exposed, required_from_user_unexposed, silent, "Вы"))
+		return FALSE
 
 	if(COOLDOWN_FINISHED(user, last_interaction_time))
 		return TRUE
@@ -110,6 +319,9 @@
 				to_chat(user, span_warning("Цель не имеет рук."))
 			return FALSE
 
+	if(!check_exposure_requirements(target, required_from_target_exposed, required_from_target_unexposed, silent, "Цель"))
+		return FALSE
+
 	return TRUE
 
 /// Actually doing the action, has a few checks to see if it's valid, usually overwritten to be make things actually happen and what-not
@@ -127,6 +339,8 @@
 	if(!evaluate_user(user, silent = FALSE, apply_cooldown = apply_cooldown))
 		return FALSE
 	if(!evaluate_target(user, target, silent = FALSE))
+		return FALSE
+	if(!evaluate_extended_requirements(user, target, silent = FALSE))
 		return FALSE
 
 	if(write_log_user)

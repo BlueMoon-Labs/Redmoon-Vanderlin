@@ -1,4 +1,5 @@
 /datum/customizer
+	abstract_type = /datum/customizer
 	/// User facing name of the customizer.
 	var/name = "Customizer"
 	/// List of all /datum/customizer_choice's that this customizer can pick from.

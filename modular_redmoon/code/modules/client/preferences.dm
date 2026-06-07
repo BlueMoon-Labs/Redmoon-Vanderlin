@@ -1,6 +1,6 @@
 /datum/preferences
 	/// My favorites! they show up in their own tab inside the ui.
-	var/list/favorite_interactions
+	var/list/favorite_interactions = list()
 
 	/// Enable the 'arousal_multiplier' to be applied to lust amount
 	var/use_arousal_multiplier = FALSE

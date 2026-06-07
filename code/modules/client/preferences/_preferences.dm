@@ -294,6 +294,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			return
 	//we couldn't load character data so just randomize the character appearance + name
 	randomise_appearance_prefs(include_donator = donator)		//let's create a random character then - rather than a fat, bald and naked man.
+	validate_customizer_entries()
 	if(!selected_patron)
 		selected_patron = GLOB.patrons_by_type[default_patron]
 	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key) // give them default keybinds and update their movement keys
@@ -421,6 +422,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.ooc-notes:hover { background-image: url('ooc_notes_hover.png'); }
 		.ooc-extra { top: 270px; left: 207px; width: 40px; height: 10px; background-image: url('ooc_extra.png'); }
 		.ooc-extra:hover { background-image: url('ooc_extra_hover.png'); }
+		.erp-prefs { top: 291px; left: 141px; width: 45px; height: 10px; background-image: url('erp_prefs.png'); }
+		.erp-prefs:hover { background-image: url('erp_prefs_hover.png'); }
 		.btn-roles { top: 284px; left: 200px; width: 55px; height: 30px; background-image: url('ooc_specialroles.png'); }
 		.btn-roles:hover { background-image: url('ooc_specialroles_hover.png'); }
 
@@ -503,6 +506,24 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.menu-toggles:hover {
 			background-image: url('toggles_hover.png');
 		}
+		.preview-rotate {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 7px;
+			font-weight: bold;
+			color: #d6dbd5;
+			background: rgba(20, 16, 10, 0.85);
+			border: 1px solid #746145;
+			box-sizing: border-box;
+			text-shadow: 1px 1px 0 #000;
+			z-index: 12;
+		}
+		.preview-rotate:hover {
+			background: rgba(59, 46, 30, 0.95);
+		}
+		.preview-rotate-cw { top: 136px; left: 8px; width: 37px; height: 10px; }
+		.preview-rotate-ccw { top: 136px; left: 50px; width: 37px; height: 10px; }
 	</style>
 	<script>
 		function shrinkText(element) {
@@ -627,12 +648,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	<div class="sprite preview-bg"></div>
 	<div class="sprite body-bg"></div>
 	<a href='?_src_=prefs;preference=preview_dir;dir=[preview_direction];invert=0'>
-		<div class="sprite" style="top: 292px; left: 119px; width: 37px; height: 10px; background-image: url('preview_rotate.png');">
-		</div>
+		<div class="sprite preview-rotate preview-rotate-cw">R</div>
 	</a>
 	<a href='?_src_=prefs;preference=preview_dir;dir=[preview_direction];invert=1'>
-		<div class="sprite" style="top: 292px; left: 160px; width: 37px; height: 10px; background-image: url('preview_rotate_inv.png');">
-		</div>
+		<div class="sprite preview-rotate preview-rotate-ccw">L</div>
 	</a>
 	<div class="sprite voice-bg"></div>
 	<div class="sprite family-bg"></div>
@@ -646,6 +665,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				 onerror="this.style.display='none';">
 		</a>
 	</div>
+	<a href='?_src_=prefs;preference=erp;task=menu'><div class="sprite erp-prefs"></div></a>
 	<div class="sprite ooc-bg"></div>
 
 	<div class="sprite" style="top:26px; left:23px; width:92px; height:9px; background-image: url('header_charname.png');">
@@ -768,7 +788,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	</div>
 	<div class="sprite v-color-box-body">
 		<a href='?_src_=prefs;preference=body_color;task=input' style="display: block; width: 100%; height: 100%;">
-		<div id="voice-blob-body" class="sprite v-blob" style="background-color: [skin_tone];"></div>
+			<div id="voice-blob-body" class="sprite v-blob" style="background-color: [skin_tone];"></div>
+		</a>
 	</div>
 	<a href='?_src_=prefs;preference=bespecial'><div id="bespecial" class="sprite [next_special_trait ? "yes" : ""]"></div></a>
 	<a href='?_src_=prefs;preference=multi;task=menu'><div class="sprite menu-ready"></div></a>
@@ -1480,6 +1501,12 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		ShowCustomizers(user)
 		return
 
+	else if(href_list["preference"] == "erp")
+		if(href_list["task"] == "cit_toggles")
+			handle_erp_citadel_toggles(user)
+		show_erp_prefs_ui(user)
+		return
+
 	else if(href_list["preference"] == "triumph_buy_menu")
 		SStriumphs.startup_triumphs_menu(user.client)
 		return
@@ -1611,6 +1638,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		if("change_culinary_preferences")
 			handle_culinary_topic(user, href_list)
 			show_culinary_ui(user)
+			return
+		if("change_erp_pref")
+			handle_erp_prefs_topic(user, href_list)
+			show_erp_prefs_ui(user)
 			return
 		if("random")
 			switch(href_list["preference"])
@@ -2299,6 +2330,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 						choice = choices[choice]
 						if(!load_character(choice))
 							randomise_appearance_prefs()
+							validate_customizer_entries()
 							save_character()
 
 				if("randomiseappearanceprefs")

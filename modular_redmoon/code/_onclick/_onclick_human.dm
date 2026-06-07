@@ -107,52 +107,135 @@
 	var/mutable_appearance/current_mob_appearance
 	var/mutable_appearance/current_background
 	var/list/actions_by_part
+	var/list/all_actions_by_part
+
+/datum/interaction_profile/proc/new_action_parts_map()
+	return list(
+		"head"      = list(),
+		"chest"     = list(),
+		"groin"     = list(),
+		"left_arm"  = list(),
+		"right_arm" = list(),
+		"left_leg"  = list(),
+		"right_leg" = list(),
+		"tail"      = list(),
+	)
+
+/datum/interaction_profile/proc/ensure_action_maps()
+	if(!islist(actions_by_part))
+		actions_by_part = new_action_parts_map()
+	if(!islist(all_actions_by_part))
+		all_actions_by_part = new_action_parts_map()
+
+/datum/interaction_profile/proc/reset_action_map(list/action_map)
+	if(!islist(action_map))
+		return
+	for(var/part in action_map)
+		action_map[part] = list()
+
+/datum/interaction_profile/proc/get_favorite_actions(mob/living/user)
+	if(!user?.client?.prefs)
+		return list()
+	if(!islist(user.client.prefs.favorite_interactions))
+		user.client.prefs.favorite_interactions = list()
+	return user.client.prefs.favorite_interactions
+
+/datum/interaction_profile/proc/persist_favorite_actions(mob/living/user)
+	if(!user?.client?.prefs)
+		return
+	if(!islist(user.client.prefs.favorite_interactions))
+		user.client.prefs.favorite_interactions = list()
+	user.client.prefs.save_preferences()
+
+/datum/interaction_profile/proc/sort_actions_with_favorites(list/source_actions, list/favorite_actions)
+	if(!islist(source_actions))
+		return list()
+	if(!islist(favorite_actions) || !length(favorite_actions))
+		return source_actions.Copy()
+
+	var/list/sorted_actions = list()
+	for(var/favorite_id in favorite_actions)
+		for(var/list/action in source_actions)
+			if(action["id"] == favorite_id)
+				sorted_actions += list(action)
+
+	for(var/list/action in source_actions)
+		if(!(action["id"] in favorite_actions))
+			sorted_actions += list(action)
+
+	return sorted_actions
+
+/datum/interaction_profile/proc/build_all_actions(mob/living/user)
+	ensure_action_maps()
+	reset_action_map(all_actions_by_part)
+
+	if(!islist(SSinteractions?.interactions))
+		return
+
+	for(var/interaction_key in SSinteractions.interactions)
+		var/datum/interaction/I = SSinteractions.interactions[interaction_key]
+		if (!I || !I.description)
+			continue
+		if (I.interaction_flags & INTERACTION_FLAG_HIDE_IN_PANEL)
+			continue
+		if (!islist(I.body_parts) || !length(I.body_parts))
+			continue
+
+		var/list/action = list(
+			"id"   = "[I.type]",
+			"name" = I.description,
+		)
+
+		for (var/part in I.body_parts)
+			if (!(part in all_actions_by_part))
+				continue
+			all_actions_by_part[part] += list(action)
+
+	var/list/favorite_actions = get_favorite_actions(user)
+	for(var/part in all_actions_by_part)
+		all_actions_by_part[part] = sort_actions_with_favorites(all_actions_by_part[part], favorite_actions)
 
 /datum/interaction_profile/proc/build_actions(mob/living/user, mob/living/target)
-    if (!user || !target)
-        return
+	if (!user || !target)
+		return
 
-    if (!actions_by_part)
-        actions_by_part = list(
-            "head"      = list(),
-            "chest"     = list(),
-            "groin"     = list(),
-            "left_arm"  = list(),
-            "right_arm" = list(),
-            "left_leg"  = list(),
-            "right_leg" = list(),
-            "tail"      = list(),
-        )
+	ensure_action_maps()
+	reset_action_map(actions_by_part)
 
-    // очищаем
-    for (var/part in actions_by_part)
-        actions_by_part[part] = list()
+	if(!islist(SSinteractions?.interactions))
+		return
 
-    for (var/interaction_key in SSinteractions.interactions)
-        var/datum/interaction/I = SSinteractions.interactions[interaction_key]
-        if (!I || !I.description)
-            continue
-        if (I.interaction_flags & INTERACTION_FLAG_HIDE_IN_PANEL)
-            continue
+	for (var/interaction_key in SSinteractions.interactions)
+		var/datum/interaction/I = SSinteractions.interactions[interaction_key]
+		if (!I || !I.description)
+			continue
+		if (I.interaction_flags & INTERACTION_FLAG_HIDE_IN_PANEL)
+			continue
 
-        // проверка на наличие нужных частей/условий У ЮЗЕРА и У ЦЕЛИ
-        if (!I.evaluate_user(user, TRUE, FALSE))
-            continue
-        if (!I.evaluate_target(user, target, TRUE))
-            continue
+		// Проверка базовых и расширенных требований.
+		if (!I.evaluate_user(user, TRUE, FALSE))
+			continue
+		if (!I.evaluate_target(user, target, TRUE))
+			continue
+		if (!I.evaluate_extended_requirements(user, target, TRUE))
+			continue
 
-        if (!islist(I.body_parts) || !length(I.body_parts))
-            continue
+		if (!islist(I.body_parts) || !length(I.body_parts))
+			continue
 
-        var/list/action = list(
-            "id"   = "[I.type]",
-            "name" = I.description,
-        )
+		var/list/action = list(
+			"id"   = "[I.type]",
+			"name" = I.description,
+		)
 
-        for (var/part in I.body_parts)
-            if (!(part in actions_by_part))
-                continue
-            actions_by_part[part] += list(action)
+		for (var/part in I.body_parts)
+			if (!(part in actions_by_part))
+				continue
+			actions_by_part[part] += list(action)
+
+	var/list/favorite_actions = get_favorite_actions(user)
+	for(var/part in actions_by_part)
+		actions_by_part[part] = sort_actions_with_favorites(actions_by_part[part], favorite_actions)
 
 
 /datum/interaction_profile/New(var/host_mob)
@@ -224,16 +307,20 @@
 	data["entity_to"] = M.real_name
 	data["character_ref"] = interaction_screen?.assigned_map
 
-	if (!actions_by_part)
-		build_actions(user, M)
-	data["actions_by_part"] = actions_by_part
-
 	return data
 
 
 /datum/interaction_profile/ui_data(mob/user)
 	. = ..()
-	var/data[0]
+	var/list/data = list()
+	var/mob/living/M = host?.resolve()
+	if(!M)
+		return data
+	build_actions(user, M)
+	build_all_actions(user)
+	data["actions_by_part"] = actions_by_part
+	data["all_actions_by_part"] = all_actions_by_part
+	data["favorite_actions"] = get_favorite_actions(user)
 	return data
 
 /datum/interaction_profile/proc/find_interaction_by_id(action_id)
@@ -258,15 +345,61 @@
 
 	switch (action)
 		if ("run_action_once")
-			var/part = params["part"]
 			var/action_id = params["action_id"]
-			var/duration = text2num("[params["duration"]]")
 
 			var/datum/interaction/I = find_interaction_by_id(action_id)
 			if (!I)
 				return
 
 			I.do_action(user, target)
+			build_actions(user, target)
+			return TRUE
+		if("toggle_preferred_action")
+			var/action_id = "[params["action_id"]]"
+			if(!length(action_id))
+				return
+			var/list/favorite_actions = get_favorite_actions(user)
+			if(action_id in favorite_actions)
+				favorite_actions -= action_id
+			else
+				favorite_actions += action_id
+			if(user?.client?.prefs)
+				user.client.prefs.favorite_interactions = favorite_actions
+				persist_favorite_actions(user)
+			build_actions(user, target)
+			build_all_actions(user)
+			return TRUE
+		if("move_preferred_action")
+			var/action_id = "[params["action_id"]]"
+			var/direction = "[params["direction"]]"
+			var/list/favorite_actions = get_favorite_actions(user)
+			var/current_index = favorite_actions.Find(action_id)
+			if(!current_index)
+				return
+			var/new_index = current_index
+			if(direction == "up")
+				new_index = max(1, current_index - 1)
+			else if(direction == "down")
+				new_index = min(length(favorite_actions), current_index + 1)
+			if(new_index != current_index)
+				var/swap_action = favorite_actions[new_index]
+				favorite_actions[new_index] = favorite_actions[current_index]
+				favorite_actions[current_index] = swap_action
+			if(user?.client?.prefs)
+				user.client.prefs.favorite_interactions = favorite_actions
+				persist_favorite_actions(user)
+			build_actions(user, target)
+			build_all_actions(user)
+			return TRUE
+		if("clear_preferred_actions")
+			var/list/favorite_actions = get_favorite_actions(user)
+			favorite_actions.Cut()
+			if(user?.client?.prefs)
+				user.client.prefs.favorite_interactions = favorite_actions
+				persist_favorite_actions(user)
+			build_actions(user, target)
+			build_all_actions(user)
+			return TRUE
 
 /datum/interaction_profile/ui_interact(mob/user, datum/tgui/ui, datum/tgui/parent_ui)
 	var/mob/living/M = host.resolve()

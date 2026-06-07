@@ -177,6 +177,7 @@
 		choice.randomize_entry(entry, src)
 
 /datum/preferences/proc/ShowCustomizers(mob/user)
+	validate_customizer_entries()
 	var/list/dat = list()
 	dat += "<style>span.color_holder_box{display: inline-block; width: 20px; height: 8px; border:1px solid #000; padding: 0px;}</style>"
 	dat += print_customizers_page()

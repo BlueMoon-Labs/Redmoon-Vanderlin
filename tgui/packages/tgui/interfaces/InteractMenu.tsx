@@ -49,24 +49,9 @@ interface InteractMenuData {
   entity_to: string;
   character_ref: any;
   actions_by_part: InteractionActionsByPart;
+  all_actions_by_part?: InteractionActionsByPart;
+  favorite_actions?: string[];
 }
-
-// Обёртка для hover (обычный div, чтобы TS не ругался)
-const HoverWrapper = (props: {
-  onHoverChange?: (hovered: boolean) => void;
-  children: React.ReactNode;
-}) => {
-  const { onHoverChange, children } = props;
-  return (
-    <div
-      onMouseEnter={() => onHoverChange?.(true)}
-      onMouseLeave={() => onHoverChange?.(false)}
-      style={{ width: '100%', height: '100%' }}
-    >
-      {children}
-    </div>
-  );
-};
 
 export const InteractMenu = (props, context) => {
   const { data, config, act } = useBackend<InteractMenuData>();
@@ -92,37 +77,18 @@ export const InteractMenu = (props, context) => {
   if (config.status < 2) {
     return null;
   }
-
-  // Массив действий, добавленных в избранное
-  const [favorites, setFavorites] = useState<Record<BodyPartId, string[]>>({
-    head: [],
-    chest: [],
-    groin: [],
-    left_arm: [],
-    right_arm: [],
-    left_leg: [],
-    right_leg: [],
-    tail: [],
-  });
-
-  const baseActions = data.actions_by_part?.[selectedPart] || [];
-  const favForPart = favorites[selectedPart] || [];
-
-  const actions = [
-    ...baseActions.filter(a => favForPart.includes(a.id)),
-    ...baseActions.filter(a => !favForPart.includes(a.id)),
-  ];
-
-  const toggleFavorite = (part: BodyPartId, actionId: string) => {
-    setFavorites((prev) => {
-      const list = prev[part] || [];
-      const isFav = list.includes(actionId);
-      const nextList = isFav
-        ? list.filter((id) => id !== actionId)
-        : [...list, actionId];
-      return { ...prev, [part]: nextList };
-    });
-  };
+  const actions = data.actions_by_part?.[selectedPart] || [];
+  const allActionsForPart = data.all_actions_by_part?.[selectedPart] || [];
+  const favoriteActions = Array.isArray(data.favorite_actions)
+    ? data.favorite_actions
+    : [];
+  const favoriteSet = new Set(favoriteActions);
+  const preferredActionsForPart = allActionsForPart.filter((action) =>
+    favoriteSet.has(action.id),
+  );
+  const availableActionsForPart = allActionsForPart.filter(
+    (action) => !favoriteSet.has(action.id),
+  );
 
   return (
     <Window title="Взаимодействие с телом" width={1000} height={800}>
@@ -195,22 +161,17 @@ export const InteractMenu = (props, context) => {
                           width="128px"
                           params={{ id: character_ref, type: 'map' }}
                         />
-                      </Box>
-                    </Stack.Item>
-
-                    {/* Низ: отдельный слой с хитбоксами такого же размера */}
-                    <Stack.Item>
-                      <Box
-                        position="relative"
-                        style={{
-                          width: '128px',
-                          height: '128px',
-                          marginTop: '30px',
-                          marginLeft: '20x',
-                          marginRight: 'auto',
-                          background: 'rgba(0, 0, 0, 0.6)',
-                        }}
-                      >
+                        {showHitboxes && (
+                          <Box
+                            position="absolute"
+                            style={{
+                              width: '128px',
+                              height: '128px',
+                              left: 0,
+                              top: 0,
+                              zIndex: 2,
+                            }}
+                          >
                         {/* Голова */}
                         <Box
                           position="absolute"
@@ -367,7 +328,18 @@ export const InteractMenu = (props, context) => {
                           onMouseOver={handleMouseOver}
                           onMouseLeave={handleMouseLeave}
                         />
+                          </Box>
+                        )}
                       </Box>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Button
+                        selected={showHitboxes}
+                        icon={showHitboxes ? 'eye-slash' : 'eye'}
+                        onClick={() => setShowHitboxes(!showHitboxes)}
+                      >
+                        {showHitboxes ? 'Скрыть хитбоксы' : 'Показать хитбоксы'}
+                      </Button>
                     </Stack.Item>
                   </Stack>
                 </Section>
@@ -389,7 +361,7 @@ export const InteractMenu = (props, context) => {
                       >
                         <Stack vertical>
                           {actions.map((action) => {
-                            const isFav = favorites[selectedPart]?.includes(action.id);
+                            const isFav = favoriteSet.has(action.id);
                             return (
                               <Stack.Item key={action.id}>
                                 <Stack align="center">
@@ -426,7 +398,9 @@ export const InteractMenu = (props, context) => {
                                     <Button
                                       icon={isFav ? 'star' : 'star-o'}
                                       onClick={() =>
-                                        toggleFavorite(selectedPart, action.id)
+                                        act('toggle_preferred_action', {
+                                          action_id: action.id,
+                                        })
                                       }
                                       width="24px"
                                     />
@@ -446,18 +420,107 @@ export const InteractMenu = (props, context) => {
                 <Stack vertical>
                   <Stack.Item>
                     <Box color="label">
-                      Здесь будет конструктор действий для этого юзера.
+                      Настройка порядка действий для части тела:{' '}
+                      <b>{BODY_PART_LABELS[selectedPart]}</b>
                     </Box>
                   </Stack.Item>
                   <Stack.Item>
-                    <Button icon="plus" onClick={() => null}>
-                      Добавить новое действие
+                    <Section title="Избранные (приоритет сверху вниз)" fill>
+                      {!preferredActionsForPart.length ? (
+                        <Box color="label">Для этой части тела избранных действий пока нет.</Box>
+                      ) : (
+                        <Stack vertical>
+                          {preferredActionsForPart.map((action, index) => (
+                            <Stack.Item key={action.id}>
+                              <Stack align="center">
+                                <Stack.Item grow>
+                                  <Button
+                                    fluid
+                                    onClick={() =>
+                                      act('toggle_preferred_action', {
+                                        action_id: action.id,
+                                      })
+                                    }
+                                  >
+                                    {action.name}
+                                  </Button>
+                                </Stack.Item>
+                                <Stack.Item>
+                                  <Button
+                                    icon="arrow-up"
+                                    disabled={index === 0}
+                                    onClick={() =>
+                                      act('move_preferred_action', {
+                                        action_id: action.id,
+                                        direction: 'up',
+                                      })
+                                    }
+                                  />
+                                </Stack.Item>
+                                <Stack.Item>
+                                  <Button
+                                    icon="arrow-down"
+                                    disabled={index === preferredActionsForPart.length - 1}
+                                    onClick={() =>
+                                      act('move_preferred_action', {
+                                        action_id: action.id,
+                                        direction: 'down',
+                                      })
+                                    }
+                                  />
+                                </Stack.Item>
+                                <Stack.Item>
+                                  <Button
+                                    icon="times"
+                                    color="red"
+                                    onClick={() =>
+                                      act('toggle_preferred_action', {
+                                        action_id: action.id,
+                                      })
+                                    }
+                                  />
+                                </Stack.Item>
+                              </Stack>
+                            </Stack.Item>
+                          ))}
+                        </Stack>
+                      )}
+                    </Section>
+                  </Stack.Item>
+                  <Stack.Item>
+                    <Section title="Доступные для добавления" fill>
+                      {!availableActionsForPart.length ? (
+                        <Box color="label">Все действия этой части тела уже в избранном.</Box>
+                      ) : (
+                        <Stack vertical>
+                          {availableActionsForPart.map((action) => (
+                            <Stack.Item key={action.id}>
+                              <Button
+                                fluid
+                                icon="plus"
+                                onClick={() =>
+                                  act('toggle_preferred_action', {
+                                    action_id: action.id,
+                                  })
+                                }
+                              >
+                                {action.name}
+                              </Button>
+                            </Stack.Item>
+                          ))}
+                        </Stack>
+                      )}
+                    </Section>
+                  </Stack.Item>
+                  <Stack.Item>
+                    <Button
+                      icon="trash"
+                      color="red"
+                      disabled={!favoriteActions.length}
+                      onClick={() => act('clear_preferred_actions')}
+                    >
+                      Очистить все избранные действия
                     </Button>
-                  </Stack.Item>
-                  <Stack.Item>
-                    <Box color="label">
-                      Пока это только визуальная заглушка без логики.
-                    </Box>
                   </Stack.Item>
                 </Stack>
               </Section>
