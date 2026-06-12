@@ -33,10 +33,6 @@ GLOBAL_LIST_EMPTY(arachnid_spinneret_list)
 GLOBAL_LIST_EMPTY(arachnid_mandibles_list)
 GLOBAL_LIST_EMPTY(caps_list)
 
-	//Bark bits
-GLOBAL_LIST_EMPTY(bark_list)
-GLOBAL_LIST_EMPTY(bark_random_list)
-
 GLOBAL_LIST_EMPTY(mam_body_markings_list)
 GLOBAL_LIST_EMPTY(mam_ears_list)
 GLOBAL_LIST_EMPTY(mam_tails_list)

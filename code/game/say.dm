@@ -117,10 +117,10 @@
 					var/mob/living/L = speaker
 					// This isn't accurate purposely
 					var/appendage = "Figure"
-					switch(L.client?.prefs.voice_type)
-						if(VOICE_TYPE_FEM, VOICE_TYPE_FEM_DAINTY, VOICE_TYPE_FEM_HAUGHTY)
+					switch(L.client?.prefs.gender)
+						if(FEMALE)
 							appendage = "Woman"
-						if(VOICE_TYPE_MASC, VOICE_TYPE_MASC_FOP)
+						if(MALE)
 							appendage = "Man"
 					namepart = "Unknown [appendage]"
 				else

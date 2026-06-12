@@ -54,6 +54,9 @@
 
 /datum/enchantment/proc/on_item_deleted(datum/source)
 	SIGNAL_HANDLER
+	var/atom/item = source
+	if(item?.enchantments)
+		item.enchantments -= src
 	qdel(src)
 
 /datum/enchantment/proc/remove_item(atom/item)

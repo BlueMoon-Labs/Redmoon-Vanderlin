@@ -108,88 +108,47 @@
 			return subject.has_belly()
 	return FALSE
 
-/datum/interaction/proc/check_single_exposure_requirement(mob/living/subject, requirement_flag, require_exposed = TRUE, silent = TRUE, subject_label = "Субъект")
-	var/state = get_requirement_state(subject, requirement_flag)
-	if(require_exposed)
-		if(state != HAS_EXPOSED_GENITAL)
-			if(!silent)
-				to_chat(subject, span_warning("[subject_label] [require_exposed ? "не имеет открытой части тела" : "не имеет скрытой части тела"]: [requirement_label(requirement_flag)]."))
-			return FALSE
-	else
+/datum/interaction/proc/check_exposure_requirements(mob/living/subject, exposed_flags, unexposed_flags, silent = TRUE, subject_label = "Субъект")
+	var/static/list/requirement_flags = list(
+		INTERACTION_REQUIRE_ANUS,
+		INTERACTION_REQUIRE_BALLS,
+		INTERACTION_REQUIRE_BREASTS,
+		INTERACTION_REQUIRE_EARS,
+		INTERACTION_REQUIRE_EARSOCKETS,
+		INTERACTION_REQUIRE_EYES,
+		INTERACTION_REQUIRE_EYESOCKETS,
+		INTERACTION_REQUIRE_FEET,
+		INTERACTION_REQUIRE_PENIS,
+		INTERACTION_REQUIRE_VAGINA,
+		INTERACTION_REQUIRE_BELLY,
+	)
+
+	for(var/requirement_flag in requirement_flags)
+		var/wants_exposed = exposed_flags & requirement_flag
+		var/wants_unexposed = unexposed_flags & requirement_flag
+		if(!wants_exposed && !wants_unexposed)
+			continue
+
+		var/state = get_requirement_state(subject, requirement_flag)
+		if(wants_exposed && wants_unexposed)
+			if(!state)
+				if(!silent)
+					to_chat(subject, span_warning("[subject_label] не имеет части тела: [requirement_label(requirement_flag)]."))
+				return FALSE
+			continue
+
+		if(wants_exposed)
+			if(state != HAS_EXPOSED_GENITAL && state != TRUE)
+				if(!silent)
+					to_chat(subject, span_warning("[subject_label] не имеет открытой части тела: [requirement_label(requirement_flag)]."))
+				return FALSE
+			continue
+
 		if(state != HAS_UNEXPOSED_GENITAL)
 			if(!silent)
-				to_chat(subject, span_warning("[subject_label] [require_exposed ? "не имеет открытой части тела" : "не имеет скрытой части тела"]: [requirement_label(requirement_flag)]."))
-			return FALSE
-	return TRUE
-
-/datum/interaction/proc/check_exposure_requirements(mob/living/subject, exposed_flags, unexposed_flags, silent = TRUE, subject_label = "Субъект")
-	if(exposed_flags & INTERACTION_REQUIRE_ANUS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_ANUS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_BALLS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BALLS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_BREASTS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BREASTS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_EARS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_EARSOCKETS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARSOCKETS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_EYES)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYES, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_EYESOCKETS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYESOCKETS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_FEET)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_FEET, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_PENIS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_PENIS, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_VAGINA)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_VAGINA, TRUE, silent, subject_label))
-			return FALSE
-	if(exposed_flags & INTERACTION_REQUIRE_BELLY)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BELLY, TRUE, silent, subject_label))
+				to_chat(subject, span_warning("[subject_label] не имеет скрытой части тела: [requirement_label(requirement_flag)]."))
 			return FALSE
 
-	if(unexposed_flags & INTERACTION_REQUIRE_ANUS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_ANUS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_BALLS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BALLS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_BREASTS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BREASTS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_EARS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_EARSOCKETS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EARSOCKETS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_EYES)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYES, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_EYESOCKETS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_EYESOCKETS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_FEET)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_FEET, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_PENIS)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_PENIS, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_VAGINA)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_VAGINA, FALSE, silent, subject_label))
-			return FALSE
-	if(unexposed_flags & INTERACTION_REQUIRE_BELLY)
-		if(!check_single_exposure_requirement(subject, INTERACTION_REQUIRE_BELLY, FALSE, silent, subject_label))
-			return FALSE
 	return TRUE
 
 /datum/interaction/proc/evaluate_extended_requirements(mob/living/user, mob/living/target, silent = TRUE)
@@ -280,6 +239,18 @@
 				to_chat(user, span_warning("У вас нет рук."))
 			return FALSE
 
+	if(required_from_user & INTERACTION_REQUIRE_KNOT)
+		if(!user.has_knotted_penis())
+			if(!silent)
+				to_chat(user, span_warning("Для этого действия нужен узловатый член."))
+			return FALSE
+
+	if(required_from_user & INTERACTION_REQUIRE_DOUBLE_PENIS)
+		if(!user.has_double_penis())
+			if(!silent)
+				to_chat(user, span_warning("Для этого действия нужны два члена."))
+			return FALSE
+
 	if(!check_exposure_requirements(user, required_from_user_exposed, required_from_user_unexposed, silent, "Вы"))
 		return FALSE
 
@@ -317,6 +288,18 @@
 		if(!target.has_hands())
 			if(!silent)
 				to_chat(user, span_warning("Цель не имеет рук."))
+			return FALSE
+
+	if(required_from_target & INTERACTION_REQUIRE_TOPLESS)
+		if(!target.is_topless())
+			if(!silent)
+				to_chat(user, span_warning("У цели должна быть обнажена верхняя часть тела."))
+			return FALSE
+
+	if(required_from_target & INTERACTION_REQUIRE_BOTTOMLESS)
+		if(!target.is_bottomless())
+			if(!silent)
+				to_chat(user, span_warning("У цели должна быть обнажена нижняя часть тела."))
 			return FALSE
 
 	if(!check_exposure_requirements(target, required_from_target_exposed, required_from_target_unexposed, silent, "Цель"))

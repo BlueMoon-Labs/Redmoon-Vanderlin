@@ -64,14 +64,6 @@
 	inherent_traits_f = list(TRAIT_STRONGBITE)
 	inherent_sheet = /datum/attribute_holder/sheet/job/species/triton
 
-	allowed_voicetypes_f = list(
-		VOICE_TYPE_MASC,
-	)
-
-	allowed_voicetypes_m = list(
-		VOICE_TYPE_ANDRO
-	)
-
 	statsheet_male = /datum/attribute_holder/sheet/job/species/triton/male
 	statsheet_female = /datum/attribute_holder/sheet/job/species/triton/female
 

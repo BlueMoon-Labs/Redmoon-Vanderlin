@@ -47,10 +47,6 @@
 	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, STUBBLE, OLDGREY)
 	inherent_traits = list(TRAIT_NOMOBSWAP, TRAIT_DEADNOSE, TRAIT_STINKY)
 
-	allowed_voicetypes_m = VOICE_TYPES_MASCANDRO
-
-	allowed_voicetypes_f = VOICE_TYPES_MASCANDRO
-
 	use_skintones = 1
 
 	possible_ages = NORMAL_AGES_LIST_CHILD

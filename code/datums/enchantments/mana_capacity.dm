@@ -30,12 +30,19 @@
 
 /datum/enchantment/mana_capacity/proc/on_drop(datum/source, mob/living/carbon/user)
 	if(!(source in affecting_mobs))
-		affecting_mobs |= source
-		affecting_mobs[source] = list()
+		return
 	if(!istype(user))
 		return
-	if(user in affecting_mobs[source])
+	if(!(user in affecting_mobs[source]))
 		return
 	affecting_mobs[source] -= user
 
 	user.mana_pool?.set_max_mana(user.mana_pool.maximum_mana_capacity - hardcap_increase)
+
+
+/datum/enchantment/mana_capacity/Destroy(force)
+	for(var/obj/item/source in affecting_mobs)
+		for(var/mob/living/carbon/user in affecting_mobs[source])
+			user.mana_pool?.set_max_mana(user.mana_pool.maximum_mana_capacity - hardcap_increase)
+	affecting_mobs = null
+	return ..()

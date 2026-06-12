@@ -126,7 +126,7 @@
 	var/shoes = user.get_shoes(TRUE)
 	var/genital_name = partner.get_penetrating_genital_name()
 
-	if(partner.is_fucking(src, CUM_TARGET_FEET))
+	if(partner.is_fucking(user, CUM_TARGET_FEET))
 		message = "[pick("дрочит [genital_name] <b>[partner]</b> своими [shoes ? shoes : pick("ножками", "ступнями")].",
 			"ласкает своими [shoes ? shoes : pick("ножками", "ногами", "ступнями")] промежность <b>[partner]</b>.",
 			"работает [shoes ? shoes : pick("ножками", "ступнями")], двигая оные вверх-вниз по члену <b>[partner]</b>.")]"

@@ -150,10 +150,10 @@
 			switch(fucktarget)
 			// BLUEMOON EDIT START
 				if("vagina")
-					genital = partner.getorganslot(ORGAN_SLOT_VAGINA)
+					genital = user.getorganslot(ORGAN_SLOT_VAGINA)
 					user.set_is_fucking(partner, THIGH_SMOTHERING, genital)
 				if("penis")
-					genital = partner.getorganslot(ORGAN_SLOT_PENIS)
+					genital = user.getorganslot(ORGAN_SLOT_PENIS)
 					user.set_is_fucking(partner, CUM_TARGET_MOUTH, genital)
 			// BLUEMOON EDIT END
 

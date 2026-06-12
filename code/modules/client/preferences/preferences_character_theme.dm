@@ -33,8 +33,9 @@
 	user << browse_rsc('html/character_ui/dusty/body/body_bodytype.png', "body_bodytype.png")
 	// Voice
 	user << browse_rsc('html/character_ui/dusty/voice/0_voice_bg.png', "0_voice_bg.png")
-	user << browse_rsc('html/character_ui/dusty/voice/voice_type.png', "voice_type.png")
 	user << browse_rsc('html/character_ui/dusty/voice/voice_accent.png', "voice_accent.png")
+	user << browse_rsc('html/character_ui/dusty/voice/voice_bark.png', "voice_bark.png")
+	user << browse_rsc('html/character_ui/dusty/voice/voice_bark_hover.png', "voice_bark_hover.png")
 	user << browse_rsc('html/character_ui/dusty/voice/voice_colour.png', "voice_colour.png")
 	user << browse_rsc('html/character_ui/dusty/voice/voice_colour_blob.png', "voice_colour_blob.png")
 	// Family
@@ -128,8 +129,9 @@
 	user << browse_rsc('html/character_ui/grimshart/body/body_bodytype.png', "body_bodytype.png")
 	// Voice
 	user << browse_rsc('html/character_ui/grimshart/voice/0_voice_bg.png', "0_voice_bg.png")
-	user << browse_rsc('html/character_ui/grimshart/voice/voice_type.png', "voice_type.png")
 	user << browse_rsc('html/character_ui/grimshart/voice/voice_accent.png', "voice_accent.png")
+	user << browse_rsc('html/character_ui/grimshart/voice/voice_bark.png', "voice_bark.png")
+	user << browse_rsc('html/character_ui/grimshart/voice/voice_bark_hover.png', "voice_bark_hover.png")
 	user << browse_rsc('html/character_ui/grimshart/voice/voice_colour.png', "voice_colour.png")
 	user << browse_rsc('html/character_ui/grimshart/voice/voice_colour_blob.png', "voice_colour_blob.png")
 	// Family
@@ -223,8 +225,9 @@
 	user << browse_rsc('html/character_ui/parchment/body/body_bodytype.png', "body_bodytype.png")
 	// Voice
 	user << browse_rsc('html/character_ui/parchment/voice/0_voice_bg.png', "0_voice_bg.png")
-	user << browse_rsc('html/character_ui/parchment/voice/voice_type.png', "voice_type.png")
 	user << browse_rsc('html/character_ui/parchment/voice/voice_accent.png', "voice_accent.png")
+	user << browse_rsc('html/character_ui/parchment/voice/voice_bark.png', "voice_bark.png")
+	user << browse_rsc('html/character_ui/parchment/voice/voice_bark_hover.png', "voice_bark_hover.png")
 	user << browse_rsc('html/character_ui/parchment/voice/voice_colour.png', "voice_colour.png")
 	user << browse_rsc('html/character_ui/parchment/voice/voice_colour_blob.png', "voice_colour_blob.png")
 	// Family
@@ -318,8 +321,9 @@
 	user << browse_rsc('html/character_ui/paper/body/body_bodytype.png', "body_bodytype.png")
 	// Voice
 	user << browse_rsc('html/character_ui/paper/voice/0_voice_bg.png', "0_voice_bg.png")
-	user << browse_rsc('html/character_ui/paper/voice/voice_type.png', "voice_type.png")
 	user << browse_rsc('html/character_ui/paper/voice/voice_accent.png', "voice_accent.png")
+	user << browse_rsc('html/character_ui/paper/voice/voice_bark.png', "voice_bark.png")
+	user << browse_rsc('html/character_ui/paper/voice/voice_bark_hover.png', "voice_bark_hover.png")
 	user << browse_rsc('html/character_ui/paper/voice/voice_colour.png', "voice_colour.png")
 	user << browse_rsc('html/character_ui/paper/voice/voice_colour_blob.png', "voice_colour_blob.png")
 	// Family

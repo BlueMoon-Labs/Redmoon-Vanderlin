@@ -2,7 +2,7 @@
 	enchantment_name = "Mana Regeneration"
 	examine_text = "Mana flows freely from this object."
 
-	should_process = TRUE
+	should_process = FALSE
 	essence_recipe = list(
 		/datum/thaumaturgical_essence/energia = 35,
 		/datum/thaumaturgical_essence/cycle = 25
@@ -22,6 +22,10 @@
 
 /datum/enchantment/mana_regeneration/proc/on_drop(obj/item/i, mob/living/user)
 	STOP_PROCESSING(SSobj, src)
+
+/datum/enchantment/mana_regeneration/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /datum/enchantment/mana_regeneration/process()
 	if(!iscarbon(enchanted_item.loc))

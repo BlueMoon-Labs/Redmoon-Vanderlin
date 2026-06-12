@@ -15,6 +15,9 @@
 #define COMSIG_MOVABLE_Z_CHANGED "movable_ztransit" 			//from base of atom/movable/onTransitZ(): (old_z, new_z)
 #define COMSIG_MOVABLE_SECLUDED_LOCATION "movable_secluded" 	//called when the movable is placed in an unaccessible area, used for stationloving: ()
 /// from base of atom/movable/Hear(): (proc args list(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list()))
+#define COMSIG_MOVABLE_BARK "movable_bark" //from base of atom/movable/bark(): (list/hearers, distance, volume, pitch) return TRUE to block playback
+#define COMSIG_MOVABLE_QUEUE_BARK "movable_queue_bark" //from base of atom/movable/send_speech(): (list/hearers, list/args) return TRUE to skip bark queue
+
 #define COMSIG_MOVABLE_HEAR "movable_hear"
 	#define HEARING_MESSAGE 1
 	#define HEARING_SPEAKER 2

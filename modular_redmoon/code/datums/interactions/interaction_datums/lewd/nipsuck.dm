@@ -9,7 +9,16 @@
 		INTERACTION_MAY_CONTAIN_DRINK
 	)
 
-/datum/interaction/lewd/nipsuck/display_interaction(mob/living/carbon/human/user, mob/living/carbon/human/target)
+/datum/interaction/lewd/nipsuck/display_interaction(mob/living/user, mob/living/target)
+	new /obj/effect/temp_visual/heart(user.loc)
+	new /obj/effect/temp_visual/heart(target.loc)
+	var/obj/item/organ/genital/breasts/milkers = target.getorganslot(ORGAN_SLOT_BREASTS)
+	var/blacklist = user.client?.prefs.gfluid_blacklist
+	var/cached_fluid
+	if((milkers?.get_fluid_id() in blacklist) || ((/datum/reagent/blood in blacklist) && ispath(milkers?.get_fluid_id(), /datum/reagent/blood)))
+		cached_fluid = milkers?.get_fluid_id()
+		milkers?.set_fluid_id(milkers?.default_fluid_id)
+
 	var/user_message
 	var/amount_high = 2
 
@@ -115,4 +124,6 @@
 	user.dir = get_dir(user, target)
 	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 						'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
+	if(cached_fluid && milkers)
+		milkers.set_fluid_id(cached_fluid)
 	return

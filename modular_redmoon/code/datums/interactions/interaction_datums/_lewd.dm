@@ -28,10 +28,32 @@
 		return dif
 
 /mob/living/proc/has_belly()
-	var/mob/living/carbon/C = src
-	if(has_belly || !istype(C))
+	if(has_belly && !iscarbon(src))
 		return TRUE
+	var/mob/living/carbon/C = src
+	if(!istype(C))
+		return FALSE
 	return has_genital(ORGAN_SLOT_BELLY)
+
+/mob/living/proc/has_knotted_penis()
+	var/mob/living/carbon/C = src
+	if(!istype(C))
+		return FALSE
+	var/obj/item/organ/genital/penis/P = C.getorganslot(ORGAN_SLOT_PENIS)
+	if(!P)
+		return FALSE
+	var/shape = lowertext(P.shape)
+	return shape in list("knotted", "barbknot", "hemiknot", "bhemiknot")
+
+/mob/living/proc/has_double_penis()
+	var/mob/living/carbon/C = src
+	if(!istype(C))
+		return FALSE
+	var/obj/item/organ/genital/penis/P = C.getorganslot(ORGAN_SLOT_PENIS)
+	if(!P)
+		return FALSE
+	var/shape = lowertext(P.shape)
+	return shape in list("hemi", "hemiknot", "bhemiknot")
 
 /mob/living/cum(mob/living/partner, target_orifice)
 	var/message //if this doesn't exist it calls ..()

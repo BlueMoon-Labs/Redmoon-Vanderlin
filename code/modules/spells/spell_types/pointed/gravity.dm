@@ -5,7 +5,7 @@
 	sound = 'sound/magic/gravity.ogg'
 	self_cast_possible = FALSE
 	spell_flags = SPELL_RITUOS
-	point_cost = 2
+	point_cost = 1
 	attunements = list(
 		/datum/attunement/dark = 0.6,
 	)

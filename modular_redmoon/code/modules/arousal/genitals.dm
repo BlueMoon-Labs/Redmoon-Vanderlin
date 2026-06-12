@@ -28,8 +28,41 @@
 
 /obj/item/organ/genital/Initialize(mapload, do_update = TRUE)
 	. = ..()
+	if(genital_flags & GENITAL_FUID_PRODUCTION)
+		ensure_reagents()
 	if(do_update)
 		update()
+
+/obj/item/organ/genital/proc/ensure_reagents()
+	if(genital_flags & GENITAL_FUID_PRODUCTION && !reagents)
+		create_reagents(fluid_max_volume)
+
+/obj/item/organ/genital/proc/get_linked_organ_type()
+	switch(linked_organ_slot)
+		if(ORGAN_SLOT_TESTICLES)
+			return /obj/item/organ/genital/testicles
+		if(ORGAN_SLOT_WOMB)
+			return /obj/item/organ/genital/womb
+		if(ORGAN_SLOT_PENIS)
+			return /obj/item/organ/genital/penis
+
+/obj/item/organ/genital/proc/ensure_fluid_links()
+	if(!owner || !linked_organ_slot)
+		return
+	if(genital_flags & GENITAL_FUID_PRODUCTION)
+		ensure_reagents()
+		return
+	if(owner.getorganslot(linked_organ_slot))
+		update_link()
+		return
+	var/organ_type = get_linked_organ_type()
+	if(!organ_type)
+		return
+	var/obj/item/organ/genital/L = new organ_type(null, FALSE)
+	if(ishuman(owner))
+		L.get_features(owner)
+	L.Insert(owner, TRUE, FALSE)
+	update_link()
 
 /obj/item/organ/genital/Destroy()
 	if(linked_organ?.linked_organ == src)
@@ -280,6 +313,7 @@
 /obj/item/organ/genital/Insert(mob/living/carbon/M, special = FALSE, drop_if_replaced = TRUE)
 	. = ..()
 	if(.)
+		ensure_fluid_links()
 		update()
 		RegisterSignal(owner, COMSIG_MOB_DEATH, PROC_REF(update_appearance_genitals))
 		if(genital_flags & GENITAL_THROUGH_CLOTHES)

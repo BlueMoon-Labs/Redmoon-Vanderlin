@@ -772,6 +772,12 @@ GLOBAL_LIST_EMPTY(respawncounts)
 	GLOB.directory -= ckey
 
 	QDEL_NULL(tgui_panel)
+	if(stat_panel)
+		stat_panel.close(can_be_suspended = FALSE)
+		if(stat_panel.client?.tgui_windows)
+			stat_panel.client.tgui_windows -= stat_panel.id
+		stat_panel.client = null
+		stat_panel = null
 
 	log_access("Logout: [key_name(src)]")
 	GLOB.ahelp_tickets.ClientLogout(src)

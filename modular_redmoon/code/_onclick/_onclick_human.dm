@@ -108,6 +108,10 @@
 	var/mutable_appearance/current_background
 	var/list/actions_by_part
 	var/list/all_actions_by_part
+	var/auto_action_timer
+	var/auto_action_id
+	var/datum/weakref/auto_action_user
+	var/auto_action_interval
 
 /datum/interaction_profile/proc/new_action_parts_map()
 	return list(
@@ -244,8 +248,64 @@
 
 
 /datum/interaction_profile/Destroy(force, ...)
+	stop_auto_action()
 	. = ..()
 	host = null
+
+
+/datum/interaction_profile/proc/stop_auto_action()
+	if(auto_action_timer)
+		deltimer(auto_action_timer)
+		auto_action_timer = null
+	auto_action_id = null
+	auto_action_user = null
+	auto_action_interval = 0
+
+
+/datum/interaction_profile/proc/start_auto_action(mob/living/user, mob/living/target, action_id, interval)
+	stop_auto_action()
+	if(interval <= 0 || !action_id)
+		return
+	auto_action_id = action_id
+	auto_action_user = WEAKREF(user)
+	auto_action_interval = max(interval, 0.1)
+	auto_action_timer = addtimer(CALLBACK(src, PROC_REF(process_auto_action)), auto_action_interval SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+
+
+/datum/interaction_profile/proc/process_auto_action()
+	var/mob/living/user = auto_action_user?.resolve()
+	var/mob/living/target = host?.resolve()
+	var/action_id = auto_action_id
+	var/interval = auto_action_interval
+	if(!user || !target || !action_id || QDELETED(user) || QDELETED(target))
+		stop_auto_action()
+		update_open_uis()
+		return
+	if(!user.client)
+		stop_auto_action()
+		return
+
+	var/datum/interaction/I = find_interaction_by_id(action_id)
+	if(!I || !I.do_action(user, target, apply_cooldown = FALSE))
+		stop_auto_action()
+		update_open_uis()
+		return
+
+	build_actions(user, target)
+	update_open_uis()
+
+	if(auto_action_id == action_id)
+		auto_action_timer = addtimer(CALLBACK(src, PROC_REF(process_auto_action)), interval SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+
+
+/datum/interaction_profile/proc/update_open_uis()
+	if(!LAZYLEN(open_uis))
+		return
+	for(var/datum/tgui/ui in open_uis)
+		if(!ui?.user?.client)
+			ui.close(can_be_suspended = FALSE)
+			return
+	SStgui.update_uis(src)
 
 
 /// Экран для отображения тела в TGUI (аналог examine_panel_screen)
@@ -321,6 +381,14 @@
 	data["actions_by_part"] = actions_by_part
 	data["all_actions_by_part"] = all_actions_by_part
 	data["favorite_actions"] = get_favorite_actions(user)
+
+	var/climax_threshold = max(M.get_climax_threshold(), 1)
+	data["lust"] = M.get_lust()
+	data["lust_max"] = climax_threshold
+	data["lust_progress"] = clamp((M.get_lust() / climax_threshold) * 100, 0, 100)
+	data["auto_running"] = !!auto_action_id
+	data["auto_action_id"] = auto_action_id
+	data["auto_interval"] = auto_action_interval
 	return data
 
 /datum/interaction_profile/proc/find_interaction_by_id(action_id)
@@ -345,14 +413,33 @@
 
 	switch (action)
 		if ("run_action_once")
-			var/action_id = params["action_id"]
+			var/action_id = "[params["action_id"]]"
+			var/duration = text2num(params["duration"]) || 0
+
+			if(!length(action_id))
+				return
+
+			if(duration > 0 && auto_action_id == action_id)
+				stop_auto_action()
+				update_open_uis()
+				return TRUE
 
 			var/datum/interaction/I = find_interaction_by_id(action_id)
 			if (!I)
 				return
 
+			if(duration <= 0)
+				stop_auto_action()
+
 			I.do_action(user, target)
 			build_actions(user, target)
+
+			if(duration > 0)
+				start_auto_action(user, target, action_id, duration)
+
+			return TRUE
+		if("stop_auto_action")
+			stop_auto_action()
 			return TRUE
 		if("toggle_preferred_action")
 			var/action_id = "[params["action_id"]]"
@@ -427,3 +514,7 @@
 		interaction_screen.setDir(SOUTH)
 		ui = new(user, src, "InteractMenu", "Взаимодействие с телом")
 		ui.open()
+
+/datum/interaction_profile/ui_close(mob/user)
+	stop_auto_action()
+	. = ..()

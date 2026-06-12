@@ -46,8 +46,8 @@
 	limbs_icon_m = 'icons/roguetown/mob/bodies/m/harpy.dmi'
 	limbs_icon_f = 'icons/roguetown/mob/bodies/f/harpy.dmi'
 
-	soundpack_m = /datum/voicepack/male
-	soundpack_f = /datum/voicepack/female
+	soundpack_m = /datum/voicepack/male/harpy
+	soundpack_f = /datum/voicepack/female/harpy
 
 	//related to preening emote - lets preening be used roundstart
 	COOLDOWN_DECLARE(time_to_next_preen)

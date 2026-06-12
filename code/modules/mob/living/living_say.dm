@@ -364,6 +364,8 @@
 		I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(flick_overlay), I, speech_bubble_recipients, 30)
 
+	queue_speech_barks(listening, message, message_range, spans, message_mods)
+
 #undef Z_MODE_NONE
 #undef Z_MODE_ONE_CEILING
 #undef Z_MODE_ONE

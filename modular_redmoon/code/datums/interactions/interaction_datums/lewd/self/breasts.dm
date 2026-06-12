@@ -26,4 +26,5 @@
 	simple_style = "danger"
 	interaction_sound = 'modular_redmoon/sound/interactions/slap.ogg'
 	required_from_user = INTERACTION_REQUIRE_HANDS
-	required_from_target = INTERACTION_REQUIRE_BREASTS
+	required_from_target_exposed = INTERACTION_REQUIRE_BREASTS
+	required_from_target_unexposed = INTERACTION_REQUIRE_BREASTS

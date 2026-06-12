@@ -26,8 +26,8 @@
 	limbs_icon_f = 'icons/roguetown/mob/bodies/f/moth_female.dmi'
 	dam_icon_m = 'icons/roguetown/mob/bodies/dam/dam_male.dmi'
 	dam_icon_f = 'icons/roguetown/mob/bodies/dam/dam_female.dmi'
-	soundpack_m = /datum/voicepack/male
-	soundpack_f = /datum/voicepack/female
+	soundpack_m = /datum/voicepack/male/moth
+	soundpack_f = /datum/voicepack/female/moth
 	offset_features_m = list(
 		OFFSET_RING = list(0,0),\
 		OFFSET_GLOVES = list(0,0),\

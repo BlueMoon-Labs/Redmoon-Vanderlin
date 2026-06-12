@@ -82,7 +82,6 @@ GLOBAL_LIST_INIT(roleplay_readme, file2list("strings/rt/Lore_Primer.txt"))
 			"undershirt" = client.prefs.undershirt,
 			"socks" = client.prefs.socks,
 			"pronouns" = client.prefs.pronouns,
-			"voice_type" = client.prefs.voice_type,
 			"voice_color" = client.prefs.voice_color,
 			"domhand" = client.prefs.domhand,
 			"flavortext" = client.prefs.flavortext,
@@ -118,7 +117,6 @@ GLOBAL_LIST_INIT(roleplay_readme, file2list("strings/rt/Lore_Primer.txt"))
 	P.undershirt = char_data["undershirt"]
 	P.socks = char_data["socks"]
 	P.pronouns = char_data["pronouns"]
-	P.voice_type = char_data["voice_type"]
 	P.voice_color = char_data["voice_color"]
 	P.domhand = char_data["domhand"]
 	P.flavortext = char_data["flavortext"]

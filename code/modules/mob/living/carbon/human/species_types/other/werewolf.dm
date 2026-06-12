@@ -97,8 +97,13 @@
 /datum/species/werewolf/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	. = ..()
 	RegisterSignal(C, COMSIG_MOB_SAY, PROC_REF(handle_speech))
+	RegisterSignal(C, COMSIG_MOVABLE_BARK, PROC_REF(cancel_default_bark))
 	C.remove_all_languages()
 	C.grant_language(/datum/language/beast)
+
+/datum/species/werewolf/on_species_loss(mob/living/carbon/C, datum/species/new_species, pref_load)
+	UnregisterSignal(C, COMSIG_MOVABLE_BARK, PROC_REF(cancel_default_bark))
+	return ..()
 
 /datum/species/werewolf/update_damage_overlays(mob/living/carbon/human/H)
 	H.remove_overlay(DAMAGE_LAYER)

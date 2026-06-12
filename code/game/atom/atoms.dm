@@ -284,6 +284,9 @@
 	if(forensics)
 		QDEL_NULL(forensics)
 
+	if(length(enchantments))
+		SSenchantment.remove_all_enchantments(src)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	LAZYCLEARLIST(overlays)

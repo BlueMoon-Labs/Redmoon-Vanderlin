@@ -51,6 +51,12 @@ interface InteractMenuData {
   actions_by_part: InteractionActionsByPart;
   all_actions_by_part?: InteractionActionsByPart;
   favorite_actions?: string[];
+  lust?: number;
+  lust_max?: number;
+  lust_progress?: number;
+  auto_running?: boolean;
+  auto_action_id?: string;
+  auto_interval?: number;
 }
 
 export const InteractMenu = (props, context) => {
@@ -61,7 +67,22 @@ export const InteractMenu = (props, context) => {
   const [activeTab, setActiveTab] = useState<TabId>('main');
   const [showHitboxes, setShowHitboxes] = useState(false);
 
-  const progressValue = 50;
+  const progressValue =
+    typeof data.lust_progress === 'number' ? data.lust_progress : 0;
+  const autoRunning = !!data.auto_running;
+  const autoActionId = data.auto_action_id || '';
+
+  const runAction = (actionId: string) => {
+    if (autoRunning && autoActionId === actionId && duration > 0) {
+      act('stop_auto_action');
+      return;
+    }
+    act('run_action_once', {
+      part: selectedPart,
+      action_id: actionId,
+      duration,
+    });
+  };
 
   const handleMouseOver = (e: React.MouseEvent<HTMLDivElement>) => {
     e.currentTarget.style.border = '2px solid #fff';
@@ -362,19 +383,16 @@ export const InteractMenu = (props, context) => {
                         <Stack vertical>
                           {actions.map((action) => {
                             const isFav = favoriteSet.has(action.id);
+                            const isAuto =
+                              autoRunning && autoActionId === action.id;
                             return (
                               <Stack.Item key={action.id}>
                                 <Stack align="center">
                                   <Stack.Item>
                                     <Button
-                                      icon="play"
-                                      onClick={() =>
-                                        act('run_action_once', {
-                                          part: selectedPart,
-                                          action_id: action.id,
-                                          duration,
-                                        })
-                                      }
+                                      icon={isAuto ? 'stop' : 'play'}
+                                      color={isAuto ? 'red' : undefined}
+                                      onClick={() => runAction(action.id)}
                                       width="24px"
                                     />
                                   </Stack.Item>
@@ -382,13 +400,8 @@ export const InteractMenu = (props, context) => {
                                   <Stack.Item grow>
                                     <Button
                                       fluid
-                                      onClick={() =>
-                                        act('run_action_once', {
-                                          part: selectedPart,
-                                          action_id: action.id,
-                                          duration,
-                                        })
-                                      }
+                                      selected={isAuto}
+                                      onClick={() => runAction(action.id)}
                                     >
                                       {action.name}
                                     </Button>
@@ -530,22 +543,35 @@ export const InteractMenu = (props, context) => {
           {/* Нижняя шкала времени */}
           <Stack.Item>
             <Section title="Скорость автоматических действий" fill>
-              <Stack align="center">
+              <Stack vertical>
+                {duration > 0 && (
+                  <Stack.Item>
+                    <Box color="good">
+                      {autoRunning
+                        ? `Автоповтор каждые ${(data.auto_interval ?? duration).toFixed(1)} с — нажмите ■ чтобы остановить`
+                        : `Автоповтор: каждые ${duration.toFixed(1)} с — нажмите ▶ на действии`}
+                    </Box>
+                  </Stack.Item>
+                )}
                 <Stack.Item>
-                  <Box width={6} textAlign="right">
-                    {duration.toFixed(1)} с
-                  </Box>
-                </Stack.Item>
-                <Stack.Item grow>
-                  <input
-                    type="range"
-                    min={0}
-                    max={4}
-                    step={0.1}
-                    value={duration}
-                    style={{ width: '100%' }}
-                    onChange={(e) => setDuration(Number(e.target.value))}
-                  />
+                  <Stack align="center">
+                    <Stack.Item>
+                      <Box width={6} textAlign="right">
+                        {duration <= 0 ? 'выкл.' : `${duration.toFixed(1)} с`}
+                      </Box>
+                    </Stack.Item>
+                    <Stack.Item grow>
+                      <input
+                        type="range"
+                        min={0}
+                        max={4}
+                        step={0.1}
+                        value={duration}
+                        style={{ width: '100%' }}
+                        onChange={(e) => setDuration(Number(e.target.value))}
+                      />
+                    </Stack.Item>
+                  </Stack>
                 </Stack.Item>
               </Stack>
             </Section>

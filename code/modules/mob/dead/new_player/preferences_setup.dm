@@ -21,31 +21,16 @@
 	if(randomise_flags & RANDOMIZE_GENDER)
 		gender = pref_species.sexes ? pick(MALE, FEMALE) : PLURAL
 
-	// pronouns and voice should match gender, not randomized
-	var/list/allowed_voices
+	// pronouns should match gender, not randomized
 	switch(gender)
 		if(MALE)
 			pronouns = HE_HIM
-			allowed_voices = pref_species.allowed_voicetypes_m
-			voice_type = VOICE_TYPE_MASC
 		if(FEMALE)
 			pronouns = SHE_HER
-			allowed_voices = pref_species.allowed_voicetypes_f
-			voice_type = VOICE_TYPE_FEM
 		if(PLURAL)
 			pronouns = THEY_THEM
-			allowed_voices = VOICE_TYPES_LIST
-			voice_type = VOICE_TYPE_ANDRO
 		else
 			pronouns = IT_ITS
-			allowed_voices = VOICE_TYPES_LIST
-			voice_type = VOICE_TYPE_ANDRO
-
-	if(!allowed_voices || !length(allowed_voices))
-		allowed_voices = VOICE_TYPE_ANDRO
-
-	if(!(voice_type in allowed_voices))
-		voice_type = pick(allowed_voices)
 
 	var/list/allowed_pronouns = pref_species.allowed_pronouns
 	if(!allowed_pronouns || !length(allowed_pronouns))
@@ -99,8 +84,6 @@
 		gender = pref_species.sexes ? pick(MALE, FEMALE) : PLURAL
 	if(randomise[RANDOM_AGE] || randomise[RANDOM_AGE_ANTAG] && antag_override)
 		age = pick(pref_species.possible_ages)
-	if(randomise[RANDOM_VOICETYPE] || antag_override && randomise[RANDOM_VOICETYPE_ANTAG])
-		voice_type = pick(VOICE_TYPES_LIST)
 	if(randomise[RANDOM_PRONOUNS] || antag_override && randomise[RANDOM_PRONOUNS_ANTAG])
 		var/list/allowed_pronouns = pref_species.allowed_pronouns
 		if(!allowed_pronouns || !length(allowed_pronouns))

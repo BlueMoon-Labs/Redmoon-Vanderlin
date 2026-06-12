@@ -5,21 +5,6 @@
 	new /obj/effect/temp_visual/heart(target.loc)
 	. = ..()
 
-/datum/interaction/lewd/do_breastfeed/display_interaction(mob/living/user, mob/living/target)
-	new /obj/effect/temp_visual/heart(user.loc)
-	new /obj/effect/temp_visual/heart(target.loc)
-	var/obj/item/organ/genital/breasts/milkers = user.getorganslot(ORGAN_SLOT_BREASTS)
-	var/blacklist = target.client?.prefs.gfluid_blacklist
-	var/cached_fluid
-	if((milkers?.get_fluid_id() in blacklist) || ((/datum/reagent/blood in blacklist) && ispath(milkers?.get_fluid_id(), /datum/reagent/blood)))
-		cached_fluid = milkers?.get_fluid_id()
-		milkers?.set_fluid_id(milkers?.default_fluid_id)
-
-	. = ..()
-
-	if(cached_fluid)
-		milkers.set_fluid_id(cached_fluid)
-
 /datum/interaction/lewd/self_nipsuck/display_interaction(mob/living/user, mob/living/target)
 	new /obj/effect/temp_visual/heart(user.loc)
 	new /obj/effect/temp_visual/heart(target.loc)
@@ -42,36 +27,6 @@
 	)
 	if(prob(50))
 		user.visible_message("<span class='lewd'>[pick(honks)]</span>")
-
-
-
-/datum/interaction/lewd/nipsuck/display_interaction(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	new /obj/effect/temp_visual/heart(user.loc)
-	new /obj/effect/temp_visual/heart(target.loc)
-	var/obj/item/organ/genital/breasts/milkers = target.getorganslot(ORGAN_SLOT_BREASTS)
-	var/blacklist = user.client?.prefs.gfluid_blacklist
-	var/cached_fluid
-	if((milkers?.get_fluid_id() in blacklist) || ((/datum/reagent/blood in blacklist) && ispath(milkers?.get_fluid_id(), /datum/reagent/blood)))
-		cached_fluid = milkers?.get_fluid_id()
-		milkers?.set_fluid_id(milkers?.default_fluid_id)
-
-	. = ..()
-
-	if(cached_fluid)
-		milkers.set_fluid_id(cached_fluid)
-
-	var/list/honks = list(
-		"<span class='lewd'>\ Сиськи <b>[target]</b> громко пищат!</span>",
-		"<span class='lewd'>\ <b>[target]</b> издаёт громкое пищание своими [pick(GLOB.breast_nouns)]!</span>"
-	)
-	if(prob(50))
-		user.visible_message("<span class='lewd'>[pick(honks)]</span>")
-
-/datum/interaction/lewd/kiss/display_interaction(mob/living/user, mob/living/partner)
-	new /obj/effect/temp_visual/heart(user.loc)
-	new /obj/effect/temp_visual/heart(partner.loc)
-	. = ..()
-	playsound(user.loc, pick(GLOB.lewd_kiss_sounds), 90, 1, -1)
 
 /datum/interaction/lewd/oral/selfsuck
 	description = "Член. Отсосать самому себе."

@@ -14,7 +14,7 @@
 	//var/genital_name = partner.get_penetrating_genital_name() - стал не нужен.
 
 	var/obj/item/reagent_containers/liquid_container
-	var/shape_desc = get_penis_shape_desc(user) //  Описания каким органом ты трахаешь // BlueMoon Add
+	var/shape_desc = istype(partner, /mob/living/carbon/human) ? get_penis_shape_desc(partner) : partner.get_penetrating_genital_name()
 
 	var/obj/item/cached_item = user.get_active_held_item()
 	if(istype(cached_item, /obj/item/reagent_containers))

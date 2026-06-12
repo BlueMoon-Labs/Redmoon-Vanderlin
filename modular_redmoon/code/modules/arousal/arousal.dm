@@ -32,13 +32,16 @@
 	return genit_list
 
 /obj/item/organ/genital/proc/climaxable(mob/living/carbon/human/H, silent = FALSE) //returns the fluid source (ergo reagents holder) if found.
-	if((genital_flags & GENITAL_FUID_PRODUCTION))
+	if(genital_flags & GENITAL_FUID_PRODUCTION)
+		ensure_reagents()
 		. = reagents
 	else
+		ensure_fluid_links()
 		if(linked_organ)
-			. = linked_organ.reagents
+			. = linked_organ.climaxable(H, TRUE)
 	if(!. && !silent)
-		to_chat(H, "<span class='warning'>Твой [name] не в состоянии производить собственную жидкость, ведь у него отсутствуют органы для этого.</span>")
+		var/organ_name = ru_name || name
+		to_chat(H, "<span class='warning'>Твой [organ_name] не в состоянии производить собственную жидкость, ведь у него отсутствуют органы для этого.</span>")
 
 /mob/living/carbon/human/proc/do_climax(datum/reagents/R, atom/target, obj/item/organ/genital/sender, spill = TRUE, cover = FALSE, obj/item/organ/genital/receiver, anonymous = FALSE)
 	if(!sender)
@@ -110,7 +113,7 @@
 	do_climax(fluid_source, loc, G)
 
 /mob/living/carbon/human/proc/mob_climax_partner(obj/item/organ/genital/G, mob/living/L, spillage = TRUE, mb_time = 30, obj/item/organ/genital/Lgen = null, forced = FALSE, anonymous = FALSE)
-	var/datum/reagents/fluid_source = G.climaxable(src)
+	var/datum/reagents/fluid_source = G.climaxable(src, TRUE)
 	if(!fluid_source)
 		return
 	if(mb_time) //Skip warning if this is an instant climax.
@@ -289,6 +292,8 @@
 		for(var/obj/item/organ/genital/G in internal_organs)
 			if(!(G.genital_flags & CAN_CLIMAX_WITH)) //Skip things like wombs and testicles
 				continue
+			if(!G.climaxable(src, TRUE))
+				continue
 			var/mob/living/partner
 			var/check_target
 
@@ -316,7 +321,7 @@
 						partner = check_target
 				//skyrat edit
 				if(forced_partner)
-					if((forced_partner == "none") || (!istype(forced_partner)))
+					if(forced_partner == "none" || forced_partner == src || !istype(forced_partner))
 						partner = null
 					else
 						partner = forced_partner

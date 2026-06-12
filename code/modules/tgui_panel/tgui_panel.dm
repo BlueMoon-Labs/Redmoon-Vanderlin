@@ -20,9 +20,16 @@
 	window = new(client, id)
 	window.subscribe(src, PROC_REF(on_message))
 
-/datum/tgui_panel/Del()
-	window.unsubscribe(src)
-	window.close()
+/datum/tgui_panel/Destroy()
+	if(window)
+		window.unsubscribe(src)
+		window.close(can_be_suspended = FALSE)
+		if(client?.tgui_windows)
+			client.tgui_windows -= window.id
+		QDEL_NULL(window)
+	if(client?.tgui_panel == src)
+		client.tgui_panel = null
+	client = null
 	return ..()
 
 /**
@@ -42,6 +49,8 @@
 	set waitfor = FALSE
 	// Minimal sleep to defer initialization to after client constructor
 	sleep(1 TICKS)
+	if(QDELETED(src) || !client || !(client in GLOB.clients) || QDELETED(window))
+		return
 	initialized_at = world.time
 	// Perform a clean initialization
 	window.initialize(
@@ -49,6 +58,8 @@
 		assets = list(
 			get_asset_datum(/datum/asset/simple/tgui_panel),
 		))
+	if(QDELETED(src) || !client || !(client in GLOB.clients))
+		return
 
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/fontawesome))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/tgfont))
@@ -66,6 +77,8 @@
  * Called when initialization has timed out.
  */
 /datum/tgui_panel/proc/on_initialize_timed_out()
+	if(!client)
+		return
 	// Currently does nothing but sending a message to old chat.
 	SEND_TEXT(client, span_userdanger("Failed to load fancy chat, click <a href='byond://?src=[REF(src)];reload_tguipanel=1'>HERE</a> to attempt to reload it."))
 

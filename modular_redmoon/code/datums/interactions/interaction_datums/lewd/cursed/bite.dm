@@ -14,7 +14,10 @@
 		user.is_fucking(partner, CUM_TARGET_HAND)
 		var/dam_zone = pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 		var/obj/item/bodypart/affecting = partner.get_bodypart(ran_zone(dam_zone))
-		partner.apply_damage(rand(3, 6), BRUTE, affecting, partner.run_armor_check(affecting, MELEE_ATTACK))
+		var/damage = rand(3, 6)
+		var/def_zone = affecting || dam_zone
+		var/armor = partner.run_armor_check(def_zone, BCLASS_STAB, damage = damage, blade_dulling = BCLASS_BITE)
+		partner.apply_damage(damage, BRUTE, def_zone, armor)
 		message = "[pick("прижимается к <b>[partner]</b>, раскрывает рот и начинает кусаться.",
 					"резко разрывает контакт своей челюсти с <b>[partner]</b>, тем самым образом отрывая кусок плоти.",
 					"крепко прижимает <b>[partner]</b> к своему телу и одновременно с этим прижимается зубами.",
@@ -23,7 +26,10 @@
 	else
 		var/dam_zone = pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 		var/obj/item/bodypart/affecting = partner.get_bodypart(ran_zone(dam_zone))
-		partner.apply_damage(rand(1, 3), BRUTE, affecting, partner.run_armor_check(affecting, MELEE_ATTACK))
+		var/damage = rand(1, 3)
+		var/def_zone = affecting || dam_zone
+		var/armor = partner.run_armor_check(def_zone, BCLASS_STAB, damage = damage, blade_dulling = BCLASS_BITE)
+		partner.apply_damage(damage, BRUTE, def_zone, armor)
 		message = "[pick("нежно прижимается к <b>[partner]</b>, раскрывает рот и начинает кусаться.",
 					"медленно разрывает контакт своей челюсти с <b>[partner]</b>, тем самым образом открывая свежую рану.",
 					"нежно прижимает <b>[partner]</b> к своему телу и одновременно с этим прижимается зубами.",

@@ -36,3 +36,6 @@
 			pick(span_lewd("\The <b>[user]</b> облизывает губы \the <b>[partner]</b>, проникая языком сквозь сжатые зубы."),
 			span_lewd("\The <b>[user]</b> бъёт по щеке \the <b>[partner]</b>, и заглушает любой звук из рта своим поцелуем."),
 			span_lewd("\The <b>[user]</b> душит \the <b>[partner]</b>, целуя в распухшие губы.")))
+	playsound(user.loc, pick(GLOB.lewd_kiss_sounds), 90, 1, -1)
+	user.handle_post_sex(LOW_LUST, null, partner)
+	partner.handle_post_sex(LOW_LUST, null, user)

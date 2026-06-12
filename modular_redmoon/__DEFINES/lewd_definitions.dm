@@ -919,7 +919,7 @@
 
 	if (lust >= threshold)
 		if(prob(30))
-			to_chat(src, "<b>Вам трудно удержаться от оргазма!</b>")
+			to_chat(src, span_userlove("<b>Вам трудно удержаться от оргазма!</b>"))
 
 		// BLUEMOON EDIT START
 		if (!use_moaning_multiplier && amount > 0 && prob(chance))

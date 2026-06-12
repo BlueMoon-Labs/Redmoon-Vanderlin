@@ -54,7 +54,7 @@ GLOBAL_LIST_INIT(breast_values, list("плоского" = 0, "a" =  1, "b" = 2, 
 
 /proc/get_penis_shape_desc(mob/living/carbon/human/H)
 	var/obj/item/organ/genital/penis/P = H?.getorganslot(ORGAN_SLOT_PENIS)
-	if(P)
+	if(!P)
 		return "член"
 
 	var/datum/sprite_accessory/S = GLOB.cock_shapes_list[P.shape]

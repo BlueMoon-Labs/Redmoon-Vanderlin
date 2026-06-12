@@ -80,9 +80,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	/// Character's pronouns.
 	var/pronouns = HE_HIM
 
-	/// The type of voice soundpack the mob should use.
-	var/voice_type = VOICE_TYPE_MASC
-
 	/// Age of character.
 	var/age = AGE_ADULT
 
@@ -394,11 +391,11 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 		.header-bg   { top: 5px;   left: 6px;   width: 260px; height: 52px; background-image: url('0_header_bg.png'); }
 		.body-bg     { top: 58px;  left: 110px; width: 118px; height: 75px; background-image: url('0_body_bg.png'); }
-		.voice-bg    { top: 137px; left: 2px;   width: 107px; height: 41px; background-image: url('0_voice_bg.png'); }
+		.voice-bg    { top: 149px; left: 2px;   width: 107px; height: 41px; background-image: url('0_voice_bg.png'); }
 		.family-bg   { top: 137px; left: 114px; width: 86px;  height: 74px; background-image: url('0_family_bg.png'); }
 		.flavour-bg  { top: 137px; left: 201px; width: 65px;  height: 95px; background-image: url('0_flavour_bg.png'); }
-		.loadout-bg  { top: 181px; left: 3px;   width: 64px;  height: 74px; background-image: url('0_loadout_bg.png'); }
-		.triumphs-bg { top: 182px; left: 74px;  width: 37px;  height: 34px; background-image: url('0_triumphs_bg.png'); }
+		.loadout-bg  { top: 193px; left: 3px;   width: 64px;  height: 74px; background-image: url('0_loadout_bg.png'); }
+		.triumphs-bg { top: 194px; left: 74px;  width: 37px;  height: 34px; background-image: url('0_triumphs_bg.png'); }
 		.headshot-bg { top: 213px; left: 119px; width: 76px;  height: 76px; background-image: url('headshot_bg.png'); }
 		.ooc-bg      { top: 236px; left: 201px; width: 54px;  height: 48px; background-image: url('0_ooc_bg.png'); }
 
@@ -427,7 +424,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.btn-roles { top: 284px; left: 200px; width: 55px; height: 30px; background-image: url('ooc_specialroles.png'); }
 		.btn-roles:hover { background-image: url('ooc_specialroles_hover.png'); }
 
-		.tri-shop { top: 202px; left: 75px; width: 34px; height: 26px; background-image: url('triumphs_shop.png'); }
+		.tri-shop { top: 214px; left: 75px; width: 34px; height: 26px; background-image: url('triumphs_shop.png'); }
 		.tri-shop:hover { background-image: url('triumphs_shop_hover.png'); }
 
 		.clickable-text {
@@ -461,23 +458,23 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			.auto-shrink { font-size: 7px; }
 		}
 
-		#bespecial   { top: 230px; left: 76px; width: 34px; height: 23px; background-image: url('bespecial_no.png'); }
+		#bespecial   { top: 242px; left: 76px; width: 34px; height: 23px; background-image: url('bespecial_no.png'); }
 		#bespecial:hover {background-image: url('bespecial_no_hover.png');}
 		#bespecial.yes:hover {background-image: url('bespecial_yes_hover.png');}
 		#bespecial.yes { background-image: url('bespecial_yes.png'); }
 
-		.menu-ready  { top: 258px; left: 4px;   width: 88px; height: 10px; background-image: url('ready_order.png'); }
+		.menu-ready  { top: 270px; left: 4px;   width: 88px; height: 10px; background-image: url('ready_order.png'); }
 		.menu-ready:hover { background-image: url('ready_order_hover.png'); }
-		.menu-change { top: 269px; left: 4px;   width: 69px; height: 10px; background-image: url('change_character.png'); }
+		.menu-change { top: 281px; left: 4px;   width: 69px; height: 10px; background-image: url('change_character.png'); }
 		.menu-change:hover { background-image: url('change_character_hover.png'); }
-		.menu-save   { top: 280px; left: 4px;   width: 21px; height: 10px; background-image: url('save.png'); }
+		.menu-save   { top: 292px; left: 4px;   width: 21px; height: 10px; background-image: url('save.png'); }
 		.menu-save:hover { background-image: url('save_hover.png'); }
-		.menu-undo   { top: 280px; left: 26px;  width: 21px; height: 10px; background-image: url('undo.png'); }
+		.menu-undo   { top: 292px; left: 26px;  width: 21px; height: 10px; background-image: url('undo.png'); }
 		.menu-undo:hover { background-image: url('undo_hover.png'); }
-		.menu-done   { top: 280px; left: 48px;  width: 20px; height: 10px; background-image: url('done.png'); }
+		.menu-done   { top: 292px; left: 48px;  width: 20px; height: 10px; background-image: url('done.png'); }
 		.menu-done:hover { background-image: url('done_hover.png'); }
 
-		.v-color-box { top: 136px; left: 34px; width: 48px; height: 15px; background-image: url('voice_colour.png'); }
+		.v-color-box { top: 148px; left: 34px; width: 48px; height: 15px; background-image: url('voice_colour.png'); }
 		.v-blob      { top: 4px;   left: 35px; width: 8px;  height: 7px;
 					   background-image: url('voice_colour_blob.png');
 					   background-blend-mode: multiply; }
@@ -485,8 +482,36 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.v-blob-body      { top: 4px;   left: 35px; width: 8px;  height: 7px;
 					   background-image: url('voice_colour_blob.png');
 					   background-blend-mode: multiply; }
+		.voice-bark {
+			top: 166px;
+			left: 10px;
+			width: 92px;
+			height: 10px;
+			background-image: url('voice_bark.png');
+			z-index: 2;
+		}
+		.voice-bark:hover { background-image: url('voice_bark_hover.png'); }
+		.voice-bark .bark-label {
+			padding-left: 12px;
+			width: 80px;
+			height: 10px;
+			font-size: 7px;
+			letter-spacing: 0.2px;
+		}
+		.voice-bark .bark-icon {
+			top: 1px;
+			left: 2px;
+			width: 8px;
+			height: 8px;
+			pointer-events: none;
+			background:
+				linear-gradient(#2a2218, #2a2218) 0px 5px / 1px 3px no-repeat,
+				linear-gradient(#2a2218, #2a2218) 3px 3px / 1px 5px no-repeat,
+				linear-gradient(#2a2218, #2a2218) 6px 4px / 1px 4px no-repeat;
+			opacity: 0.85;
+		}
 		.menu-keybinds {
-			top: 280px;
+			top: 292px;
 			left: 78px;
 			width: 39px;
 			height: 10px;
@@ -497,7 +522,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		}
 
 		.menu-toggles {
-			top: 269px;
+			top: 281px;
 			left: 83px;
 			width: 34px;
 			height: 10px;
@@ -603,8 +628,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			if('family' in data) updateField('char-family', data.family || 'None');
 			if('genderpref' in data) updateField('char-genderpref', data.genderpref || 'Any');
 			if('spouse' in data) updateField('char-spouse', data.spouse || 'None');
-			if('voicetype' in data) updateField('char-voicetype', data.voicetype || '');
 			if('accent' in data) updateField('char-accent', data.accent || '');
+			if('bark' in data) updateField('char-bark', data.bark || '');
 			if('loadout1' in data) updateField('char-loadout1', data.loadout1 || 'None');
 			if('loadout2' in data) updateField('char-loadout2', data.loadout2 || 'None');
 			if('loadout3' in data) updateField('char-loadout3', data.loadout3 || 'None');
@@ -745,24 +770,25 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		<div id="char-culture" class="clickable-text auto-shrink" style="width:51px; height:9px;">[culture ? culture::name : "None"]</div>
 	</div></a>
 
-	<a href='?_src_=prefs;preference=voicetype;task=input'><div class="sprite" style="top:154px; left:10px; width:46px; height:9px; background-image: url('voice_type.png');">
-		<div id="char-voicetype" class="clickable-text auto-shrink" style="width:46px; height:9px;">[voice_type]</div>
+	<a href='?_src_=prefs;preference=barks;task=menu'><div class="sprite voice-bark">
+		<div class="sprite bark-icon"></div>
+		<div id="char-bark" class="clickable-text auto-shrink bark-label">[get_bark_display_name()]</div>
 	</div></a>
-	<a href='?_src_=prefs;preference=selected_accent;task=input'><div class="sprite" style="top:154px; left:60px; width:42px; height:9px; background-image: url('voice_accent.png');">
+	<a href='?_src_=prefs;preference=selected_accent;task=input'><div class="sprite" style="top:166px; left:60px; width:42px; height:9px; background-image: url('voice_accent.png');">
 		<div id="char-accent" class="clickable-text auto-shrink" style="width:42px; height:9px;">[selected_accent]</div>
 	</div></a>
 
-	<a href='?_src_=prefs;preference=loadout_item;loadout_number=1;task=input'><div class="sprite" style="top:194px; left:10px; width:51px; height:9px; background-image: url('loadout_item1.png');">
+	<a href='?_src_=prefs;preference=loadout_item;loadout_number=1;task=input'><div class="sprite" style="top:206px; left:10px; width:51px; height:9px; background-image: url('loadout_item1.png');">
 		<div id="char-loadout1" class="clickable-text auto-shrink" style="width:51px; height:9px;">[loadout1 ? loadout1.name : "None"]</div>
 	</div></a>
-	<a href='?_src_=prefs;preference=loadout_item;loadout_number=2;task=input'><div class="sprite" style="top:213px; left:10px; width:51px; height:9px; background-image: url('loadout_item2.png');">
+	<a href='?_src_=prefs;preference=loadout_item;loadout_number=2;task=input'><div class="sprite" style="top:225px; left:10px; width:51px; height:9px; background-image: url('loadout_item2.png');">
 		<div id="char-loadout2" class="clickable-text auto-shrink" style="width:51px; height:9px;">[loadout2 ? loadout2.name : "None"]</div>
 	</div></a>
-	<a href='?_src_=prefs;preference=loadout_item;loadout_number=3;task=input'><div class="sprite" style="top:232px; left:10px; width:51px; height:9px; background-image: url('loadout_item3.png');">
+	<a href='?_src_=prefs;preference=loadout_item;loadout_number=3;task=input'><div class="sprite" style="top:244px; left:10px; width:51px; height:9px; background-image: url('loadout_item3.png');">
 		<div id="char-loadout3" class="clickable-text auto-shrink" style="width:51px; height:9px;">[loadout3 ? loadout3.name : "None"]</div>
 	</div></a>
 
-	<div class="sprite" style="top:195px; left:82px; width:22px; height:7px; background-image: url('triumphs_display.png');">
+	<div class="sprite" style="top:207px; left:82px; width:22px; height:7px; background-image: url('triumphs_display.png');">
 		<a href='?_src_=prefs;preference=triumphs;task=menu' style="text-decoration: none; display: block; width: 100%; height: 100%;">
 			<div id="char-triumphs" class="clickable-text" style="width:22px; height:7px; font-size: 5px;">[user.get_triumphs() ? "\Roman [user.get_triumphs()]" : "0"]</div>
 		</a>
@@ -854,10 +880,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		params["genderpref"] = gender_choice ? gender_choice : "Any"
 	if(update_all || ("spouse" in fields_to_update))
 		params["spouse"] = setspouse ? setspouse : "None"
-	if(update_all || ("voicetype" in fields_to_update))
-		params["voicetype"] = voice_type
 	if(update_all || ("accent" in fields_to_update))
 		params["accent"] = selected_accent
+	if(update_all || ("bark" in fields_to_update))
+		params["bark"] = get_bark_display_name()
 	if(update_all || ("loadout1" in fields_to_update))
 		params["loadout1"] = loadout1 ? loadout1.name : "None"
 	if(update_all || ("loadout2" in fields_to_update))
@@ -1695,27 +1721,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					if(pronouns_input)
 						pronouns = pronouns_input
 						to_chat(user, span_warning("Your character's pronouns are now [pronouns]."))
-				if ("voicetype")
-					var/list/allowed_voices
-					if(gender == MALE)
-						allowed_voices = pref_species.allowed_voicetypes_m
-					else if(gender == FEMALE)
-						allowed_voices = pref_species.allowed_voicetypes_f
-					else
-						allowed_voices = VOICE_TYPES_LIST
-					if(!allowed_voices || !length(allowed_voices))
-						allowed_voices = VOICE_TYPES_LIST
-					if(length(allowed_voices) == 1)
-						voice_type = allowed_voices[1]
-						to_chat(user, span_warning("This species can only use the [voice_type] voice type."))
-						return
-
-					var/voicetype_input = browser_input_list(user, "CHOOSE YOUR HERO'S VOICE TYPE", "DISCARD SOCIETY'S EXPECTATIONS", allowed_voices)
-					if(voicetype_input)
-						voice_type = voicetype_input
-						if(voicetype_input == VOICE_TYPE_ANDRO)
-							to_chat(user, span_warning("This will use the feminine voicepack pitched down a bit to achieve a more androgynous sound."))
-						to_chat(user, span_warning("Your character will now vocalize with a [lowertext(voice_type)] affect."))
 				if("faith")
 					var/list/faiths_named = list()
 					for(var/datum/faith/faith as anything in GLOB.faith_list)
@@ -2412,7 +2417,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	character.ooc_extra_link = ooc_extra_link
 	character.ooc_extra = ooc_extra
 	character.pronouns = pronouns
-	character.voice_type = voice_type
 
 	character.domhand = domhand
 	character.voice_color = voice_color

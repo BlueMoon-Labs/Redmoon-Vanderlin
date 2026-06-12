@@ -99,12 +99,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 				WRITE_FILE(S["species"], pref_species.id)
 
 	if(current_version < 33)
-		switch(voice_type)
-			if("Masculine")
-				voice_type = VOICE_TYPE_MASC
-			if("Feminine")
-				voice_type = VOICE_TYPE_FEM
-		WRITE_FILE(S["voice_type"], voice_type)
+		S["voice_type"] >> null
 
 /datum/preferences/proc/load_path(ckey,filename="preferences.sav")
 	if(!ckey)
@@ -462,7 +457,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		headshot_link = null
 
 	S["pronouns"] >> pronouns
-	S["voice_type"] >> voice_type
 
 	//Load flavor text
 	S["flavortext"] >> flavortext
@@ -495,7 +489,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	eye_color = sanitize_hexcolor(eye_color, 3, 0)
 	voice_color = voice_color
 	pronouns = sanitize_text(pronouns, THEY_THEM)
-	voice_type = sanitize_inlist(voice_type, VOICE_TYPES_LIST, VOICE_TYPE_MASC)
 	skin_tone = skin_tone
 	family = family
 	gender_choice = gender_choice
@@ -556,7 +549,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["socks"], socks)
 	WRITE_FILE(S["randomise"], randomise)
 	WRITE_FILE(S["pronouns"], pronouns)
-	WRITE_FILE(S["voice_type"], voice_type)
 	WRITE_FILE(S["species"], pref_species.id)
 	WRITE_FILE(S["loadout1"], loadout1)
 	WRITE_FILE(S["loadout2"], loadout2)

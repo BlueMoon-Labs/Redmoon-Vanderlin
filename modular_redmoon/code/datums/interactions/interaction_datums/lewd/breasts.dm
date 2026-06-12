@@ -15,12 +15,23 @@
 	body_parts = list(BODY_PART_HEAD)
 
 /datum/interaction/lewd/do_breastfeed/display_interaction(mob/living/user, mob/living/target)
+	new /obj/effect/temp_visual/heart(user.loc)
+	new /obj/effect/temp_visual/heart(target.loc)
 	var/message
 	var/obj/item/organ/genital/breasts/milkers = user.getorganslot(ORGAN_SLOT_BREASTS)
+	var/blacklist = target.client?.prefs.gfluid_blacklist
+	var/cached_fluid
+	if((milkers?.get_fluid_id() in blacklist) || ((/datum/reagent/blood in blacklist) && ispath(milkers?.get_fluid_id(), /datum/reagent/blood)))
+		cached_fluid = milkers?.get_fluid_id()
+		milkers?.set_fluid_id(milkers?.default_fluid_id)
 	var/milktype = milkers?.fluid_id
 	var/list/lines
 
 	if(!milkers || !milktype)
+		user.visible_message(span_lewd("<b>[user]</b> прижимает грудь ко рту <b>[target]</b>, но из сосков ничего не выходит."), ignored_mobs = user.get_unconsenting())
+		user.handle_post_sex(LOW_LUST, null, target, ORGAN_SLOT_BREASTS)
+		if(cached_fluid && milkers)
+			milkers.set_fluid_id(cached_fluid)
 		return
 
 	if(milkers.climaxable(target, TRUE))
@@ -52,6 +63,9 @@
 		playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
 							'modular_redmoon/sound/interactions/oral2.ogg'), 70, 1, -1)
 
+	if(cached_fluid && milkers)
+		milkers.set_fluid_id(cached_fluid)
+
 /datum/interaction/lewd/titgrope
 	description = "Грудь. Сжать в ладони."
 	required_from_user = INTERACTION_REQUIRE_HANDS
@@ -65,7 +79,7 @@
 		INTERACTION_FILLS_CONTAINERS
 	)
 
-/datum/interaction/lewd/titgrope/display_interaction(mob/living/carbon/human/user, mob/living/carbon/human/target)
+/datum/interaction/lewd/titgrope/display_interaction(mob/living/user, mob/living/target)
 	var/obj/item/reagent_containers/liquid_container
 
 	var/obj/item/cached_item = user.get_active_held_item()

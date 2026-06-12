@@ -98,9 +98,9 @@
 		else
 			switch(fucktarget)
 				if("vagina")
-					genital = partner.getorganslot(ORGAN_SLOT_VAGINA)
+					genital = user.getorganslot(ORGAN_SLOT_VAGINA)
 				if("penis")
-					genital = partner.getorganslot(ORGAN_SLOT_PENIS)
+					genital = user.getorganslot(ORGAN_SLOT_PENIS)
 		user.set_is_fucking(partner, CUM_TARGET_MOUTH, genital)
 
 	playsound(get_turf(user), pick('modular_redmoon/sound/interactions/oral1.ogg',
@@ -181,7 +181,7 @@
 	description = "Члены. Двойное оральное проникновение"
 	required_from_user = INTERACTION_REQUIRE_DOUBLE_PENIS
 	required_from_user_exposed = INTERACTION_REQUIRE_PENIS
-	required_from_target_exposed = INTERACTION_REQUIRE_MOUTH
+	required_from_target = INTERACTION_REQUIRE_MOUTH
 	write_log_user = "double oral fucked"
 	write_log_target = "was double oral fucked by"
 	interaction_sound = 'modular_redmoon/sound/interactions/oral1.ogg'
@@ -227,7 +227,7 @@
 	description = "Член. Глубокий минет с узлом."
 	required_from_user = INTERACTION_REQUIRE_KNOT
 	required_from_user_exposed = INTERACTION_REQUIRE_PENIS
-	required_from_target_exposed = INTERACTION_REQUIRE_MOUTH
+	required_from_target = INTERACTION_REQUIRE_MOUTH
 	write_log_user = "knot oral fucked"
 	write_log_target = "was knot oral fucked by"
 	interaction_sound = 'modular_redmoon/sound/interactions/champ2.ogg'

@@ -94,15 +94,15 @@
         #bespecial.yes:hover {background-image: url('parchment/bespecial/bespecial_yes_hover.png');}
         #bespecial.yes { background-image: url('parchment/bespecial/bespecial_yes.png'); }
 
-        .menu-ready  { top: 258px; left: 4px;   width: 88px; height: 10px; background-image: url('parchment/misc_buttons/ready_order.png'); }
+        .menu-ready  { top: 270px; left: 4px;   width: 88px; height: 10px; background-image: url('parchment/misc_buttons/ready_order.png'); }
         .menu-ready:hover { background-image: url('parchment/misc_buttons/ready_order_hover.png'); }
-        .menu-change { top: 269px; left: 4px;   width: 69px; height: 10px; background-image: url('parchment/misc_buttons/change_character.png'); }
+        .menu-change { top: 281px; left: 4px;   width: 69px; height: 10px; background-image: url('parchment/misc_buttons/change_character.png'); }
         .menu-change:hover { background-image: url('parchment/misc_buttons/change_character_hover.png'); }
-        .menu-save   { top: 280px; left: 4px;   width: 21px; height: 10px; background-image: url('parchment/misc_buttons/save.png'); }
+        .menu-save   { top: 292px; left: 4px;   width: 21px; height: 10px; background-image: url('parchment/misc_buttons/save.png'); }
         .menu-save:hover { background-image: url('parchment/misc_buttons/save_hover.png'); }
-        .menu-undo   { top: 280px; left: 26px;  width: 21px; height: 10px; background-image: url('parchment/misc_buttons/undo.png'); }
+        .menu-undo   { top: 292px; left: 26px;  width: 21px; height: 10px; background-image: url('parchment/misc_buttons/undo.png'); }
         .menu-undo:hover { background-image: url('parchment/misc_buttons/undo_hover.png'); }
-        .menu-done   { top: 280px; left: 48px;  width: 20px; height: 10px; background-image: url('parchment/misc_buttons/done.png'); }
+        .menu-done   { top: 292px; left: 48px;  width: 20px; height: 10px; background-image: url('parchment/misc_buttons/done.png'); }
         .menu-done:hover { background-image: url('parchment/misc_buttons/done_hover.png'); }
 
         .v-color-box { top: 136px; left: 34px; width: 48px; height: 15px; background-image: url('parchment/voice/voice_colour.png'); }
@@ -111,7 +111,7 @@
                        background-blend-mode: multiply; }
 
         .menu-keybinds {
-            top: 280px;
+            top: 292px;
             left: 78px;
             width: 39px;
             height: 10px;
@@ -122,7 +122,7 @@
         }
 
         .menu-toggles {
-            top: 269px;
+            top: 281px;
             left: 83px;
             width: 34px;
             height: 10px;
@@ -198,8 +198,8 @@
             if('family' in data) updateField('char-family', data.family || 'None');
             if('genderpref' in data) updateField('char-genderpref', data.genderpref || 'Any');
             if('spouse' in data) updateField('char-spouse', data.spouse || 'None');
-            if('voicetype' in data) updateField('char-voicetype', data.voicetype || '');
             if('accent' in data) updateField('char-accent', data.accent || '');
+            if('bark' in data) updateField('char-bark', data.bark || '');
             if('loadout1' in data) updateField('char-loadout1', data.loadout1 || 'None');
             if('loadout2' in data) updateField('char-loadout2', data.loadout2 || 'None');
             if('loadout3' in data) updateField('char-loadout3', data.loadout3 || 'None');
@@ -326,8 +326,9 @@
         <div id="char-culture" class="clickable-text auto-shrink" style="width:51px; height:9px;">[culture ? culture::name : "None"]</div>
     </div></a>
 
-    <a href='?_src_=prefs;preference=voicetype;task=input'><div class="sprite" style="top:154px; left:10px; width:46px; height:9px; background-image: url('parchment/voice/voice_type.png');">
-        <div id="char-voicetype" class="clickable-text auto-shrink" style="width:46px; height:9px;">[voice_type]</div>
+    <a href='?_src_=prefs;preference=barks;task=menu'><div class="sprite voice-bark">
+        <div class="sprite bark-icon"></div>
+        <div id="char-bark" class="clickable-text auto-shrink bark-label">[get_bark_display_name()]</div>
     </div></a>
     <a href='?_src_=prefs;preference=selected_accent;task=input'><div class="sprite" style="top:154px; left:60px; width:42px; height:9px; background-image: url('parchment/voice/voice_accent.png');">
         <div id="char-accent" class="clickable-text auto-shrink" style="width:42px; height:9px;">[selected_accent]</div>
