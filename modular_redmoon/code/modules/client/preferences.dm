@@ -4,6 +4,8 @@
 	/// Blocks duplicate IE topic replays within the same tick.
 	var/list/last_prefs_href_list
 	var/last_prefs_href_tick = 0
+	/// Ctrl+mousewheel zoom on the prefs browser control (IE/Trident).
+	var/pref_browser_zoom = "1"
 	/// My favorites! they show up in their own tab inside the ui.
 	var/list/favorite_interactions = list()
 

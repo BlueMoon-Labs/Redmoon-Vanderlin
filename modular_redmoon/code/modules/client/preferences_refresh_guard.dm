@@ -55,3 +55,23 @@
 	if(href_list["pref_token"])
 		record_prefs_href(href_list)
 	return FALSE
+
+/datum/preferences/proc/capture_preferences_browser_zoom(mob/user)
+	if(!user?.client)
+		return
+	if(!winexists(user, "stonekeep_prefwin.preferences_browser"))
+		return
+	var/current_zoom = winget(user, "stonekeep_prefwin.preferences_browser", "zoom")
+	if(current_zoom && current_zoom != "0")
+		pref_browser_zoom = current_zoom
+
+/datum/preferences/proc/show_preferences_browser_html(mob/user, html)
+	if(!user?.client)
+		return
+	capture_preferences_browser_zoom(user)
+	user << browse(html, "window=preferences_browser;size=816x950")
+	var/zoom = pref_browser_zoom
+	if(!zoom || zoom == "1")
+		return
+	spawn(0)
+		winset(user, "stonekeep_prefwin.preferences_browser", list("zoom" = zoom))

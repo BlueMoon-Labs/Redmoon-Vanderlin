@@ -850,7 +850,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	winshow(user, "stonekeep_prefwin", TRUE)
 	winshow(user, "stonekeep_prefwin.character_preview_map", TRUE)
 	var/pref_html = inject_pref_action_tokens(dat.Join())
-	user << browse(pref_html, "window=preferences_browser;size=816x950")
+	show_preferences_browser_html(user, pref_html)
 	update_preview_icon(preview_direction)
 	// onclose(user, "stonekeep_prefwin", src)
 
@@ -1503,7 +1503,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				update_job_preference(user, href_list["text"], text2num(href_list["level"]))
 			else
 				set_choices(user)
-		build_and_show_menu(user)
+		update_menu_data(user)
 		return 1
 
 	else if(href_list["preference"] == "multi")
@@ -1529,7 +1529,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				set_antag(user)
 			else
 				set_antag(user)
-		build_and_show_menu(user)
+		update_menu_data(user)
 		return
 
 	else if(href_list["preference"] == "triumphs")
@@ -2331,7 +2331,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 						current_tab = text2num(href_list["tab"])
 
 	update_menu_data(user)
-	build_and_show_menu(user)
+	if(href_list["preference"] in list("load", "changeslot"))
+		build_and_show_menu(user)
 	return 1
 
 
