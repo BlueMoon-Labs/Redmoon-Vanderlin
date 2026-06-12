@@ -40,7 +40,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	var/UI_style = null
 	var/buttons_locked = TRUE
 	var/hotkeys = TRUE
-	var/arousable = TRUE
 
 	var/showrolls = TRUE
 	var/max_chat_length = CHAT_MESSAGE_MAX_LENGTH
@@ -434,8 +433,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.ooc-notes:hover { background-image: url('ooc_notes_hover.png'); }
 		.ooc-extra { top: 270px; left: 207px; width: 40px; height: 10px; background-image: url('ooc_extra.png'); }
 		.ooc-extra:hover { background-image: url('ooc_extra_hover.png'); }
-		.erp-prefs { top: 291px; left: 141px; width: 45px; height: 10px; background-image: url('erp_prefs.png'); }
-		.erp-prefs:hover { background-image: url('erp_prefs_hover.png'); }
 		.btn-roles { top: 284px; left: 200px; width: 55px; height: 30px; background-image: url('ooc_specialroles.png'); }
 		.btn-roles:hover { background-image: url('ooc_specialroles_hover.png'); }
 
@@ -705,7 +702,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				 onerror="this.style.display='none';">
 		</a>
 	</div>
-	<a href='?_src_=prefs;preference=erp;task=menu'><div class="sprite erp-prefs"></div></a>
 	<div class="sprite ooc-bg"></div>
 
 	<div class="sprite" style="top:26px; left:23px; width:92px; height:9px; background-image: url('header_charname.png');">
@@ -1553,12 +1549,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		ShowCustomizers(user)
 		return
 
-	else if(href_list["preference"] == "erp")
-		if(href_list["task"] == "cit_toggles")
-			handle_erp_citadel_toggles(user)
-		show_erp_prefs_ui(user)
-		return
-
 	else if(href_list["preference"] == "triumph_buy_menu")
 		SStriumphs.startup_triumphs_menu(user.client)
 		return
@@ -1697,10 +1687,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		if("change_culinary_preferences")
 			handle_culinary_topic(user, href_list)
 			show_culinary_ui(user)
-			return
-		if("change_erp_pref")
-			handle_erp_prefs_topic(user, href_list)
-			show_erp_prefs_ui(user)
 			return
 		if("random")
 			switch(href_list["preference"])

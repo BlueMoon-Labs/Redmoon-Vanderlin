@@ -5,8 +5,8 @@
 This system allows you to update individual mob-overlays, without regenerating them all each time.
 When we generate overlays we generate the standing version and then rotate the mob as necessary..
 
-As of the time of writing there are 20 layers within this list. Please try to keep this from increasing. //22 and counting, good job guys
-	var/overlays_standing[20]		//For the standing stance
+As of the time of writing there are [TOTAL_LAYERS] layers within this list. Please try to keep this from increasing.
+	var/list/overlays_standing[TOTAL_LAYERS]		//For the standing stance
 
 Most of the time we only wish to update one overlay:
 	e.g. - we dropped the fireaxe out of our left hand and need to remove its icon from our mob

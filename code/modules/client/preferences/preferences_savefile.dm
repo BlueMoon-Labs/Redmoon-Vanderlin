@@ -119,25 +119,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/needs_update = savefile_needs_update(S)
 	if(needs_update == -2)		//fatal, can't load any data
 		return FALSE
-	//ERP PREF REDMOON
-	S["erppref"]			>> erppref
-	S["nonconpref"]			>> nonconpref
-	S["unholypref"]			>> unholypref
-	S["extremepref"]		>> extremepref
-	S["extremeharm"]		>> extremeharm
-	S["vorepref"]			>> vorepref
-	S["mobsexpref"]			>> mobsexpref
-	S["hornyantagspref"]	>> hornyantagspref
-	S["tattoopref"]			>> tattoopref
-	S["cit_toggles"]		>> cit_toggles
-	S["use_arousal_multiplier"] >> use_arousal_multiplier
-	S["arousal_multiplier"] >> arousal_multiplier
-	S["use_moaning_multiplier"] >> use_moaning_multiplier
-	S["moaning_multiplier"] >> moaning_multiplier
-	S["gfluid_blacklist"]	>> gfluid_blacklist
-	S["favorite_interactions"] >> favorite_interactions
-	//REDMOON END
-
 	//general preferences
 	S["asaycolor"]			>> asaycolor
 	S["ooccolor"]			>> ooccolor
@@ -237,9 +218,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	menuoptions	= SANITIZE_LIST(menuoptions)
 	be_special = SANITIZE_LIST(be_special)
 	key_bindings = sanitize_islist(key_bindings, list())
-	favorite_interactions = sanitize_islist(favorite_interactions, list())
-	sanitize_erp_preferences()
-
 	check_new_keybindings()
 
 	load_tickets(S)
@@ -262,25 +240,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX)		//updates (or failing that the sanity checks) will ensure data is not invalid at load. Assume up-to-date
 
 	//general preferences
-
-	//ERP PREF REDMOON
-	WRITE_FILE(S["erppref"], erppref)
-	WRITE_FILE(S["nonconpref"], nonconpref)
-	WRITE_FILE(S["unholypref"], unholypref)
-	WRITE_FILE(S["extremepref"], extremepref)
-	WRITE_FILE(S["extremeharm"], extremeharm)
-	WRITE_FILE(S["vorepref"], vorepref)
-	WRITE_FILE(S["mobsexpref"], mobsexpref)
-	WRITE_FILE(S["hornyantagspref"], hornyantagspref)
-	WRITE_FILE(S["tattoopref"], tattoopref)
-	WRITE_FILE(S["cit_toggles"], cit_toggles)
-	WRITE_FILE(S["use_arousal_multiplier"], use_arousal_multiplier)
-	WRITE_FILE(S["arousal_multiplier"], arousal_multiplier)
-	WRITE_FILE(S["use_moaning_multiplier"], use_moaning_multiplier)
-	WRITE_FILE(S["moaning_multiplier"], moaning_multiplier)
-	WRITE_FILE(S["gfluid_blacklist"], gfluid_blacklist)
-	WRITE_FILE(S["favorite_interactions"], favorite_interactions)
-	//REDMOON END
 
 	WRITE_FILE(S["asaycolor"], asaycolor)
 	WRITE_FILE(S["triumphs"], triumphs)

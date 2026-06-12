@@ -79,13 +79,6 @@
 		ORGAN_SLOT_GUTS = /obj/item/organ/guts,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_TAIL = /obj/item/organ/tail/dracon,
-		ORGAN_SLOT_BREASTS = /obj/item/organ/genital/breasts,
-		ORGAN_SLOT_BUTT = /obj/item/organ/genital/butt,
-		ORGAN_SLOT_VAGINA = /obj/item/organ/genital/vagina,
-		ORGAN_SLOT_PENIS = /obj/item/organ/genital/penis,
-		ORGAN_SLOT_TESTICLES = /obj/item/organ/genital/testicles,
-		ORGAN_SLOT_BELLY = /obj/item/organ/genital/belly,
-		ORGAN_SLOT_ANUS = /obj/item/organ/genital/anus,
 	)
 
 	bodypart_features = list(
@@ -100,13 +93,6 @@
 		/datum/customizer/organ/snout/dracon,
 		/datum/customizer/organ/tail/dracon,
 		/datum/customizer/organ/ears/dracon,
-		/datum/customizer/organ/genital/penis,
-		/datum/customizer/organ/genital/testicles,
-		/datum/customizer/organ/genital/vagina,
-		/datum/customizer/organ/genital/breasts,
-		/datum/customizer/organ/genital/butt,
-		/datum/customizer/organ/genital/belly,
-		/datum/customizer/organ/genital/anus
 		)
 
 	body_marking_sets = list(
