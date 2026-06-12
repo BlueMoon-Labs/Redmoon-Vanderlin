@@ -361,10 +361,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	return dirs[idx]
 
 /datum/preferences/proc/handle_preview_dir_click(mob/user, href_list)
-	var/start_dir = text2num(href_list["dir"]) || preview_direction
 	var/invert = text2num(href_list["invert"]) ? TRUE : FALSE
-
-	preview_direction = get_next_dir(start_dir, invert)
+	preview_direction = get_next_dir(preview_direction, invert)
 	update_preview_icon(preview_direction)
 
 /datum/preferences/proc/build_and_show_menu(mob/user)
@@ -1453,7 +1451,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 /datum/preferences/proc/process_link(mob/user, list/href_list)
 	if(href_list["preference"] == "preview_dir")
 		handle_preview_dir_click(user, href_list)
-		build_and_show_menu(user)
 		return
 
 	if(href_list["bancheck"])
