@@ -24,7 +24,7 @@ GLOBAL_VAR(last_connection)
 
 	var/client/C = GLOB.directory[ckey]
 
-	if(!real_bans_only && !C)
+	if(!real_bans_only && !C && CONFIG_GET(flag/usewhitelist))
 		if(!check_whitelist(ckey))
 			if (!admin)
 				if(get_playerquality(ckey) <= -100)
