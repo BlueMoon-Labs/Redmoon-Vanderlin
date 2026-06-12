@@ -431,7 +431,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	eye_color = sanitize_hexcolor(eye_color, 3, include_crunch = FALSE)
 	voice_color = voice_color
 	pronouns = sanitize_text(pronouns, THEY_THEM)
-	skin_tone = skin_tone
+	skin_tone = normalize_skin_tone_hex(skin_tone)
+	body_color = skin_tone
 	family = family
 	gender_choice = gender_choice
 	setspouse = setspouse

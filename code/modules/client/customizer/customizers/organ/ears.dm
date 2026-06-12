@@ -18,7 +18,7 @@
 
 /datum/customizer/organ/ears/elf
 	customizer_choices = list(/datum/customizer_choice/organ/ears/elf)
-	allows_disabling = TRUE
+	allows_disabling = FALSE
 
 /datum/customizer/organ/ears/halforc
 	customizer_choices = list(/datum/customizer_choice/organ/ears/halforc)

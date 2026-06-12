@@ -65,13 +65,23 @@
 	if(current_zoom && current_zoom != "0")
 		pref_browser_zoom = current_zoom
 
+/datum/preferences/proc/apply_preferences_browser_zoom(mob/user, zoom)
+	if(!user?.client || !zoom || zoom == "0")
+		return
+	if(!winexists(user, "stonekeep_prefwin.preferences_browser"))
+		return
+	winset(user, "stonekeep_prefwin.preferences_browser", list("zoom" = zoom))
+
 /datum/preferences/proc/show_preferences_browser_html(mob/user, html)
 	if(!user?.client)
 		return
 	capture_preferences_browser_zoom(user)
-	user << browse(html, "window=preferences_browser;size=816x950")
+	user << browse(html, "window=stonekeep_prefwin.preferences_browser;size=816x950")
 	var/zoom = pref_browser_zoom
-	if(!zoom || zoom == "1")
-		return
-	spawn(0)
-		winset(user, "stonekeep_prefwin.preferences_browser", list("zoom" = zoom))
+	if(!zoom || zoom == "0")
+		zoom = "1"
+	// IE reloads HTML after browse(); apply user zoom once the control exists.
+	spawn(1)
+		apply_preferences_browser_zoom(user, zoom)
+	spawn(5)
+		apply_preferences_browser_zoom(user, zoom)

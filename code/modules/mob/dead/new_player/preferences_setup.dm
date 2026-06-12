@@ -66,7 +66,7 @@
 
 	if(randomise_flags & RANDOMIZE_SKIN_TONE)
 		var/list/skin_list = pref_species.get_skin_list()
-		skin_tone = pick_assoc(skin_list)
+		skin_tone = normalize_skin_tone_hex(pick_assoc(skin_list))
 
 	if(randomise_flags & RANDOMIZE_EYE_COLOR)
 		eye_color = random_eye_color()
@@ -104,7 +104,7 @@
 		underwear = pref_species.random_underwear(gender)
 	if(randomise[RANDOM_SKIN_TONE])
 		var/list/skins = pref_species.get_skin_list()
-		skin_tone = pick_assoc(skins)
+		skin_tone = normalize_skin_tone_hex(pick_assoc(skins))
 	if(randomise[RANDOM_EYE_COLOR])
 		eye_color = random_eye_color()
 	features = random_features()
@@ -112,6 +112,9 @@
 	if(pref_species.default_features["ears"])
 		features["ears"] = pref_species.default_features["ears"]
 	accessory = "Nothing"
+	validate_customizer_entries()
+	reset_all_customizer_accessory_colors()
+	randomize_all_customizer_accessories()
 
 /datum/preferences/proc/random_species()
 	var/rando_race = GLOB.species_list[pick(GLOB.roundstart_species)]

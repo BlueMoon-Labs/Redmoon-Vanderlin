@@ -1379,10 +1379,11 @@
 			. += overlays
 
 	if(should_draw_greyscale && !skeletonized)
-		var/draw_color =  mutation_color || species_color || skin_tone
+		var/draw_color = mutation_color || species_color || skin_tone
 		if(HAS_TRAIT(src, TRAIT_ROTTEN) || (owner && HAS_TRAIT(owner, TRAIT_ROTMAN)))
 			draw_color = SKIN_COLOR_ROT
 		if(draw_color)
+			draw_color = normalize_skin_tone_hex(draw_color)
 			limb.color = "#[draw_color]"
 			if(aux_zone && !hideaux)
 				aux.color = "#[draw_color]"

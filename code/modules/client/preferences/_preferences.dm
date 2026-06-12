@@ -383,6 +383,10 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	<meta charset="utf-8">
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 	<style>
+		html {
+			height: 100%;
+			overflow: hidden;
+		}
 		body {
 			background-color: #1a1a1a;
 			display: flex;
@@ -391,6 +395,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			height: 100%;
 			width: 100%;
 			margin: 0;
+			overflow: hidden;
 			image-rendering: pixelated;
 		}
 		.ui-container {
@@ -399,7 +404,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			height: 315px;
 			background-image: url('Charsheet_BG.1.png');
 			background-size: cover;
-			transform: scale(3);
+			zoom: 2.25;
+			-ms-zoom: 2.25;
 		}
 		.sprite { position: absolute; background-repeat: no-repeat; cursor: pointer; }
 
@@ -666,6 +672,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				if(blob && data.voice_color) {
 					blob.style.backgroundColor = data.voice_color;
 				}
+			}
 			if('body_color' in data) {
 				var blob = document.getElementById('voice-blob-body');
 				if(blob && data.body_color) {
@@ -825,7 +832,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	</div>
 	<div class="sprite v-color-box-body">
 		<a href='?_src_=prefs;preference=body_color;task=input' style="display: block; width: 100%; height: 100%;">
-			<div id="voice-blob-body" class="sprite v-blob" style="background-color: [skin_tone];"></div>
+			<div id="voice-blob-body" class="sprite v-blob" style="background-color: #[normalize_skin_tone_hex(skin_tone)];"></div>
 		</a>
 	</div>
 	<a href='?_src_=prefs;preference=bespecial'><div id="bespecial" class="sprite [next_special_trait ? "yes" : ""]"></div></a>
@@ -913,8 +920,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		params["headshot"] = headshot_link || ""
 	if(update_all || ("voice_color" in fields_to_update))
 		params["voice_color"] = voice_color
-	if(update_all || ("body_color in fields_to_update"))
-		params["body_color"] = body_color
+	if(update_all || ("body_color" in fields_to_update))
+		params["body_color"] = "#[normalize_skin_tone_hex(skin_tone)]"
 	if(update_all || ("bespecial" in fields_to_update))
 		params["bespecial"] = next_special_trait ? "1" : "0"
 	if(update_all || ("culture" in fields_to_update))
@@ -1698,11 +1705,15 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					eye_color = random_eye_color()
 				if("s_tone")
 					var/list/skins = pref_species.get_skin_list()
-					skin_tone = skins[pick(skins)]
+					skin_tone = normalize_skin_tone_hex(pick_assoc(skins))
+					body_color = skin_tone
+					reset_all_customizer_accessory_colors()
 				if("species")
 					random_species()
 				if("all")
 					apply_character_randomization_prefs()
+					reset_all_customizer_accessory_colors()
+					randomize_all_customizer_accessories()
 		if("input")
 
 			if(href_list["preference"] in GLOB.preferences_custom_names)
@@ -1785,12 +1796,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 							return
 						voice_color = sanitize_hexcolor(new_voice, include_crunch = FALSE)
 				if("body_color")
-					var/new_color = input(user, "Выбери цвет кожи/шерсти своего персонажа", "THE THROAT","#"+body_color) as color|null
+					var/new_color = input(user, "Выбери цвет кожи/шерсти своего персонажа", "THE THROAT","#[normalize_skin_tone_hex(skin_tone)]") as color|null
 					if(new_color)
-						if(color_hex2num(new_color) < 230)
-							to_chat(user, "<font color='red'>Этот цвет слишком тёмный!.</font>")
-							return
-						skin_tone = sanitize_hexcolor(new_color)
+						// if(color_hex2num(new_color) < 230)
+						// 	to_chat(user, "<font color='red'>Этот цвет слишком тёмный!.</font>")
+						// 	return
+						skin_tone = normalize_skin_tone_hex(sanitize_hexcolor(new_color))
+						body_color = skin_tone
+						reset_all_customizer_accessory_colors()
 				if("headshot")
 					to_chat(user, span_notice("Please use an image of the head and shoulder area to maintain immersion level. Lastly, ["<span class='bold'>do not use a real life photo or ANYTHING AI generated.</span>"]"))
 					to_chat(user, span_notice("If the photo doesn't show up properly in-game, ensure that it's a direct image link that opens properly in a browser."))
@@ -1980,7 +1993,9 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					var/list/listy = pref_species.get_skin_list()
 					var/new_s_tone = browser_input_list(user, "CHOOSE YOUR HERO'S [uppertext(pref_species.skin_tone_wording)]", "THE SUN", listy)
 					if(new_s_tone)
-						skin_tone = listy[new_s_tone]
+						skin_tone = normalize_skin_tone_hex(listy[new_s_tone])
+						body_color = skin_tone
+						reset_all_customizer_accessory_colors()
 
 				if("selected_accent")
 					if(length(pref_species.multiple_accents))
@@ -2297,13 +2312,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					if(choice)
 						choice = choices[choice]
 						if(!load_character(choice))
-							randomise_appearance_prefs()
+							randomise_appearance_prefs(~RANDOMIZE_SPECIES)
 							validate_customizer_entries()
+							reset_all_customizer_accessory_colors()
+							randomize_all_customizer_accessories()
 							save_character()
 
 				if("randomiseappearanceprefs")
-					randomise_appearance_prefs()
-					customizer_entries = list()
+					randomise_appearance_prefs(~RANDOMIZE_SPECIES)
 					validate_customizer_entries()
 					reset_all_customizer_accessory_colors()
 					randomize_all_customizer_accessories()
@@ -2363,7 +2379,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	character.dna.features = features.Copy()
 	character.dna.real_name = character.real_name
 
-	character.skin_tone = skin_tone
+	character.skin_tone = normalize_skin_tone_hex(skin_tone)
 	character.culture = GLOB.culture_singletons[culture]
 	character.underwear = underwear
 	character.underwear_color = underwear_color
