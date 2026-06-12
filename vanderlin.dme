@@ -421,6 +421,7 @@
 #include "code\_onclick\hud\rendering\render_plate.dm"
 #include "code\_REDFINES\_species.dm"
 #include "code\_REDFINES\is_helpers.dm"
+#include "code\_REDFINES\sounds.dm"
 #include "code\controllers\admin.dm"
 #include "code\controllers\controller.dm"
 #include "code\controllers\failsafe.dm"

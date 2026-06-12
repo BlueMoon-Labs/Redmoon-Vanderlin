@@ -70,8 +70,8 @@
 	linked_organ = null
 	. = ..()
 
-/obj/item/organ/genital/on_life()
-	return
+/obj/item/organ/genital/on_life(delta_time, times_fired)
+	. = ..()
 
 /obj/item/organ/genital/proc/set_aroused_state(new_state,cause = "manual toggle")
 	if(!(genital_flags & GENITAL_CAN_AROUSE))
@@ -310,12 +310,12 @@
 	// Genitals only exist when enabled via the character customizer (accessory imprinted from organ DNA).
 	return !isnull(accessory_type)
 
-/obj/item/organ/genital/Insert(mob/living/carbon/M, special = FALSE, drop_if_replaced = TRUE)
+/obj/item/organ/genital/Insert(mob/living/carbon/M, special = FALSE, drop_if_replaced = TRUE, new_zone = null)
 	. = ..()
 	if(.)
 		ensure_fluid_links()
 		update()
-		RegisterSignal(owner, COMSIG_MOB_DEATH, PROC_REF(update_appearance_genitals))
+		RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(update_appearance_genitals))
 		if(genital_flags & GENITAL_THROUGH_CLOTHES)
 			owner.exposed_genitals += src
 
@@ -328,7 +328,7 @@
 			var/mob/living/carbon/human/H = .
 			H.update_genitals()
 		C.exposed_genitals -= src
-		UnregisterSignal(C, COMSIG_MOB_DEATH)
+		UnregisterSignal(C, COMSIG_LIVING_DEATH)
 
 //proc to give a player their genitals and stuff when they log in
 /mob/living/carbon/human/proc/give_genitals(clean = FALSE)//clean will remove all pre-existing genitals. proc will then give them any genitals that are enabled in their DNA

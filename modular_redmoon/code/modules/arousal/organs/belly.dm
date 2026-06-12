@@ -25,11 +25,8 @@
 /obj/item/organ/genital/belly/get_overlay_size()
 	return round(size)
 
-/obj/item/organ/genital/belly/on_life()
-	if(QDELETED(src))
-		return
-	if(!owner)
-		return
+/obj/item/organ/genital/belly/on_life(delta_time, times_fired)
+	. = ..()
 
 /obj/item/organ/genital/belly/modify_size(modifier, min = -INFINITY, max = BELLY_SIZE_MAX)
 	if(modifier < 0 && size_cached <= 0)

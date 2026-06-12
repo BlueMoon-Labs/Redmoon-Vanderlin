@@ -25,7 +25,7 @@
 	(+1 Constitution, +1 Endurance)"
 	allowed_pronouns = PRONOUNS_LIST
 	species_traits = list(EYECOLOR, HAIR, LIPS, STUBBLE, OLDGREY)
-	inherent_traits = list(TRAIT_WATER_BREATHING, TRAIT_FISHFACE, TRAIT_GOOD_SWIM)
+	inherent_traits = list(TRAIT_NODROWN, TRAIT_FISHFACE, TRAIT_SWIMMER)
 
 	possible_ages = ALL_AGES_LIST
 	use_skintones = TRUE

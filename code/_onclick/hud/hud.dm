@@ -136,7 +136,6 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 
 	QDEL_NULL(module_store_icon)
 	QDEL_LIST(static_inventory)
-	scannies = null
 
 	QDEL_NULL(fov_holder)
 

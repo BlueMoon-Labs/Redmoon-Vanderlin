@@ -72,11 +72,6 @@
 	var/window_scaling
 
 /atom/movable/screen
-//REDMOON CHANGES
-	var/assigned_map
-	var/del_on_map_removal = TRUE
-
-//REDMOON CHANGES END
 	blockscharging = TRUE
 
 ///setter used to set our new hud
