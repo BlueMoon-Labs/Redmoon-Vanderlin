@@ -177,4 +177,6 @@
 		handle_bark_prefs_topic(user, href_list)
 		show_bark_prefs_ui(user)
 		return
+	if(redmoon_block_be_special_pq(user, href_list))
+		return 1
 	return ..()
