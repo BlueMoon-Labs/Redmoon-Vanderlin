@@ -378,11 +378,13 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		break
 
 	user?.client.acquire_dpi()
+	pref_action_token = "[world.realtime]_[rand(1, 99999)]"
 
 	dat += {"
 <html lang="ru">
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 	<style>
 		body {
 			background-color: #1a1a1a;
@@ -841,6 +843,17 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	<a href='?_src_=prefs;preference=load'><div class="sprite menu-undo"></div></a>
 	<a href='?_src_=prefs;preference=finished'><div class="sprite menu-done"></div></a>
 </div>
+<script>
+(function() {
+	var token = "[pref_action_token]";
+	document.querySelectorAll('a').forEach(function(link) {
+		var linkHref = link.getAttribute('href');
+		if(!linkHref || linkHref.indexOf('_src_=prefs') === -1 || linkHref.indexOf('pref_token=') !== -1)
+			return;
+		link.setAttribute('href', linkHref + ';pref_token=' + token);
+	});
+})();
+</script>
 </body>
 </html>
 "}

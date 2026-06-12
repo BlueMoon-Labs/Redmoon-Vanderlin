@@ -1,4 +1,6 @@
 /datum/preferences
+	/// Invalidates stale preference browser URLs on refresh/reload.
+	var/pref_action_token = ""
 	/// My favorites! they show up in their own tab inside the ui.
 	var/list/favorite_interactions = list()
 

@@ -170,6 +170,9 @@
 	apply_bark_prefs_to(character)
 
 /datum/preferences/process_link(mob/user, list/href_list)
+	if(!pref_link_token_valid(href_list))
+		build_and_show_menu(user)
+		return
 	if(href_list["preference"] == "barks")
 		show_bark_prefs_ui(user)
 		return

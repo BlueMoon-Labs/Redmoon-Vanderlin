@@ -55,8 +55,11 @@ img {
 
 #topbar {
   display: flex;
-  justify-content: space-evenly;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: stretch;
+  gap: 0.15em;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 0.25em 0.25em 0;
@@ -123,13 +126,15 @@ img {
 .top-item {
   font-family: "Blackmoor LET";
   cursor: pointer;
-  display: inline-table;
+  display: inline-block;
   user-select: none;
   -ms-user-select: none; /* Remove after Byond 516 */
   text-align: center;
   font-size: 1.1em;
-  width: 100%;
-  padding: 0.25em 0.25em;
+  flex: 0 0 auto;
+  width: auto;
+  white-space: nowrap;
+  padding: 0.25em 0.5em;
   background-color: transparent;
   border: 0;
   border-radius: 0.25em;
