@@ -1,6 +1,9 @@
 /datum/preferences
 	/// Invalidates stale preference browser URLs on refresh/reload.
 	var/pref_action_token = ""
+	/// Blocks duplicate IE topic replays within the same tick.
+	var/list/last_prefs_href_list
+	var/last_prefs_href_tick = 0
 	/// My favorites! they show up in their own tab inside the ui.
 	var/list/favorite_interactions = list()
 

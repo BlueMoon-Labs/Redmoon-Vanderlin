@@ -378,7 +378,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		break
 
 	user?.client.acquire_dpi()
-	pref_action_token = "[world.realtime]_[rand(1, 99999)]"
+	pref_action_token = "[world.time]_[rand(1, 99999)]"
 
 	dat += {"
 <html lang="ru">
@@ -843,25 +843,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	<a href='?_src_=prefs;preference=load'><div class="sprite menu-undo"></div></a>
 	<a href='?_src_=prefs;preference=finished'><div class="sprite menu-done"></div></a>
 </div>
-<script>
-(function() {
-	var token = "[pref_action_token]";
-	document.querySelectorAll('a').forEach(function(link) {
-		var linkHref = link.getAttribute('href');
-		if(!linkHref || linkHref.indexOf('_src_=prefs') === -1 || linkHref.indexOf('pref_token=') !== -1)
-			return;
-		link.setAttribute('href', linkHref + ';pref_token=' + token);
-	});
-})();
-</script>
 </body>
 </html>
 "}
 
 	winshow(user, "stonekeep_prefwin", TRUE)
 	winshow(user, "stonekeep_prefwin.character_preview_map", TRUE)
-	// This should really be a browser datum
-	user << browse(dat.Join(), "window=preferences_browser;size=816x950")
+	var/pref_html = inject_pref_action_tokens(dat.Join())
+	user << browse(pref_html, "window=preferences_browser;size=816x950")
 	update_preview_icon(preview_direction)
 	// onclose(user, "stonekeep_prefwin", src)
 
