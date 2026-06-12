@@ -1,18 +1,18 @@
 
 /mob/living/proc/get_dodging_score(modifier = 0)
 	var/basic_speed = GET_MOB_ATTRIBUTE_VALUE(src, STAT_SPEED)
-	var/encumberance = get_encumbrance()
 	if(!HAS_TRAIT(src, TRAIT_DODGEEXPERT))
 		encumbrance *= 1.5
 	var/encumbrance_penalty = 0
-	if(encumberance >= 1.0)
-		encumbrance_penalty = 4
-	else if(encumberance >= 0.75)
-		encumbrance_penalty = 3
-	else if(encumberance >= 0.5)
-		encumbrance_penalty = 2
-	else if(encumberance >= 0.25)
-		encumbrance_penalty = 1
+	switch(encumbrance)
+		if(ENCUMBRANCE_LIGHT)
+			encumbrance_penalty = 1
+		if(ENCUMBRANCE_MEDIUM)
+			encumbrance_penalty = 2
+		if(ENCUMBRANCE_HEAVY)
+			encumbrance_penalty = 3
+		if(ENCUMBRANCE_EXTREME)
+			encumbrance_penalty = 4
 
 	var/stun_penalty = 0
 	if(incapacitated())
@@ -48,7 +48,7 @@
  * @return TRUE if dodge successful, FALSE otherwise
  */
 /mob/living/proc/attempt_dodge(datum/intent/intenty, mob/living/user, can_dodge_see = TRUE)
-	if(!candodge)
+	if(HAS_TRAIT(src, TRAIT_UNDODGING))
 		return FALSE
 	if(intenty && !intenty.candodge)
 		return FALSE
@@ -123,7 +123,7 @@
 		if(time_since_last < 2 SECONDS)
 			drained += 5
 
-		if((H.get_encumbrance() > 0.7) || H.legcuffed)
+		if((H.encumbrance >= ENCUMBRANCE_HEAVY) || H.legcuffed)
 			H.Knockdown(1)
 			return FALSE
 
@@ -208,8 +208,6 @@
 /mob/living/proc/calculate_dodge_score(mob/living/user)
 	if(HAS_TRAIT(src, TRAIT_EVASIVE))
 		return 99  // Effectively uncappable score, handled as special case
-	if(HAS_TRAIT(src, TRAIT_UNDODGING))
-		return -99 // Effectively impossible score
 
 	var/dodge_modifier = 0
 
