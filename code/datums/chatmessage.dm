@@ -72,11 +72,11 @@
 
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		switch(human_owner.voice_type)
-			if(VOICE_TYPE_MASC)
-				blip_tone = BLIP_TONE_MASCULINE
-			if(VOICE_TYPE_FEM)
+		switch(human_owner.gender)
+			if(FEMALE)
 				blip_tone = BLIP_TONE_FEMININE
+			if(MALE)
+				blip_tone = BLIP_TONE_MASCULINE
 
 	_extra_classes = extra_classes.Copy()
 
@@ -217,8 +217,8 @@
 	if (owned_by.seen_messages)
 //		var/idx = 1
 //		var/combined_height = approx_lines
-		for(var/msg in owned_by.seen_messages[message_loc])
-			var/datum/chatmessage/m = msg
+		for(var/datum/chatmessage/m as anything in owned_by.seen_messages[message_loc])
+
 //			animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 //			combined_height += m.approx_lines
 //			var/sched_remaining = m.scheduled_destruction - world.time

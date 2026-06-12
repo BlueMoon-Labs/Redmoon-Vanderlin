@@ -154,7 +154,7 @@
 		return
 	if(!user.can_read(src))
 		if(info)
-			user.adjust_experience(/datum/skill/misc/reading, 2, FALSE)
+			user.adjust_experience(/datum/attribute/skill/misc/reading, 2, FALSE)
 		return
 	if(mailer)
 		return
@@ -218,7 +218,7 @@
 /obj/item/paper/proc/reset_spamflag()
 	spam_flag = FALSE
 
-/obj/item/paper/attack_self(mob/user, params)
+/obj/item/paper/attack_self(mob/user, list/modifiers)
 	if(mailer)
 		user.visible_message("<span class='notice'>[user] opens the letter from [mailer].</span>")
 		cached_mailer = mailer
@@ -239,7 +239,7 @@
 	if(rigged && (SSevents.holidays && SSevents.holidays[APRIL_FOOLS]))
 		if(!spam_flag)
 			spam_flag = TRUE
-			playsound(loc, 'sound/blank.ogg', 50, TRUE)
+			playsound(src, 'sound/blank.ogg', 50, TRUE)
 			addtimer(CALLBACK(src, PROC_REF(reset_spamflag)), 20)
 
 /obj/item/paper/proc/addtofield(id, text, links = 0)
@@ -383,7 +383,7 @@
 
 	if(href_list["write"])
 		var/id = href_list["write"]
-		var/t =  browser_input_text(usr, "Enter what you want to write:", "Write", multiline = TRUE)
+		var/t = browser_input_text(usr, "Enter what you want to write:", "Write", null, MAX_MESSAGE_LEN, TRUE, FALSE)
 		if(!t || !usr.can_perform_action(src, NEED_DEXTERITY|NEED_LITERACY|FORBID_TELEKINESIS_REACH))
 			return
 		var/obj/item/i = usr.get_active_held_item()	//Check to see if he still got that darn pen, also check if he's using a crayon or pen.
@@ -410,7 +410,7 @@
 			format_browse(info_links, usr)
 			update_appearance(UPDATE_ICON_STATE | UPDATE_NAME)
 
-/obj/item/paper/attackby(obj/item/P, mob/living/user, params)
+/obj/item/paper/attackby(obj/item/P, mob/living/user, list/modifiers)
 	if(resistance_flags & ON_FIRE)
 		return ..()
 
@@ -418,7 +418,7 @@
 		return ..()
 
 	if(P.type == /obj/item/paper) //Make a manuscript
-		if(user.get_skill_level(/datum/skill/misc/reading) <= 0)
+		if(GET_MOB_SKILL_VALUE_OLD(user, /datum/attribute/skill/misc/reading) <= 0)
 			to_chat(user, span_warning("I fumble with [src] and fail to form the manuscript!"))
 			user.changeNext_move(2 SECONDS, user.active_hand_index) //lmao
 			return

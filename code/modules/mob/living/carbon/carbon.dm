@@ -7,6 +7,7 @@
 /mob/living/carbon/Destroy()
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
 	. =  ..()
+	QDEL_LIST_ASSOC_VAL(chem_effects)
 
 	QDEL_LIST(hand_bodyparts)
 	QDEL_LIST(internal_organs)
@@ -94,7 +95,7 @@
 	else
 		mode() // Activate held item
 
-/mob/living/attackby(obj/item/I, mob/user, params)
+/mob/living/carbon/attackby(obj/item/I, mob/user, list/modifiers)
 	if(!user.cmode && (istype(user.rmb_intent, /datum/rmb_intent/weak) || istype(user.rmb_intent, /datum/rmb_intent/strong)))
 		var/try_to_fail = !istype(user.rmb_intent, /datum/rmb_intent/weak)
 		var/list/possible_steps = list()
@@ -117,13 +118,7 @@
 		if(I.item_flags & SURGICAL_TOOL)
 			to_chat(user, span_warning("You're unable to perform surgery!"))
 			return TRUE
-	/*
-	for(var/datum/surgery/S in surgeries)
-		if(!(body_position != LYING_DOWN) || !S.lying_required)
-			if(S.self_operable || user != src)
-				if(S.next_step(user, user.used_intent))
-					return 1
-	*/
+
 	return ..()
 
 /mob/living/carbon/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
@@ -178,7 +173,6 @@
 
 /mob/proc/throw_item(atom/target, offhand = FALSE)
 	SEND_SIGNAL(src, COMSIG_MOB_THROW, target)
-	return
 
 /mob/living/carbon/throw_item(atom/target, offhand = FALSE)
 	. = ..()
@@ -207,16 +201,16 @@
 					if(!throwable_mob.buckled)
 						var/obj/item/grabbing/other_grab = offhand ? get_active_held_item() : get_inactive_held_item()
 						if(grab_state < GRAB_AGGRESSIVE)
-							stop_pulling()
+							stop_pulling(pulling_broke_free = TRUE)
 							return
-						stop_pulling()
+						stop_pulling(pulling_broke_free = TRUE)
 						if(HAS_TRAIT(src, TRAIT_PACIFISM))
 							to_chat(src, span_notice("I gently let go of [throwable_mob]."))
 							return
 						thrown_thing = throwable_mob
 						thrown_speed = 1
-						thrown_range = round((STASTR/throwable_mob.STACON)*2)
-						if(body_position == LYING_DOWN || (!HAS_TRAIT(thrown_thing, TRAIT_TINY) && throwable_mob.cmode && (throwable_mob.body_position != LYING_DOWN || STASTR < 15)))
+						thrown_range = round((GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH)/GET_MOB_ATTRIBUTE_VALUE(throwable_mob, STAT_CONSTITUTION))*2)
+						if(body_position == LYING_DOWN || (!HAS_TRAIT(thrown_thing, TRAIT_TINY) && throwable_mob.cmode && (throwable_mob.body_position != LYING_DOWN || GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH) < 15)))
 							while(end_T.z > start_T.z)
 								end_T = GET_TURF_BELOW(end_T)
 						if((end_T.z > start_T.z) && throwable_mob.cmode)
@@ -233,8 +227,8 @@
 
 		else if(!CHECK_BITFIELD(I.item_flags, ABSTRACT) && !HAS_TRAIT(I, TRAIT_NODROP))
 			thrown_thing = I
-			if(istype(thrown_thing, /obj/item/clothing/head/mob_holder))
-				var/obj/item/clothing/head/mob_holder/old = thrown_thing
+			if(ismobholder(thrown_thing))
+				var/obj/item/mob_holder/old = thrown_thing
 				thrown_thing = thrown_thing:held_mob
 				old.release()
 				used_sound = pick(I.swingsound)
@@ -257,15 +251,7 @@
 		thrown_thing.safe_throw_at(end_T, thrown_range, thrown_speed, src, null, null, null, move_force)
 		if(!used_sound)
 			used_sound = pick(PUNCHWOOSH)
-		playsound(get_turf(src), used_sound, 60, FALSE)
-
-// /mob/living/carbon/restrained(IGNORE_GRAB)
-// //	. = (handcuffed || (!ignore_grab && pulledby && pulledby.grab_state >= GRAB_AGGRESSIVE))
-// 	if(handcuffed)
-// 		return TRUE
-// 	if(pulledby && !ignore_grab)
-// 		if(pulledby != src)
-// 			return TRUE
+		playsound(src, used_sound, 60, FALSE)
 
 /mob/living/carbon/proc/canBeHandcuffed()
 	return 0
@@ -316,6 +302,9 @@
 	loc?.handle_fall(src)//it's loc so it doesn't call the mob's handle_fall which does nothing
 
 /mob/living/carbon/is_muzzled()
+	for(var/obj/item/clothing/clothing in get_equipped_items())
+		if(clothing.clothing_flags & BLOCKS_SPEECH)
+			return TRUE
 	return FALSE
 
 /obj/structure
@@ -332,7 +321,7 @@
 		if(istype(buckled, /obj/structure))
 			var/obj/structure/S = buckled
 			buckle_cd += S.breakoutextra
-		if(STASTR > 15)
+		if(GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH) > 15)
 			buckle_cd = 3 SECONDS
 		visible_message("<span class='warning'>[src] attempts to struggle free!</span>", \
 					"<span class='notice'>I attempt to struggle free...</span>")
@@ -362,7 +351,7 @@
 		ExtinguishMob(TRUE)
 	return
 
-/mob/living/carbon/resist_restraints()
+/mob/living/carbon/resist_restraints(instant = FALSE)
 	var/obj/item/I = null
 	var/type = 0
 	if(handcuffed)
@@ -378,20 +367,24 @@
 		if(type == 2)
 			changeNext_move(CLICK_CD_RANGE)
 			last_special = world.time + CLICK_CD_RANGE
-		cuff_resist(I)
+		cuff_resist(I, instant = instant)
 
 
-/mob/living/carbon/proc/cuff_resist(obj/item/I, breakouttime = 1 MINUTES, cuff_break = 0)
+/mob/living/carbon/proc/cuff_resist(obj/item/I, breakouttime = 1 MINUTES, cuff_break = 0, instant = FALSE)
 	if(I.item_flags & BEING_REMOVED)
 		to_chat(src, span_warning("I'm already trying to get out of \the [I]\s!"))
 		return
 	I.item_flags |= BEING_REMOVED
 	breakouttime = I.slipouttime
-	if(STASTR > 10)
+	if(GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH) > 10)
 		cuff_break = FAST_CUFFBREAK
 		breakouttime = I.breakouttime
-	if(STASTR > 15 || (mind && mind.has_antag_datum(/datum/antagonist/zombie)) )
+	if(GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH) > 15 || (mind && mind.has_antag_datum(/datum/antagonist/zombie)) )
 		cuff_break = INSTANT_CUFFBREAK
+
+	if(instant)
+		cuff_break = INSTANT_CUFFBREAK
+
 	if(!cuff_break)
 		to_chat(src, span_notice("I try to get out of \the [I]\s..."))
 		if(do_after(src, breakouttime, timed_action_flags = (IGNORE_HELD_ITEM)))
@@ -449,9 +442,8 @@
 	visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [I]!"))
 	to_chat(src, span_notice("You successfully [cuff_break ? "break" : "remove"] [I]."))
 
-	if(istype(I, /obj/item/net))
-		if(has_status_effect(/datum/status_effect/debuff/netted))
-			remove_status_effect(/datum/status_effect/debuff/netted)
+	if(istype(I, /obj/item/rope/net))
+		remove_status_effect(/datum/status_effect/debuff/netted)
 
 	if(cuff_break)
 		. = !((I == handcuffed) || (I == legcuffed))
@@ -503,28 +495,25 @@
 
 /mob/living/carbon/proc/get_str_arms(num)
 	if(!domhand || !num || HAS_TRAIT(src, TRAIT_DUALWIELDER))
-		return STASTR
-	var/used = STASTR
+		return GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH)
+	var/used = GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH)
 	if(num == domhand)
 		return used
 	else
-		used = STASTR - 1
+		used = GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH) - 1
 		if(used < 1)
 			used = 1
 		return used
 
-/mob/living/Stat()
-	..()
-	if(!client)
-		return
-	if(statpanel("Stats"))
-		stat("STR: \Roman[STASTR]")
-		stat("PER: \Roman[STAPER]")
-		stat("INT: \Roman[STAINT]")
-		stat("CON: \Roman[STACON]")
-		stat("END: \Roman[STAEND]")
-		stat("SPD: \Roman[STASPD]")
-		stat("PATRON: [uppertext(patron)]")
+/mob/living/get_status_tab_items()
+	. = ..()
+	. += "STR: \Roman[GET_MOB_ATTRIBUTE_VALUE(src, STAT_STRENGTH)]"
+	. += "PER: \Roman[GET_MOB_ATTRIBUTE_VALUE(src, STAT_PERCEPTION)]"
+	. += "INT: \Roman[GET_MOB_ATTRIBUTE_VALUE(src, STAT_INTELLIGENCE)]"
+	. += "CON: \Roman[GET_MOB_ATTRIBUTE_VALUE(src, STAT_CONSTITUTION)]"
+	. += "END: \Roman[GET_MOB_ATTRIBUTE_VALUE(src, STAT_ENDURANCE)]"
+	. += "SPD: \Roman[GET_MOB_ATTRIBUTE_VALUE(src, STAT_SPEED)]"
+	. += "PATRON: [uppertext(patron.name)]"
 
 /mob/living/carbon/attack_ui(slot)
 	if(!has_hand_for_held_index(active_hand_index))
@@ -602,7 +591,7 @@
 		Immobilize(59)
 
 	if(!blood)
-		playsound(get_turf(src), pick('sound/vo/vomit.ogg','sound/vo/vomit_2.ogg'), 100, TRUE)
+		playsound(src, pick('sound/vo/vomit.ogg','sound/vo/vomit_2.ogg'), 100, TRUE)
 	else
 		if(stat != DEAD)
 			playsound(src, pick('sound/vo/throat.ogg','sound/vo/throat2.ogg','sound/vo/throat3.ogg'), 100, FALSE)
@@ -616,6 +605,7 @@
 			adjust_hydration(-lost_nutrition)
 	if(harm)
 		adjustBruteLoss(3)
+
 	for(var/i=0 to distance)
 		if(blood)
 			if(T)
@@ -627,6 +617,24 @@
 		if (is_blocked_turf(T))
 			break
 	return TRUE
+
+/**
+ * Expel the reagents you just tried to ingest
+ *
+ * When you try to ingest reagents but you do not have a stomach
+ * you will spew the reagents on the floor.
+ *
+ * Vars:
+ * * bite: /atom the reagents to expel
+ * * amount: int The amount of reagent
+ */
+/mob/living/carbon/proc/expel_ingested(atom/bite, amount)
+	visible_message("<span class='danger'>[src] throws up all over [p_them()]self!</span>", \
+					"<span class='userdanger'>You are unable to keep the [bite] down without a stomach!</span>")
+
+	var/turf/floor = get_turf(src)
+	var/obj/effect/decal/cleanable/vomit/spew = new(floor)
+	bite.reagents.trans_to(spew, amount, transfered_by = src)
 
 /mob/living/carbon/proc/spew_organ(power = 5, amt = 1)
 	for(var/i in 1 to amt)
@@ -881,29 +889,8 @@
 		overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 	else
 		clear_fullscreen("oxy")
-/*
-	//Fire and Brute damage overlay (BSSR)
-	var/hurtdamage = getBruteLoss() + getFireLoss() + damageoverlaytemp
-	if(hurtdamage)
-		var/severity = 0
-		switch(hurtdamage)
-			if(5 to 15)
-				severity = 1
-			if(15 to 30)
-				severity = 2
-			if(30 to 45)
-				severity = 3
-			if(45 to 70)
-				severity = 4
-			if(70 to 85)
-				severity = 5
-			if(85 to INFINITY)
-				severity = 6
-		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
-	else
-		clear_fullscreen("brute")*/
 
-	var/hurtdamage = ((get_complex_pain() / (STAEND * 10)) * 100) //what percent out of 100 to max pain
+	var/hurtdamage = ((get_complex_pain() / max(1, (GET_MOB_ATTRIBUTE_VALUE(src, STAT_ENDURANCE) * 10))) * 100) //what percent out of 100 to max pain
 	if(hurtdamage)
 		var/severity = 0
 		switch(hurtdamage)
@@ -916,13 +903,13 @@
 				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash)
 			if(60 to 80)
 				severity = 4
-				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash)
+				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash, 1)
 			if(80 to 99)
 				severity = 5
-				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash)
+				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash, 2)
 			if(99 to INFINITY)
 				severity = 6
-				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash)
+				overlay_fullscreen("painflash", /atom/movable/screen/fullscreen/painflash, 3)
 		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
 	else
 		clear_fullscreen("brute")
@@ -999,44 +986,58 @@
 	update_inv_handcuffed()
 	update_hud_handcuffed()
 
-/mob/living/carbon/fully_heal(admin_revive = FALSE)
-	if(reagents)
-		reagents.clear_reagents()
-		for(var/addi in reagents.addiction_list)
-			reagents.remove_addiction(addi)
-	for(var/obj/item/organ/organ as anything in internal_organs)
-		organ.setOrganDamage(0)
-	var/obj/item/organ/brain/B = getorgan(/obj/item/organ/brain)
-	if(B)
-		B.brain_death = FALSE
-	var/datum/component/rot/corpse/CR = GetComponent(/datum/component/rot/corpse)
-	if(CR)
-		CR.amount = 0
-	if(admin_revive) //reset rot on admin revives
-		for(var/obj/item/bodypart/bodypart as anything in bodyparts)
-			bodypart.rotted = FALSE
-			bodypart.skeletonized = FALSE
-	if(admin_revive)
-		suiciding = FALSE
+/mob/living/carbon/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
+	if(excess_healing)
+		if(dna && !(NOBLOOD in dna.species.species_traits))
+			blood_volume += (excess_healing * 2) //1 excess = 2 blood
+
+		for(var/obj/item/organ/organ as anything in internal_organs)
+			organ.applyOrganDamage(excess_healing * -1)
+
+	return ..()
+
+/mob/living/carbon/fully_heal(heal_flags = HEAL_ALL)
+
+	spill_embedded_objects()
+
+	if(heal_flags & HEAL_ADMIN) //reset rot on admin revives
+		var/datum/component/rot/corpse/CR = GetComponent(/datum/component/rot/corpse)
+		if(CR)
+			CR.amount = 0
+
+	if(heal_flags & HEAL_LIMBS)
 		regenerate_limbs()
+		if(heal_flags & HEAL_ADMIN) //reset rot on admin revives
+			for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+				bodypart.rotted = FALSE
+				bodypart.skeletonized = FALSE
+
+	if(heal_flags & (HEAL_REFRESH_ORGANS|HEAL_ORGANS))
+		// regenerate_organs(regenerate_existing = (heal_flags & HEAL_REFRESH_ORGANS))
 		regenerate_organs()
+		var/obj/item/organ/brain/B = getorgan(/obj/item/organ/brain)
+		B?.brain_death = FALSE
+
+	if(heal_flags & HEAL_TRAUMAS)
+		cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
+
+	if(heal_flags & HEAL_RESTRAINTS)
+		QDEL_NULL(handcuffed)
+		QDEL_NULL(legcuffed)
 		set_handcuffed(null)
-		for(var/obj/item/restraints/R in contents) //actually remove cuffs from inventory
-			qdel(R)
 		update_handcuffed()
-		if(reagents)
-			reagents.addiction_list = list()
-	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
-	..()
-	// heal ears after healing traits, since ears check TRAIT_DEAF trait
-	// when healing.
-	restoreEars()
-	// update_disabled_bodyparts()
+
+	drunkenness = 0
+
+	return ..()
 
 /mob/living/carbon/can_be_revived()
-	. = ..()
-	if(!getorgan(/obj/item/organ/brain) && (!mind))
-		return 0
+	if(!mind)
+		return FALSE
+	var/obj/item/organ/brain/b = getorgan(/obj/item/organ/brain)
+	if(!istype(b) || b.brain_death)
+		return FALSE
+	return ..()
 
 /mob/living/carbon/harvest(mob/living/user)
 	if(QDELETED(src))
@@ -1052,8 +1053,7 @@
 
 /mob/living/carbon/ExtinguishMob(itemz = TRUE)
 	if(itemz)
-		for(var/X in get_equipped_items())
-			var/obj/item/I = X
+		for(var/obj/item/I as anything in get_equipped_items())
 			I.acid_level = 0 //washes off the acid on our clothes
 			I.extinguish() //extinguishes our clothes
 		var/obj/item/I = get_active_held_item()
@@ -1184,8 +1184,7 @@
 			return
 		var/list/artpaths = subtypesof(/datum/martial_art)
 		var/list/artnames = list()
-		for(var/i in artpaths)
-			var/datum/martial_art/M = i
+		for(var/datum/martial_art/M as anything in artpaths)
 			artnames[initial(M.name)] = M
 		var/result = input(usr, "Choose the martial art to teach","JUDO CHOP") as null|anything in sortNames(artnames)
 		if(!usr)
@@ -1261,8 +1260,6 @@
 	. = ..()
 	if(!.)
 		return
-	if(silent)
-		return FALSE
 	if(mouth?.muteinmouth)
 		return FALSE
 	for(var/obj/item/grabbing/grab in grabbedby)
@@ -1341,22 +1338,12 @@
 
 	return held_weight
 
-/mob/living/carbon/encumbrance_to_dodge()
-	var/encumbrance = get_encumbrance()
-	if(!HAS_TRAIT(src, TRAIT_DODGEEXPERT))
-		encumbrance *= 1.5
-	if(encumbrance <= 0.3 && HAS_TRAIT(src, TRAIT_DODGEEXPERT))
-		return 1
-	if(encumbrance >= 1)
-		return 0
-	return 1 - (encumbrance * 1)
-
 /mob/living/carbon/encumbrance_to_speed()
 	var/exponential = (2.71 ** -(get_encumbrance() - 0.6)) * 10
 	var/speed_factor = 1 / (1 + exponential)
 	var/precentage =  CLAMP(speed_factor, 0, 1)
 
-	add_movespeed_modifier("encumbrance", override = TRUE, multiplicative_slowdown = 5 * precentage)
+	add_movespeed_modifier(MOVESPEED_ID_ENCUMBRANCE, override = TRUE, multiplicative_slowdown = 5 * precentage)
 
 /// skeletonize all limbs of a carbon mob, pass TRUE as an argument if it's lethal, FALSE if it's not.
 /mob/living/carbon/proc/skeletonize(lethal = TRUE)
@@ -1366,17 +1353,12 @@
 
 /// grant undead eyes to a carbon mob.
 /mob/living/carbon/proc/grant_undead_eyes()
-	var/obj/item/organ/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
-	var/eyecolor = eyes.eye_color
-	var/eyesecond = eyes.second_color
-	if(eyes)
-		eyes.Remove(src,1)
-		QDEL_NULL(eyes)
-
-	eyes = new /obj/item/organ/eyes/night_vision/zombie
-	eyes.eye_color = eyecolor
-	eyes.second_color = eyesecond
-	eyes.Insert(src)
+	var/datum/organ_dna/eyes/eye_dna = dna?.organ_dna[ORGAN_SLOT_EYES]
+	if(!eye_dna)
+		return
+	eye_dna.organ_type = /obj/item/organ/eyes/night_vision/zombie
+	var/obj/item/organ/eyes/eyes = eye_dna.create_organ(species = dna.species)
+	eyes.Insert(src, TRUE)
 
 /mob/living/carbon/wash(clean_types)
 	. = ..()
@@ -1417,29 +1399,3 @@
 		to_dismember.dismember()
 		return TRUE
 	return FALSE
-
-/mob/living/carbon/proc/is_species(species)
-	if(!dna?.species)
-		return
-	return dna?.species.id == species
-
-/mob/living/carbon/proc/get_pain_factor()
-	if(HAS_TRAIT(src, TRAIT_NOPAINSTUN))
-		return FALSE
-
-	var/raw = get_complex_pain()
-	var/shock = calculate_shock_stage()
-
-	// Shock reduces pain perception
-	if(shock >= 60)
-		var/shock_reduction = min(0.3, shock * 0.001)
-		raw *= (1 - shock_reduction)
-
-	// Endurance scaling
-	var/painpercent = (raw/(STAEND * 13)) * 100
-
-	// Apply tolerance
-	painpercent *= (1 - (pain_tolerance * 0.01))
-
-	// Return normalized value between 0 and 1
-	return clamp(painpercent/100, 0, 1)

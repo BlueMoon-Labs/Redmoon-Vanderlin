@@ -1,0 +1,6 @@
+#define isaxian(A) (is_species(A, /datum/species/axian))
+#define islupian(A) (is_species(A, /datum/species/lupian))
+#define isvulpkanin(A) (is_species(A, /datum/species/vulpkanin))
+#define istabaxi(A) (is_species(A, /datum/species/tabaxi))
+#define ismoth(A) (is_species(A, /datum/species/moth))
+#define isdragon(A) (is_species(A, /datum/species/dragon))

@@ -9,6 +9,7 @@
 	roles = list(
 		/datum/migrant_role/advclass/pilgrim = 4,
 	)
+	weight = 20
 	greet_text = "Fleeing from misfortune and hardship, you and a handful of survivors get closer to Vanderlin, looking for refuge and work, finally almost being there, almost..."
 
 /datum/migrant_wave/pilgrim_down_one
@@ -45,6 +46,7 @@
 /datum/migrant_wave/adventurer
 	name = "Adventure Party"
 	downgrade_wave = /datum/migrant_wave/adventurer_down_one
+	weight = 20
 	roles = list(
 		/datum/migrant_role/advclass/adventurer = 4,
 	)
@@ -153,3 +155,31 @@
 		/datum/migrant_role/advclass/mercenary = 1,
 	)
 
+/datum/migrant_role/advclass/folkhero
+	name = "Folkhero"
+	migrant_job = /datum/job/folkhero
+	advclass_cat_rolls = list(CTAG_FOLKHEROES = 20)
+
+/datum/migrant_wave/folkheroes
+	name = "Folkheroes"
+	max_spawns = 1
+	downgrade_wave = /datum/migrant_wave/folkheroes_down_one
+	weight = 4
+	roles = list(
+		/datum/migrant_role/advclass/folkhero = 3,
+	)
+
+/datum/migrant_wave/folkheroes_down_one
+	name = "Folkheroes"
+	downgrade_wave = /datum/migrant_wave/folkheroes_down_two
+	can_roll = FALSE
+	roles = list(
+		/datum/migrant_role/advclass/folkhero = 2,
+	)
+
+/datum/migrant_wave/folkheroes_down_two
+	name = "Folkheroes"
+	can_roll = FALSE
+	roles = list(
+		/datum/migrant_role/advclass/folkhero = 1,
+	)

@@ -192,9 +192,10 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 /proc/send_to_glitchtip(exception/E, list/extra_data = null)
 	#ifndef SPACEMAN_DMM
 	#ifndef OPENDREAM
-	if(!CONFIG_GET(string/glitchtip_dsn))
+	var/datum/config_entry/string/glitchtip_dsn/dsn_entry = global.config?.entries_by_type?[/datum/config_entry/string/glitchtip_dsn]
+	if(!dsn_entry?.config_entry_value)
 		return
-	var/glitchtip_dsn = CONFIG_GET(string/glitchtip_dsn)
+	var/glitchtip_dsn = dsn_entry.config_entry_value
 	//! Parse DSN to extract components
 	//! Format: https://key@host/project_id
 	var/dsn_clean = replacetext(glitchtip_dsn, "https://", "")

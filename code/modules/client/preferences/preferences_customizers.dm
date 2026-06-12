@@ -164,6 +164,7 @@
 			customizer_entries += customizer.create_customizer_entry(src, choice_type)
 		else
 			choice.handle_topic(user, href_list, src, entry, customizer_type)
+	update_preview_icon()
 
 /datum/preferences/proc/reset_all_customizer_accessory_colors()
 	for(var/datum/customizer_entry/entry as anything in customizer_entries)
@@ -176,12 +177,13 @@
 		choice.randomize_entry(entry, src)
 
 /datum/preferences/proc/ShowCustomizers(mob/user)
+	validate_customizer_entries()
 	var/list/dat = list()
 	dat += "<style>span.color_holder_box{display: inline-block; width: 20px; height: 8px; border:1px solid #000; padding: 0px;}</style>"
 	dat += print_customizers_page()
 	var/datum/browser/popup = new(user, "customization", "<div align='center'>Customization</div>", 630, 730)
 	popup.set_content(dat.Join())
-	popup.open(FALSE)
+	popup.open(use_onclose = FALSE)
 
 /datum/preferences/proc/get_hair_color()
 	var/datum/customizer_entry/hair/entry = get_customizer_entry_of_type(/datum/customizer_entry/hair/head)

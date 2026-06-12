@@ -14,7 +14,7 @@
 	/// A reference to the object in the slot. Grabs or items, generally, but any datum will do.
 	var/datum/weakref/master_ref = null
 	/// A reference to the owner HUD, if any.
-	VAR_PRIVATE/datum/hud/hud = null
+	var/datum/hud/hud = null
 	var/lastclick
 	var/category
 
@@ -91,24 +91,30 @@
 /atom/movable/screen/skills/Click(location, control, params)
 	var/list/modifiers = params2list(params)
 
+
+	if(LAZYACCESS(modifiers, SHIFT_CLICKED))
+		if(ishuman(usr))
+			var/mob/living/L = usr
+			var/datum/language_holder/H = L.get_language_holder()
+			H.open_language_menu(usr)
+			return
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		var/ht
 		var/mob/living/L = usr
 		to_chat(L, "*----*")
 		if(ishuman(usr))
 			var/mob/living/carbon/human/M = usr
-			if(M.charflaw)
-				to_chat(M, "<span class='info'>[M.charflaw.desc]</span>")
-				to_chat(M, "*----*")
+			for(var/datum/quirk/vice/vices in M.quirks)
+				to_chat(M, "<span class='info'>[vices.get_desc()]</span>")
+			to_chat(M, "*----*")
 			if(M.mind)
 				if(M.mind.language_holder)
-					var/finn
-					for(var/X in M.mind.language_holder.languages)
-						var/datum/language/LA = new X()
-						finn = TRUE
-						to_chat(M, "<span class='info'>[LA.name] - ,[LA.key]</span>")
-					if(!finn)
+					if(!length(M.mind.language_holder.languages))
 						to_chat(M, "<span class='warning'>I don't know any languages.</span>")
+					else
+						for(var/X in M.mind.language_holder.languages)
+							var/datum/language/LA = GLOB.language_datum_instances[X]
+							to_chat(M, "<span class='info'>[LA.name] - ,[LA.key]</span>")
 					to_chat(M, "*----*")
 		for(var/X in GLOB.roguetraits)
 			if(HAS_TRAIT(L, X))
@@ -119,9 +125,13 @@
 		to_chat(L, "*----*")
 		return
 
+	if(!LAZYACCESS(modifiers, CTRL_CLICKED))
+		usr.attributes?.ui_interact(usr)
+		return
+
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.print_levels(H)
+		H.print_skill_levels(H)
 
 /atom/movable/screen/craft
 	name = "crafting menu"
@@ -138,8 +148,7 @@
 		var/mob/M = usr
 		for(var/datum/recipe as anything in M.mind?.learned_recipes)
 			book.types |= recipe.type
-		book.generate_categories()
-		usr << browse(book.generate_html(usr),"window=recipe;size=800x810")
+		book.ui_interact(usr)
 		return
 	if(world.time < lastclick + 3 SECONDS)
 		return
@@ -756,7 +765,7 @@
 			iris.icon_state = "oeye_fixed"
 		else
 			iris.icon_state = "oeye"
-	iris.color = "#[human.get_eye_color()]"
+	iris.color = human.get_eye_color()
 	. += iris
 
 /atom/movable/screen/eye_intent/proc/toggle(mob/user)
@@ -859,7 +868,7 @@
 			var/old_height = flipper.grid_height
 			flipper.grid_height = old_width
 			flipper.grid_width = old_height
-			update_hovering(location, control, params)
+			update_hovering(location, control, modifiers)
 			return
 
 	if(world.time <= usr.next_move)
@@ -869,7 +878,7 @@
 	if(master)
 		var/obj/item/I = usr.get_active_held_item()
 		if(I)
-			master.attackby(src, I, usr, params, TRUE)
+			master.attackby(src, I, usr, modifiers, TRUE)
 	return TRUE
 
 /atom/movable/screen/throw_catch
@@ -1232,9 +1241,9 @@
 
 	if(hud.mymob.stat != DEAD && ishuman(hud.mymob))
 		var/mob/living/carbon/human/H = hud.mymob
-		for(var/X in H.bodyparts)
-			var/obj/item/bodypart/BP = X
-			if(BP.body_zone in H.get_missing_limbs())
+		var/list/missing_bodyparts_zones = H.get_missing_limbs()
+		for(var/obj/item/bodypart/BP as anything in H.bodyparts)
+			if(BP.body_zone in missing_bodyparts_zones)
 				continue
 			if(HAS_TRAIT(H, TRAIT_NOPAIN))
 				var/mutable_appearance/limby = mutable_appearance('icons/mob/roguehud64.dmi', "[H.gender == "male" ? "m" : "f"]-[BP.body_zone]")
@@ -1251,7 +1260,7 @@
 			. += limby
 			if(BP.get_bleed_rate())
 				. += mutable_appearance('icons/mob/roguehud64.dmi', "[H.gender == "male" ? "m" : "f"]-[BP.body_zone]-bleed") //apply healthy limb
-		for(var/X in H.get_missing_limbs())
+		for(var/X in missing_bodyparts_zones)
 			var/mutable_appearance/limby = mutable_appearance('icons/mob/roguehud64.dmi', "[H.gender == "male" ? "m" : "f"]-[X]") //missing limb
 			limby.color = "#2f002f"
 			. += limby
@@ -1360,17 +1369,21 @@
 /atom/movable/screen/healths/blood/Click(location, control, params)
 	var/list/modifiers = params2list(params)
 	if(ishuman(usr))
-		var/mob/living/carbon/human/H = usr
+		var/mob/living/carbon/human/user_mob = usr
 		if(LAZYACCESS(modifiers, LEFT_CLICK))
-			H.check_for_injuries(H)
-			to_chat(H, "I am [H.get_encumbrance() * 100]% encumbered.")
+			user_mob.check_for_injuries(user_mob)
+			to_chat(user_mob, "I am [user_mob.get_encumbrance() * 100]% encumbered.")
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
-			if(!H.mind)
+			if(!user_mob.mind)
 				return
-			if(length(H.mind.known_people))
-				H.mind.display_known_people(H)
+			if(length(user_mob.mind.known_people))
+				user_mob.mind.display_known_people(user_mob)
 			else
-				to_chat(H, "<span class='warning'>I don't know anyone.</span>")
+				to_chat(user_mob, "<span class='warning'>I don't know anyone.</span>")
+		if(LAZYACCESS(modifiers, MIDDLE_CLICK))
+			if(!user_mob.mind)
+				return
+			user_mob.make_acquaintance()
 
 /atom/movable/screen/splash
 	icon = 'icons/blank_title.png'
@@ -1534,17 +1547,19 @@
 	if(ishuman(usr))
 		var/mob/living/carbon/human/M = usr
 		if(LAZYACCESS(modifiers, LEFT_CLICK))
-			if(M.charflaw)
-				to_chat(M, "*----*")
-				to_chat(M, span_info("[M.charflaw.desc]"))
+			to_chat(M, "*----*")
+			for(var/datum/quirk/vice/vices in M.quirks)
+				to_chat(M, span_info("[vices.get_desc()]"))
 			to_chat(M, "*--------*")
 			if(!length(M.stressors))
 				to_chat(M, span_info("I'm not feeling much of anything right now."))
 			for(var/datum/stress_event/stress_event in M.stressors)
-				if(!stress_event.can_show())
+				if(!stress_event.can_show(M))
 					continue
 				var/count = stress_event.stacks
-				var/ddesc = islist(stress_event.desc) ? pick(stress_event.desc) : stress_event.desc
+				var/ddesc = stress_event.get_desc(M)
+				if(islist(ddesc))
+					ddesc = pick(ddesc)
 				if(count > 1)
 					to_chat(M, "• [ddesc] (x[count])")
 				else
@@ -1554,7 +1569,7 @@
 			if(M.get_triumphs() <= 0)
 				to_chat(M, "<span class='warning'>I haven't TRIUMPHED.</span>")
 				return
-			if(alert("Do you want to remember a TRIUMPH?", "", "Yes", "No") == "Yes")
+			if(tgui_alert(M, "Do you want to remember a TRIUMPH?", "Remember TRIUMPH", list("Yes", "No")) == "Yes")
 				if(M.add_stress(/datum/stress_event/triumph))
 					M.adjust_triumphs(-1)
 					M.playsound_local(M, 'sound/misc/notice (2).ogg', 100, FALSE)
@@ -1685,18 +1700,20 @@
 				hud_used.rmb_intent.collapse_intents()
 
 /// Cycles through right-mouse-button intents. Loops.
-/mob/living/proc/cycle_rmb_intent()
+/mob/living/proc/cycle_rmb_intent(forward=TRUE)
 	if(!length(possible_rmb_intents))
 		return
+	var/cyc_dir = forward > 0 ? 1 : -1
 
 	// Find the index of the current intent
-	var/index = possible_rmb_intents.Find(rmb_intent.type)
+	var/index = possible_rmb_intents.Find(rmb_intent.type) + cyc_dir
 	var/A
 
-	if(index == -1)
+	if(index < 1)
+		A = possible_rmb_intents[length(possible_rmb_intents)]
+	else if(index > length(possible_rmb_intents))
 		A = possible_rmb_intents[1]
 	else
-		index = (index % length(possible_rmb_intents)) + 1
 		A = possible_rmb_intents[index]
 	rmb_intent = new A()
 
@@ -1715,13 +1732,13 @@
 
 /atom/movable/screen/time/update_name()
 	switch(GLOB.tod)
-		if("day")
+		if(DAY)
 			name = "Astrata"
-		if("dusk")
+		if(DUSK)
 			name = "Astrata - Dusk"
-		if("night")
+		if(NIGHT)
 			name = "Noc"
-		if("dawn")
+		if(DAWN)
 			name = "Astrata - Dawn"
 	return ..()
 
@@ -1773,7 +1790,7 @@
 
 /atom/movable/screen/heatstamover
 	name = ""
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	icon_state = "heatstamover"
 	icon = 'icons/mob/rogueheat.dmi'
 	screen_loc = stamina_loc
@@ -1781,7 +1798,7 @@
 
 /atom/movable/screen/mana_over
 	name = ""
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	icon_state = "manaover"
 	icon = 'icons/mob/rogueheat.dmi'
 	screen_loc = mana_loc
@@ -1792,7 +1809,7 @@
 	icon_state = "crt"
 	name = ""
 	screen_loc = ui_backhudl
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	alpha = 0
 	plane = HUD_PLANE
 	blend_mode = BLEND_MULTIPLY

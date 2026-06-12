@@ -4,7 +4,7 @@
 	/// List of items embedded in this bodypart
 	var/list/obj/item/embedded_objects = list()
 	/// Bandage, if this ever hard dels thats fucking dumb lol
-	var/obj/item/bandage
+	var/obj/item/natural/cloth/bandage
 
 /// Checks if we have any embedded objects whatsoever
 /obj/item/bodypart/proc/has_embedded_objects()
@@ -59,14 +59,14 @@
 	return returned_wounds
 
 /// Heals wounds on this bodypart by the specified amount
-/obj/item/bodypart/proc/heal_wounds(heal_amount)
+/obj/item/bodypart/proc/heal_wounds(heal_amount, datum/source, forced = FALSE)
 	if(!length(wounds))
 		return FALSE
 	var/healed_any = FALSE
 	for(var/datum/wound/wound as anything in wounds)
 		if(heal_amount <= 0)
 			continue
-		var/amount_healed = wound.heal_wound(heal_amount)
+		var/amount_healed = wound.heal_wound(heal_amount, source, forced)
 		heal_amount -= amount_healed
 		healed_any = TRUE
 	return healed_any
@@ -123,6 +123,8 @@
 		if(!embedded.embedding.embedded_bloodloss)
 			continue
 		bleed_rate += embedded.embedding.embedded_bloodloss
+	if(bandage)
+		bleed_rate *= bandage?.bandage_effectiveness
 	for(var/obj/item/grabbing/grab in grabbedby)
 		bleed_rate *= grab.bleed_suppressing
 	bleed_rate = max(round(bleed_rate, 0.1), 0)
@@ -135,28 +137,28 @@
 	return bleed_rate
 
 /// Called after a bodypart is attacked so that wounds and critical effects can be applied
-/obj/item/bodypart/proc/bodypart_attacked_by(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE, reduce_crit = 0)
+/obj/item/bodypart/proc/bodypart_attacked_by(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE, list/modifiers = list())
 	if(!bclass || !dam || !owner || (owner.status_flags & GODMODE))
 		return FALSE
 
 	if(dam < 5)
 		return
 
-	var/do_crit = TRUE
+	var/do_crit = (modifiers[CRIT_MOD_CHANCE] <= -100) ? FALSE : TRUE
 
-	if(ishuman(owner))
+	if(do_crit && ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		if(human_owner.check_crit_armor(zone_precise, bclass))
 			do_crit = FALSE
 
 	if(user)
-		if(user.stat_roll(STATKEY_LCK, 2, 10))
+		if(user.stat_roll(STAT_FORTUNE, 2, 10))
 			dam += 10
 		if(ispath(user.rmb_intent?.type, /datum/rmb_intent/weak))
 			do_crit = FALSE
 
 	if(do_crit)
-		var/crit_attempt = try_crit(bclass, dam, user, zone_precise, silent, crit_message, reduce_crit)
+		var/crit_attempt = try_crit(bclass, dam, user, zone_precise, silent, crit_message, modifiers)
 		if(crit_attempt)
 			return crit_attempt
 
@@ -195,7 +197,7 @@
 	return changed_wound
 
 /// Behemoth of a proc used to apply a wound after a bodypart is damaged in an attack
-/obj/item/bodypart/proc/try_crit(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE, reduce_crit = 0)
+/obj/item/bodypart/proc/try_crit(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE, list/modifiers = list())
 	if(!bclass || !dam || (owner.status_flags & GODMODE))
 		return FALSE
 
@@ -215,11 +217,10 @@
 	if(!crit_classes)
 		return FALSE
 
-	if(user?.stat_roll(STATKEY_LCK, 2, 10))
+	if(user?.stat_roll(STAT_FORTUNE, 2, 10))
 		dam += 10
 
-	var/used
-	used -= reduce_crit
+	var/used = modifiers[CRIT_MOD_CHANCE]
 	var/damage_dividend = (get_damage() / max_damage)
 	var/list/attempted_wounds
 	switch(pick(crit_classes))
@@ -228,7 +229,7 @@
 				return
 			if(user && istype(user.rmb_intent, /datum/rmb_intent/strong))
 				dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
 			if(prob(used))
@@ -243,7 +244,7 @@
 				dam += 10
 			if(HAS_TRAIT(src, TRAIT_BRITTLE))
 				dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
 			if(prob(used))
@@ -257,7 +258,7 @@
 					dam += 10
 				else if(istype(user.rmb_intent, /datum/rmb_intent/aimed))
 					dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
 			if(prob(used))
@@ -280,9 +281,10 @@
 			if(user?.client)
 				record_round_statistic(STATS_CRITS_MADE)
 			return applied
+
 	return FALSE
 
-/obj/item/bodypart/chest/try_crit(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE)
+/obj/item/bodypart/chest/try_crit(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE, list/modifiers = list())
 	if(!bclass || !dam || (owner.status_flags & GODMODE))
 		return FALSE
 
@@ -302,10 +304,10 @@
 	if(!crit_classes)
 		return FALSE
 
-	if(user?.stat_roll(STATKEY_LCK,2,10))
+	if(user?.stat_roll(STAT_FORTUNE,2,10))
 		dam += 10
 
-	var/used
+	var/used = modifiers[CRIT_MOD_CHANCE]
 	var/damage_dividend = (get_damage() / max_damage)
 	var/resistance = HAS_TRAIT(owner, TRAIT_CRITICAL_RESISTANCE)
 	var/list/attempted_wounds
@@ -328,7 +330,7 @@
 					dam += 10
 				if(HAS_TRAIT(src, TRAIT_BRITTLE))
 					dam += 10
-				used = round(damage_dividend * 20 + (dam / 6), 1)
+				used += round(damage_dividend * 20 + (dam / 6), 1)
 				if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 					used -= 10
 				var/fracture_type = /datum/wound/fracture/chest
@@ -342,7 +344,7 @@
 				dam += 10
 			else if(user && istype(user.rmb_intent, /datum/rmb_intent/aimed))
 				dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
 			if(prob(used))
@@ -355,7 +357,7 @@
 		if("scarring")
 			if(user && istype(user.rmb_intent, /datum/rmb_intent/strong))
 				dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
 			if(prob(used))
@@ -370,9 +372,10 @@
 			if(user?.client)
 				record_round_statistic(STATS_CRITS_MADE)
 			return applied
+
 	return FALSE
 
-/obj/item/bodypart/head/try_crit(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE)
+/obj/item/bodypart/head/try_crit(bclass, dam, mob/living/user, zone_precise, silent = FALSE, crit_message = FALSE, list/modifiers = list())
 	var/static/list/eyestab_zones = list(BODY_ZONE_PRECISE_R_EYE, BODY_ZONE_PRECISE_L_EYE)
 	var/static/list/tonguestab_zones = list(BODY_ZONE_PRECISE_MOUTH)
 	var/static/list/nosestab_zones = list(BODY_ZONE_PRECISE_NOSE)
@@ -393,7 +396,7 @@
 	if(!crit_classes)
 		return FALSE
 
-	if(user?.stat_roll(STATKEY_LCK, 2, 10))
+	if(user?.stat_roll(STAT_FORTUNE, 2, 10))
 		dam += 10
 
 	var/from_behind = FALSE
@@ -401,14 +404,14 @@
 		if((owner.dir == REVERSE_DIR(get_dir(owner, user))))
 			from_behind = TRUE
 
-	var/used
+	var/used = modifiers[CRIT_MOD_CHANCE]
 	var/damage_dividend = (get_damage() / max_damage)
 	var/resistance = HAS_TRAIT(owner, TRAIT_CRITICAL_RESISTANCE)
 	var/list/attempted_wounds
 	switch(pick(crit_classes))
 		if("dislocation")
 			if(damage_dividend >= 1)
-				used = round(damage_dividend * 20 + (dam / 6), 1)
+				used += round(damage_dividend * 20 + (dam / 6), 1)
 				if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 					used -= 10
 				if(prob(used))
@@ -421,17 +424,19 @@
 				dam += 20
 			if(user && istype(user.rmb_intent, /datum/rmb_intent/strong))
 				dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
-			if(!owner.stat && (zone_precise in knockout_zones) && !(bclass in GLOB.no_knockout_bclasses) && prob(used))
-				owner.next_attack_msg += " [span_crit("<b>Critical hit!</b> [owner] is knocked out[from_behind ? " FROM BEHIND" : ""]!")]"
-				owner.flash_fullscreen("whiteflash3")
-				owner.Unconscious(15 SECONDS + (from_behind * 15 SECONDS))
-				if(owner.client)
-					winset(owner.client, "outputwindow.output", "max-lines=1")
-					winset(owner.client, "outputwindow.output", "max-lines=100")
-				return
+			if(!owner.stat && (zone_precise in knockout_zones) && !(bclass in GLOB.no_knockout_bclasses))
+				var/knockout_chance = used + modifiers[CRIT_MOD_KNOCKOUT_CHANCE]
+				if(prob(knockout_chance))
+					owner.next_attack_msg += " [span_crit("<b>Critical hit!</b> [owner] is knocked out[from_behind ? " FROM BEHIND" : ""]!")]"
+					owner.flash_fullscreen("whiteflash3")
+					owner.Unconscious(15 SECONDS + (from_behind * 15 SECONDS))
+					if(owner.client)
+						winset(owner.client, "outputwindow.output", "max-lines=1")
+						winset(owner.client, "outputwindow.output", "max-lines=100")
+					return
 			var/dislocation_type
 			var/fracture_type = /datum/wound/fracture/head
 			var/necessary_damage = 0.95
@@ -464,7 +469,7 @@
 				else
 					if(istype(user.rmb_intent, /datum/rmb_intent/aimed))
 						dam += 10
-			used = round(damage_dividend * 20 + (dam / 6), 1)
+			used += round(damage_dividend * 20 + (dam / 6), 1)
 			if(HAS_TRAIT(src, TRAIT_CRITICAL_RESISTANCE))
 				used -= 10
 			if(prob(used))
@@ -511,6 +516,7 @@
 			if(user?.client)
 				record_round_statistic(STATS_CRITS_MADE)
 			return applied
+
 	return FALSE
 
 /// Embeds an object in this bodypart
@@ -569,27 +575,32 @@
 	return TRUE
 
 /obj/item/bodypart/proc/try_bandage_expire()
+	var/bleed_rate = get_bleed_rate()
 	if(!bandage)
 		return FALSE
-	var/bandage_effectiveness = 0.5
+	if(!bleed_rate)
+		return FALSE
+
+	var/bandage_health = 1
 	if(istype(bandage, /obj/item/natural/cloth))
 		var/obj/item/natural/cloth/cloth = bandage
-		bandage_effectiveness = cloth.bandage_effectiveness
-	var/highest_bleed_rate = 0
-	for(var/datum/wound/wound as anything in wounds)
-		if(wound.bleed_rate < highest_bleed_rate)
-			continue
-		if(wound.is_sewn())
-			continue
-		highest_bleed_rate = wound.bleed_rate
-	for(var/obj/item/embedded as anything in embedded_objects)
-		if(!embedded.embedding.embedded_bloodloss)
-			continue
-		if(embedded.embedding.embedded_bloodloss < highest_bleed_rate)
-			continue
-		highest_bleed_rate = embedded.embedding.embedded_bloodloss
-	highest_bleed_rate = round(highest_bleed_rate, 0.1)
-	if(bandage_effectiveness < highest_bleed_rate)
+
+		if(cloth.reagents && cloth.reagents.total_volume > 0)
+			if(owner && owner.reagents)
+				for(var/datum/reagent/R in cloth.reagents.reagent_list)
+					var/amount_to_transfer = min(R.volume, R.metabolization_rate)
+					if(amount_to_transfer > 0)
+
+						R.on_bodypart_absorb(src, owner, amount_to_transfer)
+						cloth.reagents.remove_reagent(R.type, amount_to_transfer)
+
+		if(owner)
+			owner.transfer_blood_to(cloth, bleed_rate * 0.25)
+
+		cloth.bandage_health -= bleed_rate
+		bandage_health = cloth.bandage_health
+
+	if(bandage_health <= 0)
 		return bandage_expire()
 	return FALSE
 
@@ -599,7 +610,8 @@
 	if(!bandage)
 		return FALSE
 	if(owner.stat != DEAD)
-		to_chat(owner, "<span class='warning'>Blood soaks through the bandage on my [name].</span>")
+		to_chat(owner, span_warning("Blood soaks through the bandage on my [name]."))
+		bandage.bandage_effectiveness = 1
 	return bandage.add_mob_blood(owner)
 
 /obj/item/bodypart/proc/remove_bandage()

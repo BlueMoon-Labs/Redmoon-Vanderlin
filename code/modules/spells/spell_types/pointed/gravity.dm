@@ -5,7 +5,7 @@
 	sound = 'sound/magic/gravity.ogg'
 	self_cast_possible = FALSE
 	spell_flags = SPELL_RITUOS
-	point_cost = 2
+	point_cost = 1
 	attunements = list(
 		/datum/attunement/dark = 0.6,
 	)
@@ -27,7 +27,7 @@
 /datum/action/cooldown/spell/gravity/cast(mob/living/cast_on)
 	. = ..()
 	new /obj/effect/temp_visual/gravity(get_turf(cast_on))
-	if(cast_on.STASTR >= 13)
+	if(GET_MOB_ATTRIBUTE_VALUE(cast_on, STAT_STRENGTH) >= 13)
 		cast_on.OffBalance(3 SECONDS)
 		cast_on.adjustBruteLoss(15)
 		to_chat(cast_on, span_userdanger("You're magically weighed down, but your strength resists!"))

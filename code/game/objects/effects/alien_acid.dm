@@ -4,7 +4,7 @@
 	desc = ""
 	icon_state = "acid"
 	density = FALSE
-	opacity = 0
+	opacity = FALSE
 	anchored = TRUE
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	layer = ABOVE_NORMAL_TURF_LAYER
@@ -38,7 +38,7 @@
 		return 0
 
 	if(prob(5))
-		playsound(loc, 'sound/blank.ogg', 100, TRUE)
+		playsound(src, 'sound/blank.ogg', 100, TRUE)
 
 	for(var/obj/O in target)
 		if(prob(20) && !(resistance_flags & UNACIDABLE))

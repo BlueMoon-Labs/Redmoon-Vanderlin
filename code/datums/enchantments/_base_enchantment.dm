@@ -17,7 +17,7 @@
 	if(should_process)
 		START_PROCESSING(SSenchantment, src)
 
-/datum/enchantment/Destroy(force, ...)
+/datum/enchantment/Destroy(force)
 	if(enchanted_item)
 		remove_item(enchanted_item)
 	if(should_process)
@@ -54,6 +54,9 @@
 
 /datum/enchantment/proc/on_item_deleted(datum/source)
 	SIGNAL_HANDLER
+	var/atom/item = source
+	if(item?.enchantments)
+		item.enchantments -= src
 	qdel(src)
 
 /datum/enchantment/proc/remove_item(atom/item)

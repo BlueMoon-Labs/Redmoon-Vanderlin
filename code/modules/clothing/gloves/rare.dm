@@ -10,8 +10,8 @@
 	blocksound = PLATEHIT
 	body_parts_covered = HANDS
 	blade_dulling = DULLING_BASH
-	sewrepair = FALSE
-	anvilrepair = /datum/skill/craft/armorsmithing
+	sewrepair = null
+	anvilrepair = /datum/attribute/skill/craft/armor_repair
 	melt_amount = 75
 	melting_material = /datum/material/steel
 
@@ -20,6 +20,8 @@
 	max_integrity = INTEGRITY_STRONGEST
 	prevent_crits = ALL_CRITICAL_HITS
 	abstract_type = /obj/item/clothing/gloves/rare
+
+	material_category = ARMOR_MAT_PLATE
 
 /obj/item/clothing/gloves/rare/elfplate
 	name = "dark elf plate gauntlets"

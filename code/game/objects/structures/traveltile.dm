@@ -49,11 +49,27 @@
 	var/can_gain_by_walking = FALSE
 	var/check_other_side = FALSE
 	var/list/revealed_to = list()
+	var/area/cached_destination_area
 
 /obj/structure/fluff/traveltile/Initialize()
 	GLOB.traveltiles += src
 	hide_if_needed()
 	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+
+/obj/structure/fluff/traveltile/LateInitialize()
+	. = ..()
+	// Find our paired portal and cache what area it's in
+	resolve_destination_area()
+
+/obj/structure/fluff/traveltile/proc/resolve_destination_area()
+	if(!aportalgoesto)
+		return
+	for(var/obj/structure/fluff/traveltile/other as anything in GLOB.traveltiles)
+		if(other.aportalid == aportalgoesto)
+			cached_destination_area = get_area(other)
+			return
 
 /obj/structure/fluff/traveltile/Destroy()
 	GLOB.traveltiles -= src
@@ -158,7 +174,7 @@
 	user.recent_travel = world.time
 	if(can_gain_with_sight)
 		reveal_travel_trait_to_others(user)
-	if(can_gain_by_walking && the_tile.required_trait && !HAS_TRAIT(user, the_tile.required_trait) && !HAS_TRAIT(user, TRAIT_BLIND)) // If you're blind you can't find your way
+	if(can_gain_by_walking && the_tile.required_trait && !HAS_TRAIT(user, the_tile.required_trait) && !user.is_blind()) // If you're blind you can't find your way
 		ADD_TRAIT(user, the_tile.required_trait, TRAIT_GENERIC)
 	if(required_trait && !revealed_to.Find(user))
 		show_travel_tile(user)
@@ -172,7 +188,7 @@
 	if(!HAS_TRAIT(user, required_trait))
 		return
 	for(var/mob/living/carbon/human/H in view(6,src))
-		if(!HAS_TRAIT(H, required_trait) && !HAS_TRAIT(H, TRAIT_BLIND))
+		if(!HAS_TRAIT(H, required_trait) && !H.is_blind())
 			to_chat(H, "<b>I discover a well hidden entrance</b>")
 			ADD_TRAIT(H, required_trait, TRAIT_GENERIC)
 

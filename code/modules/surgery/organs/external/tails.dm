@@ -17,6 +17,9 @@
 /obj/item/organ/tail/cat
 	name = "cat tail"
 
+/obj/item/organ/tail/demihuman
+	name = "hollowkin tail"
+
 /obj/item/organ/tail/harpy
 	name = "harpy plumage"
 	accessory_type = /datum/sprite_accessory/tail/hawk
@@ -65,6 +68,29 @@
 	name = "small lizard tail"
 	accessory_type = /datum/sprite_accessory/tail/kobold
 
+/obj/item/organ/tail/kobold/round
+	accessory_type = /datum/sprite_accessory/tail/kobold/round
+
 /obj/item/organ/tail/triton
 	name = "triton bell"
 	accessory_type = /datum/sprite_accessory/tail/triton
+
+/obj/item/organ/tail/axian
+	name = "Axian tail"
+	accessory_type = /datum/sprite_accessory/tail/shark
+
+/obj/item/organ/tail/lupian
+	name = "Lupian tail"
+	accessory_type = /datum/sprite_accessory/tail/wolf
+
+/obj/item/organ/tail/vulpkanin
+	name = "Vulpkanin tail"
+	accessory_type = /datum/sprite_accessory/tail/fox
+
+/obj/item/organ/tail/tabaxi
+	name = "Tabaxi tail"
+	accessory_type = /datum/sprite_accessory/tail/catbig
+
+/obj/item/organ/tail/dracon
+	name = "Dracon tail"
+	accessory_type = /datum/sprite_accessory/tail/lizard/smooth

@@ -47,6 +47,8 @@
 #define DISABLE_RUNECHAT (1<<0)
 #define DISABLE_HOVER_TEXT (1<<1)
 #define DISABLE_BALLOON_ALERTS (1<<3)
+#define DISABLE_BALLOON_COMBAT (1<<4)
+#define DISABLE_BALLOON_EXP (1<<5)
 
 #define PARALLAX_INSANE -1 //for show offs
 #define PARALLAX_HIGH    0 //default.
@@ -111,8 +113,6 @@
 #define RANDOM_GENDER_ANTAG "random_gender_antag"
 #define RANDOM_PRONOUNS "random_pronouns"
 #define RANDOM_PRONOUNS_ANTAG "random_pronouns_antag"
-#define RANDOM_VOICETYPE "random_voicetype"
-#define RANDOM_VOICETYPE_ANTAG "random_voicetype_antag"
 #define RANDOM_AGE "random_age"
 #define RANDOM_AGE_ANTAG "random_age_antag"
 #define RANDOM_UNDERWEAR "random_underwear"
@@ -162,17 +162,6 @@
 #define PRONOUNS_LIST list(HE_HIM, SHE_HER, THEY_THEM, IT_ITS)
 #define PRONOUNS_LIST_NO_IT list(HE_HIM, SHE_HER, THEY_THEM)
 #define PRONOUNS_LIST_IT_ONLY list(IT_ITS)
-
-// Voice types
-
-#define VOICE_TYPE_MASC		"Masculine"
-#define VOICE_TYPE_FEM		"Feminine"
-#define VOICE_TYPE_ANDRO	"Androgynous"
-
-#define VOICE_TYPES_LIST list(VOICE_TYPE_MASC, VOICE_TYPE_FEM, VOICE_TYPE_ANDRO)
-
-#define VOICE_TYPES_MASCANDRO list(VOICE_TYPE_MASC, VOICE_TYPE_ANDRO)
-#define VOICE_TYPES_FEMANDRO list(VOICE_TYPE_FEM, VOICE_TYPE_ANDRO)
 
 //alignment
 #define ALIGNMENT_LG		"Lawful Good"

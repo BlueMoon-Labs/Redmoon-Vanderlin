@@ -2,7 +2,17 @@
 // Reflect changes in [mob/living/carbon/human/proc/randomize_human_appearance]
 /datum/preferences/proc/randomise_appearance_prefs(randomise_flags = ALL, include_donator = FALSE)
 	if(randomise_flags & RANDOMIZE_SPECIES)
-		var/rando_race = GLOB.species_list[pick(get_selectable_species(include_donator))]
+		var/list/species_list = list()
+		for(var/species_id in GLOB.roundstart_species)
+			var/species_type = GLOB.species_list[species_id]
+
+			var/datum/species/species = new species_type()
+			if(!species.preference_accessible(src))
+				continue
+
+			species_list += species.type
+
+		var/rando_race = pick(species_list)
 		pref_species = new rando_race()
 
 	if(NOEYESPRITES in pref_species.species_traits)
@@ -11,31 +21,16 @@
 	if(randomise_flags & RANDOMIZE_GENDER)
 		gender = pref_species.sexes ? pick(MALE, FEMALE) : PLURAL
 
-	// pronouns and voice should match gender, not randomized
-	var/list/allowed_voices
+	// pronouns should match gender, not randomized
 	switch(gender)
 		if(MALE)
 			pronouns = HE_HIM
-			allowed_voices = pref_species.allowed_voicetypes_m
-			voice_type = VOICE_TYPE_MASC
 		if(FEMALE)
 			pronouns = SHE_HER
-			allowed_voices = pref_species.allowed_voicetypes_f
-			voice_type = VOICE_TYPE_FEM
 		if(PLURAL)
 			pronouns = THEY_THEM
-			allowed_voices = VOICE_TYPES_LIST
-			voice_type = VOICE_TYPE_ANDRO
 		else
 			pronouns = IT_ITS
-			allowed_voices = VOICE_TYPES_LIST
-			voice_type = VOICE_TYPE_ANDRO
-
-	if(!allowed_voices || !length(allowed_voices))
-		allowed_voices = VOICE_TYPE_ANDRO
-
-	if(!(voice_type in allowed_voices))
-		voice_type = pick(allowed_voices)
 
 	var/list/allowed_pronouns = pref_species.allowed_pronouns
 	if(!allowed_pronouns || !length(allowed_pronouns))
@@ -89,8 +84,6 @@
 		gender = pref_species.sexes ? pick(MALE, FEMALE) : PLURAL
 	if(randomise[RANDOM_AGE] || randomise[RANDOM_AGE_ANTAG] && antag_override)
 		age = pick(pref_species.possible_ages)
-	if(randomise[RANDOM_VOICETYPE] || antag_override && randomise[RANDOM_VOICETYPE_ANTAG])
-		voice_type = pick(VOICE_TYPES_LIST)
 	if(randomise[RANDOM_PRONOUNS] || antag_override && randomise[RANDOM_PRONOUNS_ANTAG])
 		var/list/allowed_pronouns = pref_species.allowed_pronouns
 		if(!allowed_pronouns || !length(allowed_pronouns))
@@ -121,12 +114,12 @@
 	accessory = "Nothing"
 
 /datum/preferences/proc/random_species()
-	var/random_species_type = GLOB.species_list[pick(get_selectable_species(donator))]
-	pref_species = new random_species_type
+	var/rando_race = GLOB.species_list[pick(GLOB.roundstart_species)]
+	pref_species = new rando_race()
 	if(randomise[RANDOM_NAME])
 		real_name = pref_species.random_name(gender, TRUE)
 
-/datum/preferences/proc/update_preview_icon()
+/datum/preferences/proc/update_preview_icon(var/dir)
 	set waitfor = 0
 	if(!parent)
 		return
@@ -140,17 +133,12 @@
 
 	// Set up the dummy for its photoshoot
 	var/mob/living/carbon/human/dummy/mannequin = generate_or_wait_for_human_dummy(DUMMY_HUMAN_SLOT_PREFERENCES)
+
 	apply_prefs_to(mannequin, TRUE)
 
 	if(previewJob)
 		mannequin.job = previewJob.title
 		mannequin.dress_up_as_job(previewJob, TRUE)
 
-	parent.show_character_previews(new /mutable_appearance(mannequin))
+	parent.show_character_previews(new /mutable_appearance(mannequin), dir)
 	unset_busy_human_dummy(DUMMY_HUMAN_SLOT_PREFERENCES)
-
-
-/datum/preferences/proc/spec_check()
-	if(!(pref_species.name in get_selectable_species(donator)))
-		return FALSE
-	return TRUE

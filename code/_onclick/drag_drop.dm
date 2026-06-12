@@ -43,6 +43,7 @@
 
 /client
 	var/list/atom/selected_target[2]
+	var/atom/movable/screen/char_preview/char_preview_holder
 	var/obj/item/active_mousedown_item = null
 	var/mouseParams = ""
 	///Used in MouseDrag to preserve the last mouse-entered location. Weakref
@@ -71,6 +72,11 @@
 	var/window_scaling
 
 /atom/movable/screen
+//REDMOON CHANGES
+	var/assigned_map
+	var/del_on_map_removal = TRUE
+
+//REDMOON CHANGES END
 	blockscharging = TRUE
 
 ///setter used to set our new hud
@@ -175,13 +181,6 @@
 				updateprogbar()
 			else
 				mouse_pointer_icon = 'icons/effects/mousemice/human_attack.dmi'
-
-/mob
-	var/obj/effect/spell_rune/spell_rune
-	var/datum/intent/curplaying
-	var/accent = ACCENT_DEFAULT
-	var/cmode_timer
-	var/monitor_key
 
 /client/MouseUp(object, location, control, params)
 	if(!control)
