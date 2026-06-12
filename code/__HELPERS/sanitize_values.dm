@@ -89,3 +89,12 @@
 /// Makes sure the input color is text with a # at the start followed by 6 hexadecimal characters. Examples: "#ff1234", "#A38321", COLOR_GREEN_GRAY
 /proc/sanitize_color(color)
 	return findtext(color, GLOB.is_color) ? color : GLOB.normal_ooc_colour
+
+/// Bodypart greyscale expects a 6-char hex string without #; sprite accessories accept either form via sanitize_hexcolor().
+/proc/normalize_skin_tone_hex(skin_tone)
+	if(!istext(skin_tone) || !length(skin_tone))
+		return copytext(sanitize_hexcolor(SKIN_COLOR_CONTINENTAL), 2)
+	var/named = GLOB.skin_tones[skin_tone]
+	if(named)
+		skin_tone = named
+	return sanitize_hexcolor(skin_tone, include_crunch = FALSE)

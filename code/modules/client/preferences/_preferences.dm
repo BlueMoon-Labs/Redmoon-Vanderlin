@@ -40,7 +40,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	var/UI_style = null
 	var/buttons_locked = TRUE
 	var/hotkeys = TRUE
-	var/arousable = TRUE
 
 	var/showrolls = TRUE
 	var/max_chat_length = CHAT_MESSAGE_MAX_LENGTH
@@ -361,10 +360,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	return dirs[idx]
 
 /datum/preferences/proc/handle_preview_dir_click(mob/user, href_list)
-	var/start_dir = text2num(href_list["dir"]) || preview_direction
 	var/invert = text2num(href_list["invert"]) ? TRUE : FALSE
-
-	preview_direction = get_next_dir(start_dir, invert)
+	preview_direction = get_next_dir(preview_direction, invert)
 	update_preview_icon(preview_direction)
 
 /datum/preferences/proc/build_and_show_menu(mob/user)
@@ -378,12 +375,18 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		break
 
 	user?.client.acquire_dpi()
+	pref_action_token = "[world.time]_[rand(1, 99999)]"
 
 	dat += {"
 <html lang="ru">
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 	<style>
+		html {
+			height: 100%;
+			overflow: hidden;
+		}
 		body {
 			background-color: #1a1a1a;
 			display: flex;
@@ -392,6 +395,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			height: 100%;
 			width: 100%;
 			margin: 0;
+			overflow: hidden;
 			image-rendering: pixelated;
 		}
 		.ui-container {
@@ -400,7 +404,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			height: 315px;
 			background-image: url('Charsheet_BG.1.png');
 			background-size: cover;
-			transform: scale(3);
+			zoom: 2.25;
+			-ms-zoom: 2.25;
 		}
 		.sprite { position: absolute; background-repeat: no-repeat; cursor: pointer; }
 
@@ -434,8 +439,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		.ooc-notes:hover { background-image: url('ooc_notes_hover.png'); }
 		.ooc-extra { top: 270px; left: 207px; width: 40px; height: 10px; background-image: url('ooc_extra.png'); }
 		.ooc-extra:hover { background-image: url('ooc_extra_hover.png'); }
-		.erp-prefs { top: 291px; left: 141px; width: 45px; height: 10px; background-image: url('erp_prefs.png'); }
-		.erp-prefs:hover { background-image: url('erp_prefs_hover.png'); }
 		.btn-roles { top: 284px; left: 200px; width: 55px; height: 30px; background-image: url('ooc_specialroles.png'); }
 		.btn-roles:hover { background-image: url('ooc_specialroles_hover.png'); }
 
@@ -669,6 +672,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				if(blob && data.voice_color) {
 					blob.style.backgroundColor = data.voice_color;
 				}
+			}
 			if('body_color' in data) {
 				var blob = document.getElementById('voice-blob-body');
 				if(blob && data.body_color) {
@@ -705,7 +709,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				 onerror="this.style.display='none';">
 		</a>
 	</div>
-	<a href='?_src_=prefs;preference=erp;task=menu'><div class="sprite erp-prefs"></div></a>
 	<div class="sprite ooc-bg"></div>
 
 	<div class="sprite" style="top:26px; left:23px; width:92px; height:9px; background-image: url('header_charname.png');">
@@ -829,7 +832,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	</div>
 	<div class="sprite v-color-box-body">
 		<a href='?_src_=prefs;preference=body_color;task=input' style="display: block; width: 100%; height: 100%;">
-			<div id="voice-blob-body" class="sprite v-blob" style="background-color: [skin_tone];"></div>
+			<div id="voice-blob-body" class="sprite v-blob" style="background-color: #[normalize_skin_tone_hex(skin_tone)];"></div>
 		</a>
 	</div>
 	<a href='?_src_=prefs;preference=bespecial'><div id="bespecial" class="sprite [next_special_trait ? "yes" : ""]"></div></a>
@@ -847,8 +850,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 	winshow(user, "stonekeep_prefwin", TRUE)
 	winshow(user, "stonekeep_prefwin.character_preview_map", TRUE)
-	// This should really be a browser datum
-	user << browse(dat.Join(), "window=preferences_browser;size=816x950")
+	var/pref_html = inject_pref_action_tokens(dat.Join())
+	show_preferences_browser_html(user, pref_html)
 	update_preview_icon(preview_direction)
 	// onclose(user, "stonekeep_prefwin", src)
 
@@ -917,8 +920,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 		params["headshot"] = headshot_link || ""
 	if(update_all || ("voice_color" in fields_to_update))
 		params["voice_color"] = voice_color
-	if(update_all || ("body_color in fields_to_update"))
-		params["body_color"] = body_color
+	if(update_all || ("body_color" in fields_to_update))
+		params["body_color"] = "#[normalize_skin_tone_hex(skin_tone)]"
 	if(update_all || ("bespecial" in fields_to_update))
 		params["bespecial"] = next_special_trait ? "1" : "0"
 	if(update_all || ("culture" in fields_to_update))
@@ -1451,7 +1454,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 /datum/preferences/proc/process_link(mob/user, list/href_list)
 	if(href_list["preference"] == "preview_dir")
 		handle_preview_dir_click(user, href_list)
-		build_and_show_menu(user)
 		return
 
 	if(href_list["bancheck"])
@@ -1501,7 +1503,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				update_job_preference(user, href_list["text"], text2num(href_list["level"]))
 			else
 				set_choices(user)
-		build_and_show_menu(user)
+		update_menu_data(user)
 		return 1
 
 	else if(href_list["preference"] == "multi")
@@ -1527,7 +1529,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 				set_antag(user)
 			else
 				set_antag(user)
-		build_and_show_menu(user)
+		update_menu_data(user)
 		return
 
 	else if(href_list["preference"] == "triumphs")
@@ -1552,12 +1554,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 	else if(href_list["preference"] == "customizers")
 		ShowCustomizers(user)
-		return
-
-	else if(href_list["preference"] == "erp")
-		if(href_list["task"] == "cit_toggles")
-			handle_erp_citadel_toggles(user)
-		show_erp_prefs_ui(user)
 		return
 
 	else if(href_list["preference"] == "triumph_buy_menu")
@@ -1699,10 +1695,6 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 			handle_culinary_topic(user, href_list)
 			show_culinary_ui(user)
 			return
-		if("change_erp_pref")
-			handle_erp_prefs_topic(user, href_list)
-			show_erp_prefs_ui(user)
-			return
 		if("random")
 			switch(href_list["preference"])
 				if("name")
@@ -1713,11 +1705,15 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					eye_color = random_eye_color()
 				if("s_tone")
 					var/list/skins = pref_species.get_skin_list()
-					skin_tone = skins[pick(skins)]
+					skin_tone = normalize_skin_tone_hex(pick_assoc(skins))
+					body_color = skin_tone
+					reset_all_customizer_accessory_colors()
 				if("species")
 					random_species()
 				if("all")
 					apply_character_randomization_prefs()
+					reset_all_customizer_accessory_colors()
+					randomize_all_customizer_accessories()
 		if("input")
 
 			if(href_list["preference"] in GLOB.preferences_custom_names)
@@ -1800,12 +1796,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 							return
 						voice_color = sanitize_hexcolor(new_voice, include_crunch = FALSE)
 				if("body_color")
-					var/new_color = input(user, "Выбери цвет кожи/шерсти своего персонажа", "THE THROAT","#"+body_color) as color|null
+					var/new_color = input(user, "Выбери цвет кожи/шерсти своего персонажа", "THE THROAT","#[normalize_skin_tone_hex(skin_tone)]") as color|null
 					if(new_color)
-						if(color_hex2num(new_color) < 230)
-							to_chat(user, "<font color='red'>Этот цвет слишком тёмный!.</font>")
-							return
-						skin_tone = sanitize_hexcolor(new_color)
+						// if(color_hex2num(new_color) < 230)
+						// 	to_chat(user, "<font color='red'>Этот цвет слишком тёмный!.</font>")
+						// 	return
+						skin_tone = normalize_skin_tone_hex(sanitize_hexcolor(new_color))
+						body_color = skin_tone
+						reset_all_customizer_accessory_colors()
 				if("headshot")
 					to_chat(user, span_notice("Please use an image of the head and shoulder area to maintain immersion level. Lastly, ["<span class='bold'>do not use a real life photo or ANYTHING AI generated.</span>"]"))
 					to_chat(user, span_notice("If the photo doesn't show up properly in-game, ensure that it's a direct image link that opens properly in a browser."))
@@ -1995,7 +1993,9 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					var/list/listy = pref_species.get_skin_list()
 					var/new_s_tone = browser_input_list(user, "CHOOSE YOUR HERO'S [uppertext(pref_species.skin_tone_wording)]", "THE SUN", listy)
 					if(new_s_tone)
-						skin_tone = listy[new_s_tone]
+						skin_tone = normalize_skin_tone_hex(listy[new_s_tone])
+						body_color = skin_tone
+						reset_all_customizer_accessory_colors()
 
 				if("selected_accent")
 					if(length(pref_species.multiple_accents))
@@ -2312,13 +2312,14 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					if(choice)
 						choice = choices[choice]
 						if(!load_character(choice))
-							randomise_appearance_prefs()
+							randomise_appearance_prefs(~RANDOMIZE_SPECIES)
 							validate_customizer_entries()
+							reset_all_customizer_accessory_colors()
+							randomize_all_customizer_accessories()
 							save_character()
 
 				if("randomiseappearanceprefs")
-					randomise_appearance_prefs()
-					customizer_entries = list()
+					randomise_appearance_prefs(~RANDOMIZE_SPECIES)
 					validate_customizer_entries()
 					reset_all_customizer_accessory_colors()
 					randomize_all_customizer_accessories()
@@ -2329,7 +2330,8 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 						current_tab = text2num(href_list["tab"])
 
 	update_menu_data(user)
-	build_and_show_menu(user)
+	if(href_list["preference"] in list("load", "changeslot"))
+		build_and_show_menu(user)
 	return 1
 
 
@@ -2377,7 +2379,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	character.dna.features = features.Copy()
 	character.dna.real_name = character.real_name
 
-	character.skin_tone = skin_tone
+	character.skin_tone = normalize_skin_tone_hex(skin_tone)
 	character.culture = GLOB.culture_singletons[culture]
 	character.underwear = underwear
 	character.underwear_color = underwear_color

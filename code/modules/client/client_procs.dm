@@ -1318,23 +1318,30 @@ GLOBAL_LIST_EMPTY(respawncounts)
 		to_chat(src, announcement)
 
 /client/proc/show_character_previews(mutable_appearance/MA, var/dir)
-    var/atom/movable/screen/char_preview/O = char_preview_holder
-    if(O)
-        screen -= O
-        qdel(O)
+	var/atom/movable/screen/char_preview/O = char_preview_holder
+	if(O)
+		screen -= O
+		qdel(O)
 
-    O = new
-    char_preview_holder = O
+	O = new
+	char_preview_holder = O
 
-    screen += O
-    O.appearance = MA
-    O.dir = dir
+	screen += O
+	O.appearance = MA
+	O.dir = dir
 
-    var/matrix/M = matrix()
-    M.Scale(2)
-    O.transform = M
-
-    O.screen_loc = "character_preview_map:1:1,3:-32"
+	var/matrix/M = matrix()
+	M.Scale(1)
+	O.transform = M
+	switch(dir)
+		if(NORTH)
+			O.screen_loc = "character_preview_map:1:2,1:0"
+		if(EAST)
+			O.screen_loc = "character_preview_map:1:2,0:0"
+		if(WEST)
+			O.screen_loc = "character_preview_map:0:2,0:0"
+		else
+			O.screen_loc = "character_preview_map:0:2,1:0"
 
 /client/proc/clear_character_previews()
 	for(var/index in char_render_holders) // associative list, have to index

@@ -7,8 +7,6 @@
 #define MARKINGS		17
 #define MUTCOLORS2		18
 #define MUTCOLORS3		19
-#define NOAROUSAL		20	//Stops all arousal effects
-#define NOGENITALS		21	//Cannot create, use, or otherwise have genitals
 #define MATRIXED		22	//if icon is color matrix'd
 #define SKINTONE		23	//uses skin tones
 #define CUSTOM_SKINTONE	24	//adds a "_g" suffix to bodypart overlays icon states if a custom skintone is used.
@@ -19,12 +17,3 @@
 /// Used for determining which wounds are applicable to this species.
 #define HAS_FLESH	29 /// if we have flesh (can suffer slash/piercing/burn wounds, requires they don't have NOBLOOD)
 #define HAS_BONE	30 /// if we have bones (can suffer bone wounds)
-
-#define ORGAN_SLOT_PENIS "penis"
-#define ORGAN_SLOT_WOMB "womb"
-#define ORGAN_SLOT_VAGINA "vagina"
-#define ORGAN_SLOT_TESTICLES "testicles"
-#define ORGAN_SLOT_BREASTS "breasts"
-#define ORGAN_SLOT_BUTT "butt"
-#define ORGAN_SLOT_BELLY "belly"
-#define ORGAN_SLOT_ANUS "anus"

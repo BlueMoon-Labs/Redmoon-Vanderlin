@@ -369,8 +369,8 @@ window "stonekeep_prefwin"
 		anchor1 = 0,0
 		anchor2 = 75,100
 		background-color = none
-		saved-params = ""
-		zoom: 1
+		saved-params = "zoom"
+		zoom = 1
 	elem "character_preview_map"
 		type = MAP
 		pos = 30,155

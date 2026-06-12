@@ -139,6 +139,12 @@
 	SPEC_ID_ELF,\
 	SPEC_ID_HALF_ELF,\
 	SPEC_ID_HALFLING,\
+	SPEC_ID_AXIAN,\
+	SPEC_ID_LUPIAN,\
+	SPEC_ID_VULPKANIN,\
+	SPEC_ID_TABAXI,\
+	SPEC_ID_MOTH,\
+	SPEC_ID_DRACON,\
 )
 
 /// Species who are nonheretical to the church. Excluded species typically have an inhumen god associated, like Zizo. Used for church/faith roles.

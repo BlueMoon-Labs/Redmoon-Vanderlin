@@ -1,1 +1,0 @@
-#define STATUS_EFFECT_DRIPPING_CUM /datum/status_effect/dripping_cum
