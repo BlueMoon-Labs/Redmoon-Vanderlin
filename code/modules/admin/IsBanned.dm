@@ -25,10 +25,11 @@ GLOBAL_VAR(last_connection)
 	var/client/C = GLOB.directory[ckey]
 
 	if(!real_bans_only && !C)
-		if (!admin)
-			if(get_playerquality(ckey) <= -100)
-				log_access("Failed Login: [ckey] - PQ at -100")
-				return list("reason"="pqlow", "desc"="\nYou have completed the game!")
+		if(!check_whitelist(ckey))
+			if (!admin)
+				if(get_playerquality(ckey) <= -100)
+					log_access("Failed Login: [ckey] - PQ at -100")
+					return list("reason"="pqlow", "desc"="\nYou have completed the game!")
 
 	//Guest Checking
 	if(!real_bans_only && !C && IsGuestKey(key))

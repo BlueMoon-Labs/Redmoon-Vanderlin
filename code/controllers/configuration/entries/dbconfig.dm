@@ -49,3 +49,7 @@
 	min_val = 1
 
 /datum/config_entry/flag/bsql_debug
+
+/datum/config_entry/string/feedback_database_whitelist
+	default = "test"
+	protection = CONFIG_ENTRY_LOCKED | CONFIG_ENTRY_HIDDEN
