@@ -14,13 +14,13 @@ SUBSYSTEM_DEF(communications)
 	var/used_title
 	if(user.job)
 		var/datum/job/job = SSjob.GetJob(user.job)
-		used_title = job ? "The [job.get_informed_title(user)]" : "Someone"
+		used_title = job ? "[job.get_informed_title(user)]" : "Кто-то"
 
 	if(decree)
-		priority_announce(html_decode(user.treat_message(input)), "[user.real_name], [used_title] Decrees", 'sound/misc/alert.ogg', "Captain")
+		priority_announce(html_decode(user.treat_message(input)), "[user.real_name], [used_title] указывает", 'sound/misc/alert.ogg', "Captain")
 		message_cooldown = world.time + 5 SECONDS
 	else
-		priority_announce(html_decode(user.treat_message(input)), "[user.real_name], [used_title] Speaks", 'sound/misc/alert.ogg', "Captain")
+		priority_announce(html_decode(user.treat_message(input)), "[user.real_name], [used_title] обращается к народу", 'sound/misc/alert.ogg', "Captain")
 		message_cooldown = world.time + 5 SECONDS
 
 	user.log_talk(input, LOG_SAY, tag="priority announcement")

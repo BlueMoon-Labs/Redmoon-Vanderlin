@@ -409,43 +409,43 @@ GLOBAL_LIST_INIT(badomens, list())
 	GLOB.badomens -= input
 
 /datum/round_event_control/proc/badomen(eventreason)
-	var/used = "Zizo."
-	var/title = "Bad Omen"
+	var/used = "Зизо."
+	var/title = "Дурное предзнаменование"
 	var/sound = 'sound/misc/evilevent.ogg'
 	switch(eventreason)
 		if(OMEN_ROUNDSTART)
 			used = pick( \
-				"Zizo.", \
-				"Unholy invocations channel the will of Her.", \
-				"Forbidden rituals cause echoes through the plane.", \
-				"Whispers of the Dark Lady in the shadows.", \
-				"The servants of Zizo undermine the Ten.", \
-				"Her influence becomes more tangible...", \
-				"A foul curse temporarily takes the land.", \
-				"The dead churn and dig at their graves.", \
+				"Зизо.", \
+				"Нечестивые призывания направляют Её волю.", \
+				"Запретные ритуалы вызывают эхо по всему миру.", \
+				"Шёпот Тёмной Госпожи в тенях.", \
+				"Слуги Зизо подрывают власть Десятерых.", \
+				"Её влияние становится всё ощутимее...", \
+				"Мерзкое проклятие временно охватывает землю.", \
+				"Мёртвые ворочаются и роют свои могилы.", \
 			)
 			title = pick( \
-				"Zizo Sneers", \
-				"The Dark Lady Watches", \
-				"Zizo's Attention", \
-				"She Peers", \
-				"Zizo Smirks", \
+				"Зизо Насмехается", \
+				"Тёмная Госпожа Наблюдает", \
+				"Внимание Зизо", \
+				"Она Всматривается", \
+				"Зизо Ухмыляется", \
 			)
 			sound = 'sound/misc/gods/zizo_omen.ogg'
 		if(OMEN_NOLORD)
-			used = "The Monarch is dead! We need a new ruler."
+			used = "Монарх мёртв! Нам нужен новый правитель."
 		if(OMEN_NOPRIEST)
-			used = "The High Priest is dead!"
+			used = "Верховный жрец мёртв!"
 		if(OMEN_NOBLEDEATH)
-			used = "A Noble has perished."
+			used = "Благородный пал."
 		if(OMEN_SUNSTEAL)
-			used = "The Sun, she is wounded!"
+			used = "Солнцу нанесена рана!"
 		if(OMEN_SKELETONSIEGE)
-			used = "Unwelcome visitors!"
+			used = "Нежеланные гости!"
 		if("ascend")
-			used = "Zizo will rise once again."
+			used = "Зизо вновь восстанет."
 		if("psycross")
-			used = "You have angered the gods!"
+			used = "Вы разгневали богов!"
 	if(!eventreason)
 		return
 	if(!used || !title || !sound)

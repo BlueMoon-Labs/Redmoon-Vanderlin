@@ -75,7 +75,7 @@
 		if(!istype(get_area(src), /area/indoors/town/tavern))
 			to_chat(src, "<span class='warning'>I need to do this from the tavern.</span>")
 			return FALSE
-		priority_announce("[inputty]", title = "[src.real_name], The Town Elder Speaks", sound = 'sound/misc/bell.ogg')
+		priority_announce("[inputty]", title = "[src.real_name], старейшина обращается к народу", sound = 'sound/misc/bell.ogg')
 		src.log_talk("[TIMETOTEXT4LOGS] [inputty]", LOG_SAY, tag="Town Elder announcement")
 
 		last_announcement_time = world.time

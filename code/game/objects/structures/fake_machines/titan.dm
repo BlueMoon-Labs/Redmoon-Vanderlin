@@ -310,7 +310,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	playsound(src, 'sound/misc/machineyes.ogg', 100, FALSE, -1)
 	var/decree_text = GLOB.lord_decrees[decree_index]
 	GLOB.lord_decrees -= decree_text
-	priority_announce("[decree_index]. [decree_text]", "A DECREE IS ABOLISHED", 'sound/misc/lawdeclaration.ogg', "Captain")
+	priority_announce("[decree_index]. [decree_text]", "УКАЗ ОТМЕНЁН", 'sound/misc/lawdeclaration.ogg', "Captain")
 	reset_mode()
 	return TRUE
 
@@ -319,7 +319,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		return
 	GLOB.laws_of_the_land += message
 	record_round_statistic(STATS_LAWS_AND_DECREES_MADE)
-	priority_announce("[length(GLOB.laws_of_the_land)]. [message]", "A LAW IS DECLARED", 'sound/misc/lawdeclaration.ogg', "Captain")
+	priority_announce("[length(GLOB.laws_of_the_land)]. [message]", "ЗАКОН ОБЪЯВЛЕН", 'sound/misc/lawdeclaration.ogg', "Captain")
 	reset_mode()
 
 /// Removes a law
@@ -334,7 +334,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	playsound(src, 'sound/misc/machineyes.ogg', 100, FALSE, -1)
 	var/law_text = GLOB.laws_of_the_land[law_index]
 	GLOB.laws_of_the_land -= law_text
-	priority_announce("[law_index]. [law_text]", "A LAW IS ABOLISHED", 'sound/misc/lawdeclaration.ogg', "Captain")
+	priority_announce("[law_index]. [law_text]", "ЗАКОН ОТМЕНЁН", 'sound/misc/lawdeclaration.ogg', "Captain")
 	reset_mode()
 	return TRUE
 
@@ -343,7 +343,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	say("All laws shall be purged!")
 	playsound(src, 'sound/misc/machineyes.ogg', 100, FALSE, -1)
 	GLOB.laws_of_the_land = list()
-	priority_announce("All laws of the land have been purged!", "LAWS PURGED", 'sound/misc/lawspurged.ogg', "Captain")
+	priority_announce("Все законы страны отменены!", "ЗАКОНЫ ОТМЕНЕНЫ", 'sound/misc/lawspurged.ogg', "Captain")
 
 /// Declares someone an outlaw
 /obj/structure/fake_machine/titan/proc/declare_outlaw(mob/living/carbon/human/user, message)
@@ -369,7 +369,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		reset_mode()
 		return FALSE
 	GLOB.outlawed_players |= message
-	priority_announce("[message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+	priority_announce("[message] объявлен вне закона - его нужно схватить или убить.", "[user.real_name], [user.get_role_title()] указывает", 'sound/misc/alert.ogg', "Captain")
 	reset_mode()
 	return TRUE
 
@@ -379,7 +379,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 
 	if(message in GLOB.outlawed_players)
 		GLOB.outlawed_players -= message
-		priority_announce("[message] is no longer an outlaw in Vanderlin lands.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+		priority_announce("[message] больше не вне закона на землях Вандерлина.", "[user.real_name], [user.get_role_title()] указывает", 'sound/misc/alert.ogg', "Captain")
 		reset_mode()
 		return TRUE
 	else
@@ -404,7 +404,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		newtax = CLAMP(newtax, 1, 99)
 		SStreasury.tax_value = newtax / 100
 		SStreasury.untaxed_deposits = list()
-		priority_announce("The new tax in Vanderlin shall be [newtax] percent.", "[user.real_name], The Generous [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+		priority_announce("Новый налог в Вандерлине составит [newtax]%.", "[user.real_name], щедрый [user.get_role_title()] указывает", 'sound/misc/alert.ogg', "Captain")
 	reset_mode()
 
 /// Changes the job of a nearby mob
@@ -480,7 +480,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	if(!SScommunications.can_announce(user))
 		return
 
-	priority_announce("Henceforth, the vassal known as [victim.real_name] shall have the title of [new_pos].", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+	priority_announce("Отныне вассал по имени [victim.real_name] получает титул [new_pos].", "[user.real_name], [user.get_role_title()] указывает", 'sound/misc/alert.ogg', "Captain")
 
 /// Appoints a regent to the throne
 /obj/structure/fake_machine/titan/proc/appoint_regent(mob/living/carbon/human/user)
@@ -490,7 +490,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		return FALSE
 	if(SSticker.regent_mob)
 		var/mob/living/carbon/human/regent = SSticker.regent_mob
-		priority_announce("[regent.real_name] is no longer regent.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+		priority_announce("[regent.real_name] больше не регент.", "[user.real_name], [user.get_role_title()] указывает", 'sound/misc/alert.ogg', "Captain")
 		SSticker.regent_mob = null
 		return TRUE
 	var/list/mob/living/carbon/possible_mobs = orange(2, src)
@@ -501,7 +501,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	var/mob/living/carbon/new_regent = input(user, "Who will rule when you sleep?", src, null) as null|mob in possible_mobs - user
 	if(isnull(new_regent) || !Adjacent(user))
 		return
-	priority_announce("[new_regent.real_name] has been appointed regent.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+	priority_announce("[new_regent.real_name] назначен регентом.", "[user.real_name], [user.get_role_title()] указывает", 'sound/misc/alert.ogg', "Captain")
 	SSticker.regent_mob = new_regent
 
 /obj/structure/fake_machine/titan/proc/silence_plebs(mob/living/carbon/human/user)

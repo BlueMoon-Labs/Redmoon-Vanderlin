@@ -530,3 +530,11 @@ SMART_CACHE_ASSETS
 ## Useful for developers to debug potential spritesheet issues to determine where the issue is cropping up (either in DM-side sprite generation or in the TGUI-side display of said spritesheet).
 ## Will only seek to waste disk space if ran on production.
 #SAVE_SPRITESHEETS
+
+## Rich Discord embeds for round start/end via TGS (Redmoon roundspoke)
+## Requires CHAT_ANNOUNCE_NEW_GAME or ROUNDSPOKE_CHANNEL_TAG to target the right channel
+#ROUNDSPOKE
+#ROUNDSPOKE_CHANNEL_TAG status
+#ROUNDSPOKE_DISCORD_ROLE 1325992382021501050
+#ROUNDSPOKE_JOIN_URL https://redmoon.ss13-bluemoon.ru/
+#ROUNDSPOKE_MEDIA_FILE config/discord_videos.json

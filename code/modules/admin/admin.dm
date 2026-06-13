@@ -1076,7 +1076,7 @@
 		devotion.grant_to(M)
 	M.give_priest_verbs()
 	removeomen(OMEN_NOPRIEST)
-	priority_announce("Astrata has anointed [M.real_name] as the new head of the Church of the Ten!", title = "Astrata Shines!", sound = 'sound/misc/bell.ogg')
+	priority_announce("Астрата помазала [M.real_name] новым главой Церкви Десятерых!", title = "Астрата Сияет!", sound = 'sound/misc/bell.ogg')
 
 /datum/admins/proc/fix_death_area()
 	set category = "GameMaster"

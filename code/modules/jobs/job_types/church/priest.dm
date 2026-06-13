@@ -186,8 +186,8 @@
 	SSticker.rulermob = coronated
 	GLOB.badomens -= OMEN_NOLORD
 	say("By the authority of the Gods, I pronounce you Ruler of all [SSmapping.config.map_name]!")
-	priority_announce("[real_name] the [mind.assigned_role.get_informed_title(src)] has named [coronated.real_name] the inheritor of [SSmapping.config.map_name]!", \
-	title = "Long Live [lord_job.get_informed_title()] [coronated.real_name]!", sound = 'sound/misc/bell.ogg')
+	priority_announce("[real_name], [mind.assigned_role.get_informed_title(src)], назначил [coronated.real_name] наследником [SSmapping.config.map_name]!", \
+	title = "Да здравствует [lord_job.get_informed_title()] [coronated.real_name]!", sound = 'sound/misc/bell.ogg')
 
 /mob/living/carbon/human/proc/churchexcommunicate()
 	set name = "Excommunicate"
@@ -201,7 +201,7 @@
 	if(inputty)
 		if(inputty in GLOB.excommunicated_players)
 			GLOB.excommunicated_players -= inputty
-			priority_announce("[real_name] has forgiven [inputty]. The Ten hear their prayers once more!", title = "Hail the Ten!", sound = 'sound/misc/bell.ogg')
+			priority_announce("[real_name] простил [inputty]. Десятеро вновь слышат их молитвы!", title = "Слава Десятерым!", sound = 'sound/misc/bell.ogg')
 			for(var/mob/living/carbon/human/H in GLOB.human_list)
 				if(H.real_name == inputty)
 					H.cleric?.recommunicate()
@@ -217,7 +217,7 @@
 					return FALSE
 				H.cleric?.excommunicate()
 				GLOB.excommunicated_players += inputty
-				priority_announce("[real_name] has excommunicated [inputty]! The Ten have turned away from them!", title = "SHAME", sound = 'sound/misc/excomm.ogg')
+				priority_announce("[real_name] отлучил [inputty] от церкви! Десятеро отвернулись от них!", title = "ПОЗОР", sound = 'sound/misc/excomm.ogg')
 				break
 
 /mob/living/carbon/human/proc/churchcurse()
@@ -232,7 +232,7 @@
 	if(inputty)
 		if(inputty in GLOB.heretical_players)
 			GLOB.heretical_players -= inputty
-			priority_announce("[real_name] has forgiven [inputty]. Once more walk in the light!", title = "Hail the Ten!", sound = 'sound/misc/bell.ogg')
+			priority_announce("[real_name] простил [inputty]. Вновь идите во свете!", title = "Слава Десятерым!", sound = 'sound/misc/bell.ogg')
 			for(var/mob/living/carbon/H in GLOB.player_list)
 				if(H.real_name == inputty)
 					H.remove_stress(/datum/stress_event/psycurse)
@@ -247,7 +247,7 @@
 					return FALSE
 				H.add_stress(/datum/stress_event/psycurse)
 				GLOB.heretical_players += inputty
-				priority_announce("[real_name] has put Xylix's curse of woe on [inputty] for offending the church!", title = "SHAME", sound = 'sound/misc/excomm.ogg')
+				priority_announce("[real_name] наложил проклятие Зайликса на [inputty] за оскорбление церкви!", title = "ПОЗОР", sound = 'sound/misc/excomm.ogg')
 				break
 
 /mob/living/carbon/human/proc/churchannouncement()
@@ -260,7 +260,7 @@
 		return FALSE
 	var/inputty = SANITIZE_HEAR_MESSAGE(html_decode(tgui_input_text(src, "Make an announcement to the faithful", "Church Announcement", multiline = TRUE)))
 	if(inputty)
-		priority_announce("[inputty]", title = "The [get_role_title()] Speaks", sound = 'sound/misc/bell.ogg')
+		priority_announce("[inputty]", title = "[get_role_title()] обращается", sound = 'sound/misc/bell.ogg')
 		src.log_talk("[TIMETOTEXT4LOGS] [inputty]", LOG_SAY, tag="Priest announcement")
 
 /// Helper for giving priest verbs, and whether that should include coronation or penance verbs.

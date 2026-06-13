@@ -1152,7 +1152,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 				for(var/datum/job/job in available_jobs)
 					var/rank = job.title
-					var/used_name = (pronouns == SHE_HER && job.f_title) ? job.f_title : job.title
+					var/used_name = job.get_informed_title(user, TRUE)
 					var/job_id = replacetext(rank, " ", "_")
 
 					category_html += "<tr bgcolor='#000000'><td width='60%' align='right'>"

@@ -115,7 +115,7 @@
 		if(!is_type_in_list(get_area(src), list(/area/outdoors/exposed/under/basement, /area/outdoors/exposed/under/sewer)))
 			to_chat(src, span_warning("I must speak DOWN upon them."))
 			return FALSE
-		priority_announce("[inputty]", title = "[src.real_name], The Sunlord Speaks", sound = 'sound/misc/foghorn.ogg')
+		priority_announce("[inputty]", title = "[src.real_name], солнцелорд обращается", sound = 'sound/misc/foghorn.ogg')
 		src.log_talk("[TIMETOTEXT4LOGS] [inputty]", LOG_SAY, tag="Sunlord announcement")
 
 		last_announcement_time = world.time

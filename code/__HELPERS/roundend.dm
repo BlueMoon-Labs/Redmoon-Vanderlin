@@ -111,6 +111,8 @@
 	SSdbcore.SetRoundEnd()
 	SSpersistence.CollectData()
 
+	INVOKE_ASYNC(world, TYPE_PROC_REF(/world, SendTGSRoundEnd))
+
 	//stop collecting feedback during grifftime
 	SSblackbox.Seal()
 
@@ -120,29 +122,33 @@
 	standard_reboot()
 
 /datum/controller/subsystem/ticker/proc/get_end_reason()
+	var/end_reason = get_round_end_reason()
+	if(end_reason)
+		to_chat(world, span_bigbold("[end_reason]."))
+	else
+		to_chat(world, span_bigbold("[SSmapping.config?.map_name || "Поселение"] пережило ещё одну неделю."))
+
+/datum/controller/subsystem/ticker/proc/get_round_end_reason()
 	var/end_reason
+	var/map_name = SSmapping.config?.map_name || "поселение"
 
 	if(!check_for_lord(TRUE)) //TRUE forces the check, otherwise it will autofail.
-		end_reason = pick("Without a Monarch, the forces of Zizo grew ever bolder.",
-						"Without a Monarch, [SSmapping.config?.map_name || "the settlement"] fell into turmoil.",
-						"Without a Monarch, some jealous rival reigned in tyranny.")
+		end_reason = pick("Без правителя силы Зизо стали ещё дерзче.",
+						"Без правителя [map_name] погрузилось в смуту.",
+						"Без правителя тиранически правил ревнивый соперник.")
 
 	if(vampire_werewolf() == "vampire")
-		end_reason = "When the Vampires finished sucking [SSmapping.config?.map_name || "the town"] dry, they moved on to the next one."
+		end_reason = "Вампиры выпили [map_name] до дна и отправились к следующей добыче."
 	if(vampire_werewolf() == "werewolf")
-		end_reason = "The Werevolves formed an unholy clan, marauding [SSmapping.config?.map_name || "the town"] until the end of its daes."
+		end_reason = "Оборотни образовали нечестивый клан и мародёрствовали в [map_name] до самого конца."
 
 	if(SSmapping.retainer.cult_ascended)
 		end_reason = "ZIZOZIZOZIZOZIZO"
 
 	if(SSmapping.retainer.head_rebel_decree)
-		end_reason = "The peasant rebels took control of the throne, hail the new community!"
+		end_reason = "Крестьянские мятежники захватили трон — да здравствует новая община!"
 
-
-	if(end_reason)
-		to_chat(world, span_bigbold("[end_reason]."))
-	else
-		to_chat(world, span_bigbold("[SSmapping.config?.map_name || "The town"] has managed to survive another week."))
+	return end_reason
 
 /datum/controller/subsystem/ticker/proc/gamemode_report()
 	//TODO: This is a copypaste of antag_report(), this should be deleted

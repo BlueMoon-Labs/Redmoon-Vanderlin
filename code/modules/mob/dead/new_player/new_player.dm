@@ -580,9 +580,7 @@ GLOBAL_LIST_INIT(roleplay_readme, file2list("strings/rt/Lore_Primer.txt"))
 					var/command_bold = ""
 					if(job in GLOB.noble_positions)
 						command_bold = " command"
-					var/used_name = job_datum.title
-					if(client.prefs.gender == FEMALE && job_datum.f_title)
-						used_name = job_datum.f_title
+					var/used_name = job_datum.get_informed_title(src, TRUE)
 					if(job_datum in SSjob.prioritized_jobs)
 						dat += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[used_name] ([job_datum.current_positions])</span></a>"
 					else

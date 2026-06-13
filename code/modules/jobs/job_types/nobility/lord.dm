@@ -59,13 +59,13 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	job_flags = (JOB_ANNOUNCE_ARRIVAL | JOB_SHOW_IN_CREDITS | JOB_EQUIP_RANK | JOB_NEW_PLAYER_JOINABLE)
 	display_order = JDO_LORD
 	faction = FACTION_TOWN
-	total_positions = 0
+	total_positions = 1
 	spawn_positions = 1
 	spells = list(
 		/datum/action/cooldown/spell/undirected/list_target/grant_title,
 		/datum/action/cooldown/spell/undirected/list_target/grant_nobility,
 	)
-	allowed_races = RACES_PLAYER_ROYALTY
+	allowed_races = RACES_PLAYER_NONHERETICAL
 	outfit = /datum/outfit/lord
 	bypass_lastclass = TRUE
 	give_bank_account = 500
@@ -113,8 +113,14 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	if(change_title)
 		ruler_title = new_title
 		return "[ruler_title]"
-	else
-		return "[ruler_title]"
+
+	if(ruler_title == initial(ruler_title))
+		if(mob && !ignore_pronouns && mob.pronouns == SHE_HER && SSmapping.config?.monarch_title_f)
+			return SSmapping.config.monarch_title_f
+		if(SSmapping.config?.monarch_title)
+			return SSmapping.config.monarch_title
+
+	return "[ruler_title]"
 
 /datum/job/lord/after_spawn(mob/living/carbon/human/spawned, client/player_client)
 	. = ..()

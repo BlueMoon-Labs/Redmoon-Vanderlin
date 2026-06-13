@@ -586,4 +586,7 @@ GLOBAL_PROTECT(tracy_init_reason)
 			CRASH("Error flushing byond-tracy log: [flush_result]")
 		SEND_TEXT(world.log, "Flushed byond-tracy log")
 
+/world/proc/SendTGSRoundEnd()
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(roundspoke_send_round_end))
+
 #undef RESTART_COUNTER_PATH

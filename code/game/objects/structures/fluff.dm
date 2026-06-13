@@ -1361,8 +1361,8 @@
 	bride.adjust_triumphs(1)
 
 	if(!secret_marriage)
-		var/announcement_message = "Eora [groom.gender == bride.gender ? "begrudgingly accepts" : "proudly embraces"] the marriage between [groom.real_name] and [bride_first_name]!"
-		priority_announce(announcement_message, title = "Holy Union!", sound = 'sound/misc/bell.ogg')
+		var/announcement_message = "Эора [groom.gender == bride.gender ? "неохотно принимает" : "с гордостью благословляет"] брак между [groom.real_name] и [bride_first_name]!"
+		priority_announce(announcement_message, title = "Святой союз!", sound = 'sound/misc/bell.ogg')
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOBAL_MARRIAGE, groom, bride)
 	record_round_statistic(STATS_MARRIAGES)

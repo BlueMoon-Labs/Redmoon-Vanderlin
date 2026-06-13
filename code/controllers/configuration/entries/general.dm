@@ -420,6 +420,24 @@
 /datum/config_entry/string/channel_announce_new_game_message
 	default = null
 
+/datum/config_entry/flag/roundspoke_enabled
+
+/datum/config_entry/string/roundspoke_channel_tag
+	default = "status"
+
+/datum/config_entry/string/roundspoke_discord_role
+
+/datum/config_entry/string/roundspoke_join_url
+
+/datum/config_entry/string/roundspoke_author_name
+	default = "Ксайликс вещает"
+
+/datum/config_entry/string/roundspoke_author_icon_url
+	default = "https://cdn.discordapp.com/attachments/1325992384684884115/1330502172906885131/IMG_4957.png?ex=678e3635&is=678ce4b5&hm=525f0416de455a33fabe2b014f91a546bc2883f670dd2785afbc95add71375e4&"
+
+/datum/config_entry/string/roundspoke_media_file
+	default = "config/discord_videos.json"
+
 /datum/config_entry/flag/debug_admin_hrefs
 
 /datum/config_entry/number/mc_tick_rate/base_mc_tick_rate

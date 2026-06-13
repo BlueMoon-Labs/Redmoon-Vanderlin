@@ -154,6 +154,6 @@
 
 /datum/command_report_menu/proc/test_announcement()
 	var/send_message = "[command_report_content]\n\n\nSound Used: [played_sound]"
-	priority_announce(send_message, "TEST: [command_name]", played_sound, players = list(ui_user), encode_title = encode_report, encode_text = encode_report)
+	priority_announce(send_message, "ТЕСТ: [command_name]", played_sound, players = list(ui_user), encode_title = encode_report, encode_text = encode_report)
 
 #undef DEFAULT_ANNOUNCEMENT_SOUND
