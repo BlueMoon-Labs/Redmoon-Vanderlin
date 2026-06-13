@@ -317,7 +317,7 @@ GLOBAL_LIST_INIT(roleplay_readme, file2list("strings/rt/Lore_Primer.txt"))
 		if(JOB_UNAVAILABLE_DEITY)
 			return "[jobtitle] requires more faith."
 		if(JOB_UNAVAILABLE_QUALITY)
-			return "[jobtitle] requires higher player quality."
+			return redmoon_job_unavailable_quality_message(jobtitle, usr?.client?.ckey)
 		if(JOB_UNAVAILABLE_DONATOR)
 			return "You need to be a donator to have play as [jobtitle]."
 		if(JOB_UNAVAILABLE_ACCOUNTAGE)

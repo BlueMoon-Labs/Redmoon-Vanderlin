@@ -1,49 +1,29 @@
-/proc/redmoon_meets_pq(ckey, required_pq)
-	if(!required_pq)
+/proc/redmoon_job_meets_pq(ckey, datum/job/job)
+	if(!job)
 		return TRUE
-	#ifdef USES_PQ
-	return get_playerquality(ckey) >= required_pq
+	#ifndef USES_PQ
+	return TRUE
 	#else
+	var/player_pq = get_playerquality(ckey)
+	if(!isnull(job.min_pq) && player_pq < job.min_pq)
+		return FALSE
+	if(!isnull(job.max_pq) && player_pq > job.max_pq)
+		return FALSE
 	return TRUE
 	#endif
-
-/proc/get_redmoon_antag_pq_requirement(antag_flag)
-	switch(antag_flag)
-		if(ROLE_BANDIT)
-			return 25
-		if(ROLE_WRETCH)
-			return 50
-	return 0
-
-/proc/get_redmoon_job_pq_requirement(datum/job/job)
-	if(!job)
-		return 0
-	if(istype(job, /datum/job/lunatic) || job.title == JOB_LUNATIC)
-		return 75
-	if(istype(job, /datum/job/bandit) || job.title == ROLE_BANDIT)
-		return 25
-	var/datum/job/advclass/advclass = job
-	if(istype(advclass))
-		if(CTAG_BANDIT in advclass.category_tags)
-			return 25
-		if(CTAG_WRETCH in advclass.category_tags)
-			return 50
-	return 0
 
 /datum/job/special_job_check(mob/dead/new_player/player)
 	. = ..()
 	if(!.)
 		return FALSE
-	var/required_pq = get_redmoon_job_pq_requirement(src)
-	if(required_pq && player?.client && !redmoon_meets_pq(player.client.ckey, required_pq))
+	if(player?.client && !redmoon_job_meets_pq(player.client.ckey, src))
 		return FALSE
 	return TRUE
 
 /datum/job/advclass/check_requirements(mob/living/carbon/human/to_check, triumph_restriction_lift = FALSE)
 	if(!..())
 		return FALSE
-	var/required_pq = get_redmoon_job_pq_requirement(src)
-	if(required_pq && !redmoon_meets_pq(to_check.ckey, required_pq))
+	if(!redmoon_job_meets_pq(to_check.ckey, src))
 		return FALSE
 	return TRUE
 
@@ -52,8 +32,7 @@
 	if(. != JOB_AVAILABLE)
 		return .
 	var/datum/job/job = SSjob.GetJob(rank)
-	var/required_pq = get_redmoon_job_pq_requirement(job)
-	if(required_pq && client && !redmoon_meets_pq(client.ckey, required_pq))
+	if(job && client && !redmoon_job_meets_pq(client.ckey, job))
 		return JOB_UNAVAILABLE_QUALITY
 	return .
 
@@ -61,9 +40,8 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	var/required_pq = get_redmoon_job_pq_requirement(job)
-	if(required_pq && !redmoon_meets_pq(player.ckey, required_pq))
-		JobDebug("Eligibility failed: player quality, Player: [player], Job: [job.title], Required: [required_pq]")
+	if(!redmoon_job_meets_pq(player.ckey, job))
+		JobDebug("Eligibility failed: player quality, Player: [player], Job: [job.title], Min PQ: [job.min_pq], Max PQ: [job.max_pq]")
 		return FALSE
 	return TRUE
 
@@ -71,12 +49,12 @@
 	. = ..()
 	if(!length(.) || !be_special)
 		return .
-	var/required_pq = get_redmoon_antag_pq_requirement(be_special)
-	if(!required_pq)
+	var/datum/job/pq_job = SSjob.GetJob(be_special)
+	if(!pq_job)
 		return .
 	var/list/filtered = list()
 	for(var/mob/candidate as anything in .)
-		if(redmoon_meets_pq(candidate.ckey, required_pq))
+		if(redmoon_job_meets_pq(candidate.ckey, pq_job))
 			filtered += candidate
 	return filtered
 
@@ -90,12 +68,15 @@
 	var/datum/job/migrant_job = SSjob.GetJobType(role.migrant_job)
 	if(!migrant_job)
 		return FALSE
-	var/required_pq = get_redmoon_job_pq_requirement(migrant_job)
-	if(required_pq && !redmoon_meets_pq(player.ckey, required_pq))
+	if(!redmoon_job_meets_pq(player.ckey, migrant_job))
 		return FALSE
-	if(migrant_job.antag_role)
-		var/antag_type = migrant_job.antag_role::job_rank
-		required_pq = get_redmoon_antag_pq_requirement(antag_type)
-		if(required_pq && !redmoon_meets_pq(player.ckey, required_pq))
-			return FALSE
 	return TRUE
+
+/proc/redmoon_job_unavailable_quality_message(jobtitle, ckey)
+	var/datum/job/job = SSjob.GetJob(jobtitle)
+	var/player_pq = get_playerquality(ckey)
+	if(job && !isnull(job.min_pq) && player_pq < job.min_pq)
+		return "You do not meet the Player Quality requirement for [jobtitle]. (Required: [job.min_pq], Your PQ: [player_pq])"
+	if(job && !isnull(job.max_pq) && player_pq > job.max_pq)
+		return "You exceed the Player Quality requirement for [jobtitle]. (Maximum: [job.max_pq], Your PQ: [player_pq])"
+	return "[jobtitle] requires higher player quality."

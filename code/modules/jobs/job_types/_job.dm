@@ -146,6 +146,11 @@
 
 	var/bypass_lastclass = FALSE
 
+	/// Minimum player quality required to play this job. Null disables the check.
+	var/min_pq = 0
+	/// Maximum player quality allowed to play this job. Null disables the check.
+	var/max_pq
+
 	var/list/peopleiknow = list()
 	var/list/peopleknowme = list()
 

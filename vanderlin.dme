@@ -4326,6 +4326,7 @@
 #include "modular_redmoon\code\modules\blooper\say_barks.dm"
 #include "modular_redmoon\code\modules\blooper\bark_extra.dm"
 #include "modular_redmoon\code\modules\jobs\playerquality_jobs.dm"
+#include "modular_redmoon\code\modules\jobs\job_pq_requirements.dm"
 #include "modular_redmoon\code\modules\jobs\peasants\lunatic.dm"
 #include "modular_redmoon\code\modules\mob\overhead_effects.dm"
 #include "modular_redmoon\code\modules\spells\healing_miracle.dm"
