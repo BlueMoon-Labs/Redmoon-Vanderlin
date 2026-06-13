@@ -249,81 +249,81 @@
 /proc/slur(n)
 	var/phrase = html_decode(n)
 	var/leng = length(phrase)
-	var/counter=length(phrase)
-	var/newphrase=""
-	var/newletter=""
-	while(counter>=1)
-		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
-		if(rand(1,3)==3)
-			if(lowertext(newletter)=="o")
-				newletter="u"
-			if(lowertext(newletter)=="s")
-				newletter="ch"
-			if(lowertext(newletter)=="a")
-				newletter="ah"
-			if(lowertext(newletter)=="u")
-				newletter="oo"
-			if(lowertext(newletter)=="c")
-				newletter="k"
-		if(rand(1,20)==20)
-			if(newletter==" ")
-				newletter="...huuuhhh..."
-			if(newletter==".")
-				newletter=" *BURP*."
-		switch(rand(1,20))
+	var/newphrase = ""
+	var/newletter = ""
+	var/rawchar = ""
+	for(var/i = 1, i <= leng, i += length(rawchar))
+		rawchar = newletter = phrase[i]
+		if(rand(1, 3) == 3)
+			if(lowertext(newletter) == "o")
+				newletter = "u"
+			if(lowertext(newletter) == "s")
+				newletter = "ch"
+			if(lowertext(newletter) == "a")
+				newletter = "ah"
+			if(lowertext(newletter) == "u")
+				newletter = "oo"
+			if(lowertext(newletter) == "c")
+				newletter = "k"
+		if(rand(1, 20) == 20)
+			if(newletter == " ")
+				newletter = "...huuuhhh..."
+			if(newletter == ".")
+				newletter = " *BURP*."
+		switch(rand(1, 20))
 			if(1)
-				newletter+="'"
+				newletter += "'"
 			if(10)
-				newletter+="[newletter]"
+				newletter += "[newletter]"
 			if(20)
-				newletter+="[newletter][newletter]"
+				newletter += "[newletter][newletter]"
 			else
 				;;
-		newphrase+="[newletter]";counter-=1
+		newphrase += newletter
 	return newphrase
 
 /// Makes you talk like you got cult stunned, which is slurring but with some dark messages
 /proc/cultslur(n) // Inflicted on victims of a stun talisman
 	var/phrase = html_decode(n)
 	var/leng = length(phrase)
-	var/counter=length(phrase)
-	var/newphrase=""
-	var/newletter=""
-	while(counter>=1)
-		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
-		if(rand(1,2)==2)
-			if(lowertext(newletter)=="o")
-				newletter="u"
-			if(lowertext(newletter)=="t")
-				newletter="ch"
-			if(lowertext(newletter)=="a")
-				newletter="ah"
-			if(lowertext(newletter)=="u")
-				newletter="oo"
-			if(lowertext(newletter)=="c")
-				newletter=" NAR "
-			if(lowertext(newletter)=="s")
-				newletter=" SIE "
-		if(rand(1,4)==4)
-			if(newletter==" ")
-				newletter=" no hope... "
-			if(newletter=="H")
-				newletter=" IT COMES... "
+	var/newphrase = ""
+	var/newletter = ""
+	var/rawchar = ""
+	for(var/i = 1, i <= leng, i += length(rawchar))
+		rawchar = newletter = phrase[i]
+		if(rand(1, 2) == 2)
+			if(lowertext(newletter) == "o")
+				newletter = "u"
+			if(lowertext(newletter) == "t")
+				newletter = "ch"
+			if(lowertext(newletter) == "a")
+				newletter = "ah"
+			if(lowertext(newletter) == "u")
+				newletter = "oo"
+			if(lowertext(newletter) == "c")
+				newletter = " NAR "
+			if(lowertext(newletter) == "s")
+				newletter = " SIE "
+		if(rand(1, 4) == 4)
+			if(newletter == " ")
+				newletter = " no hope... "
+			if(newletter == "H")
+				newletter = " IT COMES... "
 
-		switch(rand(1,15))
+		switch(rand(1, 15))
 			if(1)
-				newletter="'"
+				newletter += "'"
 			if(2)
-				newletter+="agn"
+				newletter += "agn"
 			if(3)
-				newletter="fth"
+				newletter = "fth"
 			if(4)
-				newletter="nglu"
+				newletter = "nglu"
 			if(5)
-				newletter="glor"
+				newletter = "glor"
 			else
 				;;
-		newphrase+="[newletter]";counter-=1
+		newphrase += newletter
 	return newphrase
 
 ///Adds stuttering to the message passed in

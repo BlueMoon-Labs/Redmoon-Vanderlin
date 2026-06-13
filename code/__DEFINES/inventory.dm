@@ -102,6 +102,8 @@
 #define HIDEFACE (1<<7)	// Whether we appear as unknown.
 #define HIDEHAIR (1<<8)
 #define HIDEFACIALHAIR (1<<9)
+/// Head items with these flags set skip rendering the head bodypart limb (for open-front hats/masks).
+#define HIDES_HEAD_LIMB (HIDEFACE|HIDEHAIR)
 #define HIDENECK (1<<10)
 #define HIDEBOOB (1<<11)
 #define HIDEBELT (1<<12)

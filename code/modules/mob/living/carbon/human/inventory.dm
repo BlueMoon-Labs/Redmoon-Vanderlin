@@ -284,6 +284,8 @@
 		update_inv_wear_mask()
 	if(I.flags_inv & HIDEEARS || forced)
 		update_body()
+	if((I.flags_inv & HIDES_HEAD_LIMB) == HIDES_HEAD_LIMB || forced)
+		update_body_parts(redraw = TRUE)
 	check_armor_class()
 	..()
 

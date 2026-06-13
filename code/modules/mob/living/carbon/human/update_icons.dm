@@ -1605,6 +1605,9 @@ generate/load female uniform sprites matching all previously decided variables
 	. += gender
 	. += age
 
+	if(head && (head.flags_inv & HIDES_HEAD_LIMB) == HIDES_HEAD_LIMB)
+		. += "head_hidden"
+
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		. += BP.body_zone
 		if(BP.status == BODYPART_ORGANIC)
@@ -1676,6 +1679,8 @@ generate/load female uniform sprites matching all previously decided variables
 			if(cloak?.flags_inv & HIDEBOOB)
 				hideboob = TRUE
 			new_limbs += BP.get_limb_icon(hideaux = hideboob)
+		else if(BP.body_zone == BODY_ZONE_HEAD && head && (head.flags_inv & HIDES_HEAD_LIMB) == HIDES_HEAD_LIMB)
+			continue
 		else
 			new_limbs += BP.get_limb_icon()
 	if(new_limbs.len)
@@ -1716,7 +1721,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 	HD.update_limb()
 
-	add_overlay(HD.get_limb_icon())
+	if(!head || (head.flags_inv & HIDES_HEAD_LIMB) != HIDES_HEAD_LIMB)
+		add_overlay(HD.get_limb_icon())
 	update_damage_overlays()
 
 	if(HD && !(HAS_TRAIT(src, TRAIT_HUSK)))
