@@ -144,7 +144,6 @@
 	icon_state = "priesthead"
 	dynamic_hair_suffix = ""
 	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
-	default_hidden = HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
 	body_parts_covered = FULL_HEAD | NECK
 	resistance_flags = FIRE_PROOF
 	item_weight = 135 GRAMS
