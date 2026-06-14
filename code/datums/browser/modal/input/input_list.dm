@@ -35,11 +35,14 @@
 	if(isnull(default))
 		default = items[1]
 
+	var/window_height = (length(items) > 9) ? 430 : 370
+	var/list_max_height = (length(items) > 9) ? 175 : 210
+
 	set_head_content({"
 		<style>
 			form {
-				display: flex;
-				flex-direction: column;
+				margin: 0;
+				padding: 0;
 			}
 
 			form * {
@@ -67,11 +70,39 @@
 			"}]
 
 			.input_list_options {
-				flex-grow: 1;
+				max-height: [list_max_height]px;
 				padding: 4px;
 				margin: 0.25em 0;
 				border: 1px solid ["#7b5353"];
 				overflow-y: auto;
+				overflow-x: hidden;
+			}
+
+			.input_list_search {
+				display: block;
+				width: 100%;
+				box-sizing: border-box;
+				margin: 0.25em 0;
+			}
+
+			.input_list_actions {
+				clear: both;
+				padding-top: 6px;
+				text-align: center;
+			}
+
+			.input_list_actions button {
+				color: #7b5353 !important;
+				background-color: #000000 !important;
+				border: 1px solid #7b5353 !important;
+				min-height: 22px;
+				padding: 2px 10px !important;
+				margin: 0 4px;
+				font-size: 14px;
+			}
+
+			.input_list_actions button:hover {
+				color: #eac0b9 !important;
 			}
 		</style>
 
@@ -151,9 +182,9 @@
 				[item]
 			</label>"}
 
-	..(user, ckey("[user]-[message]-[title]-[world.time]-[rand(1,10000)]"), title, 350, 350, src, TRUE, timeout)
+	..(user, ckey("[user]-[message]-[title]-[world.time]-[rand(1,10000)]"), title, 350, window_height, src, TRUE, timeout)
 	set_content({"
-	<form style="width: 100%; height: 100%;" action="byond://">
+	<form action="byond://">
 		<input type="hidden" name="src" value="[REF(src)]">
 
 		<center><b>[message]</b></center>
@@ -161,8 +192,8 @@
 		</div>
 
 		[NULLABLE(length(choices) > 9) && \
-		"<input style='margin: 0.25em 0; z-index: 5' id='searchbar' type='text' placeholder='Find...' autofocus/>"]
-		<div style="display: flex; margin-top: auto; justify-content: space-between; text-align: center;">
+		"<input class='input_list_search' id='searchbar' type='text' placeholder='Find...' autofocus/>"]
+		<div class="input_list_actions">
 			<button type="submit" name="submit" value="[TRUE]">[CHOICE_CONFIRM]</button>
 			<button type="submit" name="cancel" value="[TRUE]" formnovalidate>[CHOICE_CANCEL]</button>
 		</div>
