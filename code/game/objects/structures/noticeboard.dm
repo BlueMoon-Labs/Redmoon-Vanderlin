@@ -45,7 +45,7 @@
 			dat += "<A href='byond://?src=[REF(src)];read=[REF(P)]'>[P.name]</A> [auth ? "<A href='byond://?src=[REF(src)];write=[REF(P)]'>Write</A> <A href='byond://?src=[REF(src)];remove=[REF(P)]'>Remove</A>" : ""]<BR>"
 		else
 			dat += "<A href='byond://?src=[REF(src)];read=[REF(P)]'>[P.name]</A> [auth ? "<A href='byond://?src=[REF(src)];remove=[REF(P)]'>Remove</A>" : ""]<BR>"
-	user << browse("<HEAD><TITLE>Notices</TITLE></HEAD>[dat]","window=noticeboard")
+	user << browse("<html><head>[BROWSER_UTF8_META]<title>Notices</title></head><body>[dat]</body></html>","window=noticeboard")
 	onclose(user, "noticeboard")
 
 /obj/structure/noticeboard/Topic(href, href_list)
