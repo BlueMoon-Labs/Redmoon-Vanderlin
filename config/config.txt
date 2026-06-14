@@ -532,8 +532,8 @@ SMART_CACHE_ASSETS
 #SAVE_SPRITESHEETS
 
 ## Rich Discord embeds for round start/end via TGS (Redmoon roundspoke)
-## Requires CHAT_ANNOUNCE_NEW_GAME or ROUNDSPOKE_CHANNEL_TAG to target the right channel
-#ROUNDSPOKE
+## Requires ROUNDSPOKE_CHANNEL_TAG (or CHAT_ANNOUNCE_NEW_GAME) to match a TGS channel tag
+ROUNDSPOKE
 #ROUNDSPOKE_CHANNEL_TAG status
 #ROUNDSPOKE_DISCORD_ROLE 1325992382021501050
 #ROUNDSPOKE_JOIN_URL https://redmoon.ss13-bluemoon.ru/

@@ -4,7 +4,7 @@
  */
 
 /proc/roundspoke_enabled()
-	return CONFIG_GET(flag/roundspoke_enabled) && world.TgsAvailable()
+	return CONFIG_GET(flag/roundspoke) && world.TgsAvailable()
 
 /proc/roundspoke_channel()
 	var/channel = CONFIG_GET(string/roundspoke_channel_tag)
@@ -18,8 +18,8 @@
 	send2chat(message, roundspoke_channel())
 	return TRUE
 
-/proc/roundspoke_make_author()
-	var/datum/tgs_chat_embed/provider/author/author = new(CONFIG_GET(string/roundspoke_author_name))
+/proc/roundspoke_make_author(author_name)
+	var/datum/tgs_chat_embed/provider/author/author = new(author_name || CONFIG_GET(string/roundspoke_author_name))
 	var/icon_url = CONFIG_GET(string/roundspoke_author_icon_url)
 	if(icon_url)
 		author.icon_url = icon_url
@@ -119,10 +119,6 @@
 	var/list/media_links = roundspoke_load_media_links()
 	if(length(media_links))
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(roundspoke_send_roundstart_media)), 5 SECONDS)
-
-/world/TgsInitializationComplete()
-	. = ..()
-	roundspoke_announce_round_start()
 
 /proc/roundspoke_send_round_end()
 	if(!roundspoke_enabled())

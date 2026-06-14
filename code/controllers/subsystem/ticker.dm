@@ -212,7 +212,10 @@ SUBSYSTEM_DEF(ticker)
 					timeLeft = null
 					Master.SetRunLevel(RUNLEVEL_LOBBY)
 				else
-					send2chat(new /datum/tgs_message_content("New round starting on Vanderlin!"), CONFIG_GET(string/chat_announce_new_game))
+					if(roundspoke_enabled())
+						roundspoke_announce_round_start()
+					else if(CONFIG_GET(string/chat_announce_new_game))
+						send2chat(new /datum/tgs_message_content("New round starting on Vanderlin!"), CONFIG_GET(string/chat_announce_new_game))
 					SEND_SIGNAL(src, COMSIG_TICKER_ENTER_SETTING_UP)
 					current_state = GAME_STATE_SETTING_UP
 					Master.SetRunLevel(RUNLEVEL_SETUP)

@@ -420,7 +420,7 @@
 /datum/config_entry/string/channel_announce_new_game_message
 	default = null
 
-/datum/config_entry/flag/roundspoke_enabled
+/datum/config_entry/flag/roundspoke
 
 /datum/config_entry/string/roundspoke_channel_tag
 	default = "status"
