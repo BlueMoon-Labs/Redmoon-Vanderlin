@@ -30,9 +30,9 @@ SUBSYSTEM_DEF(vote)
 				SSvote.open_vote_browser(C)
 
 /datum/controller/subsystem/vote/proc/open_vote_browser(client/C)
-	if(!C?.mob)
+	if(!C)
 		return
-	var/datum/browser/noclose/popup = new(C.mob, "vote", "Voting Panel")
+	var/datum/browser/noclose/popup = new(C, "vote", "Voting Panel")
 	popup.set_window_options(can_close = FALSE)
 	popup.set_head_content(BROWSER_UTF8_META)
 	popup.set_content(interface(C))
