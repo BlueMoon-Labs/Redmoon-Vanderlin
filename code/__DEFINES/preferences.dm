@@ -212,3 +212,14 @@ DEFINE_BITFIELD(toggles_maptext, list(
 DEFINE_BITFIELD(toggles_gameplay, list(
 	"Disable random split personality" = DISABLE_SPLIT_PERSONALITY,
 ))
+
+// Character sheet: 272x315 art at 2.25x zoom (was scale(3) in 816x950 window).
+#define CHARSHEET_UI_ZOOM 2.25
+#define CHARSHEET_UI_WIDTH 272
+#define CHARSHEET_UI_HEIGHT 315
+#define CHARSHEET_WINDOW_WIDTH 612
+#define CHARSHEET_WINDOW_HEIGHT 709
+#define CHARSHEET_PREVIEW_LEFT 18
+#define CHARSHEET_PREVIEW_TOP 113
+#define CHARSHEET_PREVIEW_WIDTH 223
+#define CHARSHEET_PREVIEW_HEIGHT 187

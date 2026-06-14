@@ -384,32 +384,32 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 	<style>
 		html {
-			height: 100%;
+			height: [CHARSHEET_WINDOW_HEIGHT]px;
+			width: [CHARSHEET_WINDOW_WIDTH]px;
 			overflow: hidden;
 		}
 		body {
 			background-color: #1a1a1a;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 100%;
-			width: 100%;
 			margin: 0;
+			padding: 0;
+			height: [CHARSHEET_WINDOW_HEIGHT]px;
+			width: [CHARSHEET_WINDOW_WIDTH]px;
 			overflow: hidden;
 			image-rendering: pixelated;
 		}
 		.ui-container {
 			position: relative;
-			width: 272px;
-			height: 315px;
+			width: [CHARSHEET_UI_WIDTH]px;
+			height: [CHARSHEET_UI_HEIGHT]px;
 			background-image: url('Charsheet_BG.1.png');
 			background-size: cover;
-			zoom: 2.25;
-			-ms-zoom: 2.25;
+			zoom: [CHARSHEET_UI_ZOOM];
+			-ms-zoom: [CHARSHEET_UI_ZOOM];
 		}
 		.sprite { position: absolute; background-repeat: no-repeat; cursor: pointer; }
 
 		.header-bg   { top: 5px;   left: 6px;   width: 260px; height: 52px; background-image: url('0_header_bg.png'); }
+		.preview-bg  { top: 50px;  left: 8px;   width: 99px;  height: 83px; background-image: url('charpreview_bg.png'); }
 		.body-bg     { top: 58px;  left: 110px; width: 118px; height: 75px; background-image: url('0_body_bg.png'); }
 		.voice-bg    { top: 149px; left: 2px;   width: 107px; height: 41px; background-image: url('0_voice_bg.png'); }
 		.family-bg   { top: 137px; left: 114px; width: 86px;  height: 74px; background-image: url('0_family_bg.png'); }

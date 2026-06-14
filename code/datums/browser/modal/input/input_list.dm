@@ -40,6 +40,9 @@
 			form {
 				display: flex;
 				flex-direction: column;
+				height: 100%;
+				min-height: 0;
+				overflow: hidden;
 			}
 
 			form * {
@@ -67,11 +70,30 @@
 			"}]
 
 			.input_list_options {
-				flex-grow: 1;
+				flex: 1 1 0;
+				min-height: 0;
 				padding: 4px;
 				margin: 0.25em 0;
 				border: 1px solid ["#7b5353"];
 				overflow-y: auto;
+			}
+
+			.input_list_actions {
+				flex-shrink: 0;
+				display: flex;
+				justify-content: space-between;
+				text-align: center;
+				margin-top: 0.25em;
+			}
+
+			.input_list_actions button {
+				color: #7b5353;
+				background: #000000;
+				border: 1px solid #7b5353;
+			}
+
+			.input_list_actions button:hover {
+				color: #eac0b9;
 			}
 		</style>
 
@@ -161,8 +183,8 @@
 		</div>
 
 		[NULLABLE(length(choices) > 9) && \
-		"<input style='margin: 0.25em 0; z-index: 5' id='searchbar' type='text' placeholder='Find...' autofocus/>"]
-		<div style="display: flex; margin-top: auto; justify-content: space-between; text-align: center;">
+		"<input style='margin: 0.25em 0; flex-shrink: 0; z-index: 5' id='searchbar' type='text' placeholder='Find...' autofocus/>"]
+		<div class="input_list_actions">
 			<button type="submit" name="submit" value="[TRUE]">[CHOICE_CONFIRM]</button>
 			<button type="submit" name="cancel" value="[TRUE]" formnovalidate>[CHOICE_CANCEL]</button>
 		</div>

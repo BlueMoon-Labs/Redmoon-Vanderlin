@@ -72,16 +72,28 @@
 		return
 	winset(user, "stonekeep_prefwin.preferences_browser", list("zoom" = zoom))
 
+/datum/preferences/proc/apply_preferences_browser_layout(mob/user)
+	if(!user?.client)
+		return
+	if(!winexists(user, "stonekeep_prefwin"))
+		return
+	winset(user, "stonekeep_prefwin", "size=[CHARSHEET_WINDOW_WIDTH]x[CHARSHEET_WINDOW_HEIGHT]")
+	winset(user, "stonekeep_prefwin.preferences_browser", "size=[CHARSHEET_WINDOW_WIDTH]x[CHARSHEET_WINDOW_HEIGHT]")
+	winset(user, "stonekeep_prefwin.character_preview_map", "pos=[CHARSHEET_PREVIEW_LEFT],[CHARSHEET_PREVIEW_TOP];size=[CHARSHEET_PREVIEW_WIDTH]x[CHARSHEET_PREVIEW_HEIGHT]")
+
 /datum/preferences/proc/show_preferences_browser_html(mob/user, html)
 	if(!user?.client)
 		return
 	capture_preferences_browser_zoom(user)
-	user << browse(html, "window=stonekeep_prefwin.preferences_browser;size=816x950")
+	user << browse(html, "window=stonekeep_prefwin.preferences_browser;size=[CHARSHEET_WINDOW_WIDTH]x[CHARSHEET_WINDOW_HEIGHT]")
+	apply_preferences_browser_layout(user)
 	var/zoom = pref_browser_zoom
 	if(!zoom || zoom == "0")
 		zoom = "1"
 	// IE reloads HTML after browse(); apply user zoom once the control exists.
 	spawn(1)
 		apply_preferences_browser_zoom(user, zoom)
+		apply_preferences_browser_layout(user)
 	spawn(5)
 		apply_preferences_browser_zoom(user, zoom)
+		apply_preferences_browser_layout(user)
