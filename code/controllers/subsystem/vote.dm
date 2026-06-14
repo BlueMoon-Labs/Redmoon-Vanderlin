@@ -26,12 +26,20 @@ SUBSYSTEM_DEF(vote)
 				C << browse(null, "window=vote;can_close=0")
 			reset()
 		else
-			var/datum/browser/noclose/client_popup
 			for(var/client/C in voting)
-				client_popup = new(C, "vote", "Voting Panel")
-				client_popup.set_window_options(can_close = FALSE)
-				client_popup.set_content(interface(C))
-				client_popup.open(FALSE)
+				SSvote.open_vote_browser(C)
+
+/datum/controller/subsystem/vote/proc/open_vote_browser(client/C)
+	if(!C?.mob)
+		return
+	var/datum/browser/noclose/popup = new(C.mob, "vote", "Voting Panel")
+	popup.set_window_options(can_close = FALSE)
+	popup.set_head_content(BROWSER_UTF8_META)
+	popup.set_content(interface(C))
+	popup.open(FALSE)
+
+/datum/controller/subsystem/vote/proc/vote_input_text(mob/user, message, title, default = "")
+	return browser_input_text(user, message, title, default, MAX_MESSAGE_LEN, FALSE, FALSE)
 
 
 /datum/controller/subsystem/vote/proc/reset()
@@ -268,11 +276,11 @@ SUBSYSTEM_DEF(vote)
 						continue
 					choices.Add(VM.map_name)
 			if("custom")
-				question = stripped_input(usr,"What is the vote for?")
+				question = vote_input_text(usr, "What is the vote for?", "Custom Vote")
 				if(!question)
 					return 0
 				for(var/i=1,i<=10,i++)
-					var/option = capitalize(stripped_input(usr,"Please enter an option or hit cancel to finish"))
+					var/option = vote_input_text(usr, "Please enter an option or hit cancel to finish", "Custom Vote Option")
 					if(!option || mode || !usr.client)
 						break
 					choices.Add(option)
@@ -332,7 +340,7 @@ SUBSYSTEM_DEF(vote)
 
 	if(mode)
 		if(question)
-			. += "<h2>Vote: '[question]'</h2>"
+			. += "<h2>Vote: '[html_encode(question)]'</h2>"
 		else
 			. += "<h2>Vote: [capitalize(mode)]</h2>"
 		. += "Time Left: [time_remaining] s<hr><ul>"
@@ -340,7 +348,7 @@ SUBSYSTEM_DEF(vote)
 			var/votes = choices[choices[i]]
 			if(!votes)
 				votes = 0
-			. += "<li><a href='byond://?src=[REF(src)];vote=[i]'>[choices[i]]</a> ([votes] votepwr)</li>"
+			. += "<li><a href='byond://?src=[REF(src)];vote=[i]'>[html_encode(choices[i])]</a> ([votes] votepwr)</li>"
 		. += "</ul><hr>"
 		if(admin)
 			. += "(<a href='byond://?src=[REF(src)];vote=cancel'>Cancel Vote</a>) "
@@ -436,10 +444,7 @@ SUBSYSTEM_DEF(vote)
 	set category = "OOC"
 	set name = "Vote"
 	set hidden = 1
-	var/datum/browser/noclose/popup = new(src, "vote", "Voting Panel")
-	popup.set_window_options(can_close = FALSE)
-	popup.set_content(SSvote.interface(client))
-	popup.open(FALSE)
+	SSvote.open_vote_browser(client)
 
 /datum/action/vote
 	name = "Vote!"

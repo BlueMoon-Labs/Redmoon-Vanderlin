@@ -1884,7 +1884,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 
 				if("flavortext")
 					to_chat(user, span_notice("["<span class='bold'>Flavortext should not include nonphysical nonsensory attributes such as backstory or the character's internal thoughts. NSFW descriptions are prohibited.</span>"]"))
-					var/new_flavortext = input(user, "Input your character description", "DESCRIBE YOURSELF", flavortext) as message|null // browser_input_text sanitizes in the box itself, which makes it look kind of ugly when editing A LOT of FTs
+					var/new_flavortext = browser_input_text(user, "Input your character description", "DESCRIBE YOURSELF", flavortext, MAX_MESSAGE_LEN, TRUE, FALSE)
 					if(new_flavortext == null)
 						return
 					if(new_flavortext == "")
@@ -1901,7 +1901,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					log_game("[user] has set their flavortext'.")
 				if("ooc_notes")
 					to_chat(user, span_notice("["<span class='bold'>Do not put anything NSFW here. This feature is for stuff that wouldn't fit in the flavortext.</span>"]"))
-					var/new_ooc_notes = input(user, "Input your OOC preferences:", "OOC notes", ooc_notes) as message|null
+					var/new_ooc_notes = browser_input_text(user, "Input your OOC preferences:", "OOC notes", ooc_notes, MAX_MESSAGE_LEN, TRUE, FALSE)
 					if(new_ooc_notes == null)
 						return
 					if(new_ooc_notes == "")
@@ -1930,6 +1930,7 @@ GLOBAL_LIST_INIT(name_adjustments, list())
 					if(ooc_extra)
 						dat += "[ooc_extra]"
 					var/datum/browser/popup = new(user, "[real_name]", "<center>[real_name]</center>", width = 480, height = 700)
+					popup.set_head_content(BROWSER_UTF8_META)
 					popup.set_content(dat.Join())
 					popup.open(use_onclose = FALSE)
 				if("ooc_extra")

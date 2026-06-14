@@ -10,8 +10,8 @@
 #define CHOICE_CONFIRM "MAKE IT SO"
 #define CHOICE_CANCEL "I RESCIND"
 
-/// UTF-8 meta tag for browse() HTML windows (IE popup controls default to Latin-1 without this).
-#define BROWSER_UTF8_META {"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"}
+/// UTF-8 meta tags for browse() HTML windows (IE defaults to Latin-1 without these).
+#define BROWSER_UTF8_META {"<meta charset=\"UTF-8\"><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"}
 
 #define DEFAULT_INPUT_CONFIRMATIONS list(CHOICE_CONFIRM, CHOICE_CANCEL)
 #define DEFAULT_INPUT_CHOICES list(CHOICE_YES, CHOICE_NO)

@@ -20,7 +20,7 @@ GLOBAL_VAR_INIT(year_integer, text2num(year)) // = 2013???
 		if(ooc_extra)
 			dat += "[ooc_extra]"
 		var/datum/browser/popup = new(user, "[src]", "<center>[src]</center>", 480, 700)
-
+		popup.set_head_content(BROWSER_UTF8_META)
 		popup.set_content(dat.Join())
 		popup.open(FALSE)
 		return

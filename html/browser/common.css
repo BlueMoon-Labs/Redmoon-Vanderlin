@@ -1,6 +1,6 @@
 body
 {
-	font-family: Pterra, TrueType;
+	font-family: Pterra, "Segoe UI", Arial, sans-serif;
 	padding: 0;
 	margin: 0;
 	background-color: #000000;
@@ -24,7 +24,7 @@ body
 	width: 100%;
 	top: 0;
 	left: 0;
-	font-family: Nosfer, TrueType;
+	font-family: Nosfer, "Segoe UI", Arial, sans-serif;
 	padding: 6px 8px;
 	border-bottom: 2px solid #161616;
 	background: #000000;
@@ -48,9 +48,7 @@ body
 	border-top: calc(2px + 16px + 1.25em) solid transparent; /* thanks box sizing */
 	height: 100%;
 	width: 100%;
-	font-family: Pterra, TrueType;
-
-	/* MODERN */
+	font-family: Pterra, "Segoe UI", Arial, sans-serif;
 	scrollbar-color: #7b5353 black;
 	scrollbar-width: thin;
 	caret-shape: block;
@@ -74,8 +72,7 @@ hr
 
 a, button, input[type="button"], input[type="submit"], a:link, a:visited, a:active, .linkOn, .linkOff
 {
-	font-family: Pterra, TrueType;
-	color: #7b5353;
+	font-family: Pterra, "Segoe UI", Arial, sans-serif;
 	text-decoration: none;
 	background: #000000;
 	border: 1px solid #000000;
@@ -157,8 +154,7 @@ img, a img
 
 h1, h2, h3, h4, h5, h6
 {
-	font-family: Pterra, TrueType;
-	margin: 0;
+	font-family: Pterra, "Segoe UI", Arial, sans-serif;
 	padding: 16px 0 8px 0;
 	color: #ae3636;
 }
