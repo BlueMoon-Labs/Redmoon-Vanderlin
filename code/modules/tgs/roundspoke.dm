@@ -3,6 +3,44 @@
  * Ported from Redmoon-Peak roundspoke.dm with Vanderlin stats/config integration.
  */
 
+#define ROUNDSPOKE_EMBED_FIELD_LIMIT 25
+#define ROUNDSPOKE_EMBED_FIELD_NAME_LIMIT 256
+#define ROUNDSPOKE_EMBED_FIELD_VALUE_LIMIT 1024
+#define ROUNDSPOKE_EMBED_DESCRIPTION_LIMIT 4096
+#define ROUNDSPOKE_EMBED_TITLE_LIMIT 256
+#define ROUNDSPOKE_EMBED_FOOTER_LIMIT 2048
+#define ROUNDSPOKE_EMBED_AUTHOR_LIMIT 256
+
+/proc/roundspoke_embed_trim(text, max_length)
+	if(!text)
+		return ""
+	if(length(text) <= max_length)
+		return text
+	if(max_length <= 1)
+		return copytext(text, 1, max_length)
+	return "[copytext(text, 1, max_length - 1)]…"
+
+/proc/roundspoke_embed_field(name, value, inline = FALSE)
+	var/datum/tgs_chat_embed/field/field = new(
+		roundspoke_embed_trim(name, ROUNDSPOKE_EMBED_FIELD_NAME_LIMIT),
+		roundspoke_embed_trim(value, ROUNDSPOKE_EMBED_FIELD_VALUE_LIMIT),
+	)
+	field.is_inline = inline
+	return field
+
+/proc/roundspoke_apply_embed_limits(datum/tgs_chat_embed/structure/embed)
+	if(!embed)
+		return
+	embed.title = roundspoke_embed_trim(embed.title, ROUNDSPOKE_EMBED_TITLE_LIMIT)
+	embed.description = roundspoke_embed_trim(embed.description, ROUNDSPOKE_EMBED_DESCRIPTION_LIMIT)
+	if(embed.footer)
+		embed.footer.text = roundspoke_embed_trim(embed.footer.text, ROUNDSPOKE_EMBED_FOOTER_LIMIT)
+	if(embed.author)
+		embed.author.name = roundspoke_embed_trim(embed.author.name, ROUNDSPOKE_EMBED_AUTHOR_LIMIT)
+	if(length(embed.fields) > ROUNDSPOKE_EMBED_FIELD_LIMIT)
+		log_game("ROUNDSPOKE: Truncating embed from [embed.fields.len] to [ROUNDSPOKE_EMBED_FIELD_LIMIT] fields for Discord limits.")
+		embed.fields = embed.fields.Copy(1, ROUNDSPOKE_EMBED_FIELD_LIMIT)
+
 /proc/roundspoke_enabled()
 	return CONFIG_GET(flag/roundspoke) && world.TgsAvailable()
 
@@ -109,9 +147,10 @@
 	embed.colour = "#ff0000"
 	embed.author = roundspoke_make_author("Ксайликс собирает игроков на сессию")
 	embed.fields = list(
-		new /datum/tgs_chat_embed/field("Ксайликс говорит:", roundspoke_pick_lore_line()),
-		new /datum/tgs_chat_embed/field("Заходи на сервер!", join_url || "byond://[world.internet_address]:[world.port]")
+		roundspoke_embed_field("Ксайликс говорит:", roundspoke_pick_lore_line()),
+		roundspoke_embed_field("Заходи на сервер!", join_url || "byond://[world.internet_address]:[world.port]")
 	)
+	roundspoke_apply_embed_limits(embed)
 
 	if(!roundspoke_send(message))
 		return
@@ -148,33 +187,32 @@
 	var/monarch_patron = roundspoke_format_monarch_patron(stats[STATS_MONARCH_PATRON])
 
 	embed.fields = list(
-		new /datum/tgs_chat_embed/field("💀 Смертей", "[stats[STATS_DEATHS]]"),
-		new /datum/tgs_chat_embed/field("🩸 Крови пролито", "[round(stats[STATS_BLOOD_SPILT] / 100, 1)]L"),
-		new /datum/tgs_chat_embed/field("🏆 Триумфов получено", "[stats[STATS_TRIUMPHS_AWARDED]]"),
-		new /datum/tgs_chat_embed/field("🕵️ Триумфов украдено", "[stats[STATS_TRIUMPHS_STOLEN] * -1]"),
-		new /datum/tgs_chat_embed/field("💋 Поцелуев", "[stats[STATS_KISSES_MADE]]"),
-		new /datum/tgs_chat_embed/field("✝️ Исповедники", "[GLOB.confessors.len]"),
-		new /datum/tgs_chat_embed/field("👻 Заблудшие души", "[GLOB.player_list.len]"),
-		new /datum/tgs_chat_embed/field("🧔 Мужчины", "[stats[STATS_MALE_POPULATION]] ([percent_of_males]%)"),
-		new /datum/tgs_chat_embed/field("👩 Женщины", "[stats[STATS_FEMALE_POPULATION]] ([percent_of_females]%)"),
-		new /datum/tgs_chat_embed/field("🏳️‍⚧️ Другие", "[stats[STATS_OTHER_GENDER]] ([percent_of_other]%)"),
-		new /datum/tgs_chat_embed/field("💎 Боги", roundspoke_format_gods_summary()),
-		new /datum/tgs_chat_embed/field("✨ Воскрешений", "[stats[STATS_ASTRATA_REVIVALS] + stats[STATS_LUX_REVIVALS] + stats[STATS_CPR_REVIVALS]]"),
-		new /datum/tgs_chat_embed/field("🙏 Молитв", "[stats[STATS_PRAYERS_MADE]]"),
-		new /datum/tgs_chat_embed/field("🌊 Утонуло", "[stats[STATS_PEOPLE_DROWNED]]"),
-		new /datum/tgs_chat_embed/field("👜 Карманных краж", "[stats[STATS_ITEMS_PICKPOCKETED]]"),
-		new /datum/tgs_chat_embed/field("🍷 Алкоголя выпито", "[stats[STATS_ALCOHOL_CONSUMED]]"),
-		new /datum/tgs_chat_embed/field("💊 Наркотиков", "[stats[STATS_DRUGS_SNORTED]]"),
-		new /datum/tgs_chat_embed/field("🐟 Рыбы поймано", "[stats[STATS_FISH_CAUGHT]]"),
-		new /datum/tgs_chat_embed/field("🌳 Деревьев срублено", "[stats[STATS_TREES_CUT]]"),
-		new /datum/tgs_chat_embed/field("🌿 Урожая собрано", "[stats[STATS_PLANTS_HARVESTED]]"),
-		new /datum/tgs_chat_embed/field("📖 Грамотность", "[literacy_rate]%"),
-		new /datum/tgs_chat_embed/field("👑 Двор", "[ruler_label]: [monarch_patron] | Дворян: [stats[STATS_ALIVE_NOBLES]] | Гарнизон: [stats[STATS_ALIVE_GARRISON]] | Духовенство: [stats[STATS_ALIVE_CLERGY]]"),
-		new /datum/tgs_chat_embed/field("🧝 Расы (север)", "Люди: [stats[STATS_ALIVE_NORTHERN_HUMANS]] | Дварфы: [stats[STATS_ALIVE_DWARVES]] | Эльфы: [stats[STATS_ALIVE_SNOW_ELVES]] | Полуэльфы: [stats[STATS_ALIVE_HALF_ELVES]] | Полудроу: [stats[STATS_ALIVE_HALF_DROWS]]"),
-		new /datum/tgs_chat_embed/field("🧝 Расы (юг и прочие)", "Тёмные эльфы: [stats[STATS_ALIVE_DARK_ELVES]] | Полуорки: [stats[STATS_ALIVE_HALF_ORCS]] | Тифлинги: [stats[STATS_ALIVE_TIEFLINGS]] | Кобольды: [stats[STATS_ALIVE_KOBOLDS]]"),
-		new /datum/tgs_chat_embed/field("🧝 Расы (экзотика)", "Аасимары: [stats[STATS_ALIVE_AASIMAR]] | Ракшари: [stats[STATS_ALIVE_RAKSHARI]] | Тритоны: [stats[STATS_ALIVE_TRITONS]] | Харпии: [stats[STATS_ALIVE_HARPIES]] | Холлоукины: [stats[STATS_ALIVE_HOLLOWKINS]]"),
-		new /datum/tgs_chat_embed/field("💼 Уделы", roundspoke_format_jobs_summary())
+		roundspoke_embed_field("💀 Смертей", "[stats[STATS_DEATHS]]"),
+		roundspoke_embed_field("🩸 Крови пролито", "[round(stats[STATS_BLOOD_SPILT] / 100, 1)]L"),
+		roundspoke_embed_field("🏆 Триумфов получено", "[stats[STATS_TRIUMPHS_AWARDED]]"),
+		roundspoke_embed_field("🕵️ Триумфов украдено", "[stats[STATS_TRIUMPHS_STOLEN] * -1]"),
+		roundspoke_embed_field("💋 Поцелуев", "[stats[STATS_KISSES_MADE]]"),
+		roundspoke_embed_field("✝️ Исповедники", "[GLOB.confessors.len]"),
+		roundspoke_embed_field("👻 Заблудшие души", "[GLOB.player_list.len]"),
+		roundspoke_embed_field("👥 Пол", "М: [stats[STATS_MALE_POPULATION]] ([percent_of_males]%) | Ж: [stats[STATS_FEMALE_POPULATION]] ([percent_of_females]%) | Др: [stats[STATS_OTHER_GENDER]] ([percent_of_other]%)"),
+		roundspoke_embed_field("💎 Боги", roundspoke_format_gods_summary()),
+		roundspoke_embed_field("✨ Воскрешений", "[stats[STATS_ASTRATA_REVIVALS] + stats[STATS_LUX_REVIVALS] + stats[STATS_CPR_REVIVALS]]"),
+		roundspoke_embed_field("🙏 Молитв", "[stats[STATS_PRAYERS_MADE]]"),
+		roundspoke_embed_field("🌊 Утонуло", "[stats[STATS_PEOPLE_DROWNED]]"),
+		roundspoke_embed_field("👜 Карманных краж", "[stats[STATS_ITEMS_PICKPOCKETED]]"),
+		roundspoke_embed_field("🍷 Алкоголя выпито", "[stats[STATS_ALCOHOL_CONSUMED]]"),
+		roundspoke_embed_field("💊 Наркотиков", "[stats[STATS_DRUGS_SNORTED]]"),
+		roundspoke_embed_field("🐟 Рыбы поймано", "[stats[STATS_FISH_CAUGHT]]"),
+		roundspoke_embed_field("🌳 Деревьев срублено", "[stats[STATS_TREES_CUT]]"),
+		roundspoke_embed_field("🌿 Урожая собрано", "[stats[STATS_PLANTS_HARVESTED]]"),
+		roundspoke_embed_field("📖 Грамотность", "[literacy_rate]%"),
+		roundspoke_embed_field("👑 Двор", "[ruler_label]: [monarch_patron] | Дворян: [stats[STATS_ALIVE_NOBLES]] | Гарнизон: [stats[STATS_ALIVE_GARRISON]] | Духовенство: [stats[STATS_ALIVE_CLERGY]]"),
+		roundspoke_embed_field("🧝 Расы (север)", "Люди: [stats[STATS_ALIVE_NORTHERN_HUMANS]] | Дварфы: [stats[STATS_ALIVE_DWARVES]] | Эльфы: [stats[STATS_ALIVE_SNOW_ELVES]] | Полуэльфы: [stats[STATS_ALIVE_HALF_ELVES]] | Полудроу: [stats[STATS_ALIVE_HALF_DROWS]]"),
+		roundspoke_embed_field("🧝 Расы (юг и прочие)", "Тёмные эльфы: [stats[STATS_ALIVE_DARK_ELVES]] | Полуорки: [stats[STATS_ALIVE_HALF_ORCS]] | Тифлинги: [stats[STATS_ALIVE_TIEFLINGS]] | Кобольды: [stats[STATS_ALIVE_KOBOLDS]]"),
+		roundspoke_embed_field("🧝 Расы (экзотика)", "Аасимары: [stats[STATS_ALIVE_AASIMAR]] | Ракшари: [stats[STATS_ALIVE_RAKSHARI]] | Тритоны: [stats[STATS_ALIVE_TRITONS]] | Харпии: [stats[STATS_ALIVE_HARPIES]] | Холлоукины: [stats[STATS_ALIVE_HOLLOWKINS]]"),
+		roundspoke_embed_field("💼 Уделы", roundspoke_format_jobs_summary())
 	)
+	roundspoke_apply_embed_limits(embed)
 
 	roundspoke_send(message)
 
