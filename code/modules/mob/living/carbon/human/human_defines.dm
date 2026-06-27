@@ -137,6 +137,9 @@
 
 	rot_type = /datum/component/rot/corpse
 
+	/// voice type of the mob
+	var/voice_type = null
+
 	blocks_emissive = NONE
 	var/list/datum/quirk/quirks = list()
 

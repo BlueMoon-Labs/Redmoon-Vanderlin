@@ -44,15 +44,7 @@
 	var/datum/customizer_entry/hair/hair_entry = entry
 	switch(href_list["customizer_task"])
 		if("hair_color")
-			var/list/hairs
-			var/new_color
-			if(prefs.read_preference(/datum/preference/choiced/age) == AGE_OLD && (OLDGREY in prefs.pref_species.species_traits))
-				hairs = prefs.pref_species.get_oldhc_list()
-			else
-				hairs = prefs.pref_species.get_hairc_list()
-			var/new_hair = browser_input_list(user, "SELECT YOUR HERO'S HAIR COLOR", "BARBER", hairs)
-			if(new_hair)
-				new_color = hairs[new_hair]
+			var/new_color = color_pick_sanitized_lumi(user, "Choose your hair color:", "Character Preference", hair_entry.hair_color)
 			if(!new_color)
 				return
 			hair_entry.hair_color = sanitize_hexcolor(new_color)
