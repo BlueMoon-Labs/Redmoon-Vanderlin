@@ -34,10 +34,10 @@
 	if(get_face_name("") != GetVoice())
 		// This isn't accurate purposely
 		var/appendage = age == AGE_CHILD ? "Child" : "Figure"
-		switch(client?.prefs.gender)
-			if(FEMALE)
+		switch(client?.prefs.read_preference(/datum/preference/choiced/voice_type))
+			if(VOICE_TYPE_FEM, VOICE_TYPE_FEM_DAINTY, VOICE_TYPE_FEM_HAUGHTY)
 				appendage = age == AGE_CHILD ? "Girl" : "Woman"
-			if(MALE)
+			if(VOICE_TYPE_MASC, VOICE_TYPE_MASC_FOP)
 				appendage = age == AGE_CHILD ? "Boy" : "Man"
 		return "Unknown [appendage]"
 
@@ -81,8 +81,6 @@
 	if(!length(message))
 		return
 	if(dna.species)
-		if((vocal_bark_id || vocal_bark) && !dna.species.always_play_send_voice)
-			return
 		dna.species.send_voice(src)
 
 /datum/species/proc/send_voice(mob/living/carbon/human/H)

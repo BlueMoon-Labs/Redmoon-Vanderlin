@@ -57,7 +57,7 @@
  */
 /datum/tgui/New(mob/user, datum/src_object, interface, title, ui_x, ui_y)
 	log_tgui(user,
-		"new [interface] fancy [user?.client?.prefs.tgui_fancy]",
+		"new [interface] fancy [user?.client?.prefs.read_preference(/datum/preference/toggle/tgui_fancy)]",
 		src_object = src_object)
 	src.user = user
 	src.src_object = src_object
@@ -98,7 +98,7 @@
 	if(!window.is_ready())
 		window.initialize(
 			strict_mode = TRUE,
-			fancy = user.client.prefs.tgui_fancy,
+			fancy = user.client.prefs.read_preference(/datum/preference/toggle/tgui_fancy),
 			assets = list(
 				get_asset_datum(/datum/asset/simple/tgui),
 			))
@@ -208,7 +208,7 @@
  * optional force bool Send an update even if UI is not interactive.
  */
 /datum/tgui/proc/send_full_update(custom_data, force)
-	if(!user?.client || !initialized || closing)
+	if(!user.client || !initialized || closing)
 		return
 	if(!COOLDOWN_FINISHED(src, refresh_cooldown))
 		refreshing = TRUE
@@ -231,7 +231,7 @@
  * optional force bool Send an update even if UI is not interactive.
  */
 /datum/tgui/proc/send_update(custom_data, force)
-	if(!user?.client || !initialized || closing)
+	if(!user.client || !initialized || closing)
 		return
 	var/should_update_data = force || status >= UI_UPDATE
 	window.send_message("update", get_payload(
@@ -246,13 +246,6 @@
  * return list
  */
 /datum/tgui/proc/get_payload(custom_data, with_data, with_static_data)
-	if(!user?.client)
-		return list("config" = list("status" = UI_CLOSE))
-
-	var/client/client = user.client
-	var/datum/preferences/prefs = client.prefs
-	var/fancy = prefs ? prefs.tgui_fancy : TRUE
-	var/locked = prefs ? prefs.tgui_lock : TRUE
 	var/list/json_data = list()
 	json_data["config"] = list(
 		"title" = title,
@@ -264,15 +257,15 @@
 		"window" = list(
 			"key" = window_key,
 			"size" = window_size,
-			"fancy" = fancy,
-			"locked" = locked,
+			"fancy" = user.client.prefs.read_preference(/datum/preference/toggle/tgui_fancy),
+			"locked" = user.client.prefs.read_preference(/datum/preference/toggle/tgui_lock),
 			"theme" = "grim",
 			"scale" = TRUE,
 		),
 		"client" = list(
-			"ckey" = client.ckey,
-			"address" = client.address,
-			"computer_id" = client.computer_id,
+			"ckey" = user.client.ckey,
+			"address" = user.client.address,
+			"computer_id" = user.client.computer_id,
 		),
 		"user" = list(
 			"name" = "[user]",
@@ -325,9 +318,6 @@
 		return
 
 	if(needs_update)
-		if(!user?.client)
-			close(can_be_suspended = FALSE)
-			return
 		window.send_message("update", get_payload())
 
 /**

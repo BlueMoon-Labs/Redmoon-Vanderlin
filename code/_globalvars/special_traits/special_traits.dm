@@ -47,7 +47,7 @@ GLOBAL_LIST_INIT(special_traits, build_special_traits())
 	if(!player)
 		player = character.client
 	apply_prefs_special(character, player)
-	// apply_voicepacks(character, player)
+	apply_voicepacks(character, player)
 
 /proc/apply_prefs_special(mob/living/carbon/human/character, client/player)
 	if(!player)
@@ -63,15 +63,15 @@ GLOBAL_LIST_INIT(special_traits, build_special_traits())
 	player.prefs.next_special_trait = null
 	player.prefs.save_preferences()
 
-// /proc/apply_voicepacks(mob/living/carbon/human/character, client/player)
-// 	switch(player.prefs.voice_type)
-// 		if(VOICE_TYPE_MASC_FOP)
-// 			character.dna.species.soundpack_m = new /datum/voicepack/male/foppish()
-// 		if(VOICE_TYPE_FEM_DAINTY)
-// 			character.dna.species.soundpack_f = new /datum/voicepack/female/dainty()
-// 		if(VOICE_TYPE_FEM_HAUGHTY)
-// 			character.dna.species.soundpack_f = new /datum/voicepack/female/haughty()
-// 	return
+/proc/apply_voicepacks(mob/living/carbon/human/character, client/player)
+	switch(player.prefs.read_preference(/datum/preference/choiced/voice_type))
+		if(VOICE_TYPE_MASC_FOP)
+			character.dna.species.soundpack_m = new /datum/voicepack/male/foppish()
+		if(VOICE_TYPE_FEM_DAINTY)
+			character.dna.species.soundpack_f = new /datum/voicepack/female/dainty()
+		if(VOICE_TYPE_FEM_HAUGHTY)
+			character.dna.species.soundpack_f = new /datum/voicepack/female/haughty()
+	return
 
 /proc/apply_special_trait_if_able(mob/living/carbon/human/character, client/player, trait_type)
 	if(!charactet_eligible_for_trait(character, player, trait_type))

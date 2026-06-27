@@ -172,6 +172,16 @@
 /datum/preferences/process_link(mob/user, list/href_list)
 	if(should_ignore_prefs_href(href_list))
 		return
+	if(href_list["preference"] == "preview_dir")
+		handle_preview_dir_click(user, href_list)
+		return
+	if(href_list["preference"] == "body_color" && href_list["task"] == "input")
+		handle_body_color_input(user)
+		update_menu_data(user, list("body_color"))
+		return
+	if(href_list["preference"] == "bespecial")
+		open_loadout_shop(user)
+		return
 	if(href_list["preference"] == "barks")
 		show_bark_prefs_ui(user)
 		return

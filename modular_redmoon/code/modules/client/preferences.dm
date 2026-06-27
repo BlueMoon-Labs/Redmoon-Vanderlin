@@ -8,3 +8,4 @@
 	var/pref_browser_zoom = "1"
 
 	var/datum/character_offer_instance/offer
+	var/preview_direction = SOUTH
